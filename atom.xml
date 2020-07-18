@@ -122,6 +122,35 @@
   </entry>
   
   <entry>
+    <title>OAuth2.0</title>
+    <link href="http://adbo.gitee.io/2020/05/19/2020-05-19-oauth2-0/"/>
+    <id>http://adbo.gitee.io/2020/05/19/2020-05-19-oauth2-0/</id>
+    <published>2020-05-19T15:45:46.000Z</published>
+    <updated>2020-07-18T06:20:26.447Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;本篇主要记录和总结工作中用到授权认证的OAuth2.0&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&quot;/2020/05/19/2020-05-19-oauth2-0/c81m1m9e.bmp&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Work" scheme="http://adbo.gitee.io/categories/Work/"/>
+    
+    
+      <category term="OAuth2" scheme="http://adbo.gitee.io/tags/OAuth2/"/>
+    
+  </entry>
+  
+  <entry>
     <title>消息队列</title>
     <link href="http://adbo.gitee.io/2020/05/18/2020-05-18-rocketmq/"/>
     <id>http://adbo.gitee.io/2020/05/18/2020-05-18-rocketmq/</id>
@@ -500,32 +529,6 @@
         
         
           &lt;p&gt;AQS，AbstractQueuedSynchronizer，即队列同步器。它是构建锁或者其他同步组件的基础框架（如ReentrantLock、ReentrantReadWriteLock、Semaphore等），JUC并发包的作者（Doug
-        
-      
-    
-    </summary>
-    
-      <category term="JAVA" scheme="http://adbo.gitee.io/categories/JAVA/"/>
-    
-    
-      <category term="JAVA并发" scheme="http://adbo.gitee.io/tags/JAVA%E5%B9%B6%E5%8F%91/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Java内存模型之总结</title>
-    <link href="http://adbo.gitee.io/2020/02/19/2020-02-19-bing-fa-nei-cun-mo-xing-zong-jie/"/>
-    <id>http://adbo.gitee.io/2020/02/19/2020-02-19-bing-fa-nei-cun-mo-xing-zong-jie/</id>
-    <published>2020-02-19T15:45:46.000Z</published>
-    <updated>2020-07-18T06:13:37.368Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;总结&quot;&gt;&lt;a href=&quot;#总结&quot; class=&quot;headerlink&quot;
         
       
     
