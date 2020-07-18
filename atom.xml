@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://adbo.gitee.io/"/>
-  <updated>2020-07-18T06:13:37.600Z</updated>
+  <updated>2020-07-18T12:37:05.316Z</updated>
   <id>http://adbo.gitee.io/</id>
   
   <author>
@@ -15,6 +15,24 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>小李飞刀</title>
+    <link href="http://adbo.gitee.io/2020/07/18/2020-07-18-xiao-li-fei-dao/"/>
+    <id>http://adbo.gitee.io/2020/07/18/2020-07-18-xiao-li-fei-dao/</id>
+    <published>2020-07-18T11:05:31.000Z</published>
+    <updated>2020-07-18T12:37:05.316Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+      <category term="大招" scheme="http://adbo.gitee.io/categories/%E5%A4%A7%E6%8B%9B/"/>
+    
+    
+      <category term="小李飞刀" scheme="http://adbo.gitee.io/tags/%E5%B0%8F%E6%9D%8E%E9%A3%9E%E5%88%80/"/>
+    
+  </entry>
   
   <entry>
     <title>MySQL</title>
@@ -123,10 +141,10 @@
   
   <entry>
     <title>OAuth2.0</title>
-    <link href="http://adbo.gitee.io/2020/05/19/2020-05-19-oauth2/"/>
-    <id>http://adbo.gitee.io/2020/05/19/2020-05-19-oauth2/</id>
+    <link href="http://adbo.gitee.io/2020/05/19/2020-05-19-oauth2-0/"/>
+    <id>http://adbo.gitee.io/2020/05/19/2020-05-19-oauth2-0/</id>
     <published>2020-05-19T15:45:46.000Z</published>
-    <updated>2020-07-18T07:48:29.632Z</updated>
+    <updated>2020-07-18T07:50:01.624Z</updated>
     
     <summary type="html">
     
@@ -137,7 +155,7 @@
           &lt;blockquote&gt;
 &lt;p&gt;本篇主要记录和总结工作中用到授权认证的OAuth2.0&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;&lt;img src=&quot;/2020/05/19/2020-05-19-oauth2/c81m1m9e.bmp&quot;
+&lt;p&gt;&lt;img src=&quot;/2020/05/19/2020-05-19-oauth2-0/c81m1m9e.bmp&quot;
         
       
     
@@ -503,32 +521,6 @@
         
           &lt;p&gt;&lt;strong&gt;AQS内部维护着一个FIFO队列，该队列就是CLH同步队列。&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;CLH同步队列是一个FIFO双向队列，AQS依赖它来完成同步状态的管理，当前线程如果获取同步状态失败时，AQS则会将当前线程已经等待状态等信息构造成
-        
-      
-    
-    </summary>
-    
-      <category term="JAVA" scheme="http://adbo.gitee.io/categories/JAVA/"/>
-    
-    
-      <category term="JAVA并发" scheme="http://adbo.gitee.io/tags/JAVA%E5%B9%B6%E5%8F%91/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>J.U.C之AQS：AQS简介</title>
-    <link href="http://adbo.gitee.io/2020/03/13/2020-03-13-bing-fa-aqs/"/>
-    <id>http://adbo.gitee.io/2020/03/13/2020-03-13-bing-fa-aqs/</id>
-    <published>2020-03-13T15:45:46.000Z</published>
-    <updated>2020-07-18T06:13:37.368Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;AQS，AbstractQueuedSynchronizer，即队列同步器。它是构建锁或者其他同步组件的基础框架（如ReentrantLock、ReentrantReadWriteLock、Semaphore等），JUC并发包的作者（Doug
         
       
     
