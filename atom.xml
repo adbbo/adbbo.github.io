@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Adbo</title>
+  
+  <subtitle>Adbo~Blog</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://adbo.gitee.io/"/>
+  <updated>2020-07-18T06:13:37.600Z</updated>
+  <id>http://adbo.gitee.io/</id>
+  
+  <author>
+    <name>Adbo</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MySQL</title>
+    <link href="http://adbo.gitee.io/2020/06/04/2020-06-04-mysql-04/"/>
+    <id>http://adbo.gitee.io/2020/06/04/2020-06-04-mysql-04/</id>
+    <published>2020-06-04T15:45:46.000Z</published>
+    <updated>2020-07-18T06:13:37.600Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+      <category term="SQL" scheme="http://adbo.gitee.io/categories/SQL/"/>
+    
+    
+      <category term="MySQL" scheme="http://adbo.gitee.io/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL</title>
+    <link href="http://adbo.gitee.io/2020/06/03/2020-06-03-mysql-03/"/>
+    <id>http://adbo.gitee.io/2020/06/03/2020-06-03-mysql-03/</id>
+    <published>2020-06-03T15:45:46.000Z</published>
+    <updated>2020-07-18T06:13:37.600Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;来源《MySQL实战45课》&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;隔离性与隔离级别&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="SQL" scheme="http://adbo.gitee.io/categories/SQL/"/>
+    
+    
+      <category term="MySQL" scheme="http://adbo.gitee.io/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL</title>
+    <link href="http://adbo.gitee.io/2020/06/02/2020-06-02-mysql-02/"/>
+    <id>http://adbo.gitee.io/2020/06/02/2020-06-02-mysql-02/</id>
+    <published>2020-06-02T15:45:46.000Z</published>
+    <updated>2020-07-18T06:13:37.584Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;来源《MySQL实战45课》&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;前序&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="SQL" scheme="http://adbo.gitee.io/categories/SQL/"/>
+    
+    
+      <category term="MySQL" scheme="http://adbo.gitee.io/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL</title>
+    <link href="http://adbo.gitee.io/2020/06/01/2020-06-01-mysql-01/"/>
+    <id>http://adbo.gitee.io/2020/06/01/2020-06-01-mysql-01/</id>
+    <published>2020-06-01T15:45:46.000Z</published>
+    <updated>2020-07-18T06:13:37.584Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;来源《MySQL实战45课》&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;基础架构&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="SQL" scheme="http://adbo.gitee.io/categories/SQL/"/>
+    
+    
+      <category term="MySQL" scheme="http://adbo.gitee.io/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>OAuth2.0</title>
+    <link href="http://adbo.gitee.io/2020/05/19/2020-05-19-oauth2-0/"/>
+    <id>http://adbo.gitee.io/2020/05/19/2020-05-19-oauth2-0/</id>
+    <published>2020-05-19T15:45:46.000Z</published>
+    <updated>2020-07-18T06:13:37.584Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;本篇主要记录和总结工作中用到授权认证的OAuth2.0&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&quot;/2020/05/19/2020-05-19-oauth2-0/c81m1m9e.bmp&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Work" scheme="http://adbo.gitee.io/categories/Work/"/>
+    
+    
+      <category term="OAuth2" scheme="http://adbo.gitee.io/tags/OAuth2/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>消息队列</title>
+    <link href="http://adbo.gitee.io/2020/05/18/2020-05-18-rocketmq/"/>
+    <id>http://adbo.gitee.io/2020/05/18/2020-05-18-rocketmq/</id>
+    <published>2020-05-18T15:45:46.000Z</published>
+    <updated>2020-07-18T06:13:37.522Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;消息队列能用来干什么？&quot;&gt;&lt;a href=&quot;#消息队列能用来干什么？&quot; class=&quot;headerlink&quot; title=&quot;消息队列能用来干什么？&quot;&gt;&lt;/a&gt;消息队列能用来干什么？&lt;/h2&gt;&lt;h3 id=&quot;异步&quot;&gt;&lt;a href=&quot;#异步&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="中间件" scheme="http://adbo.gitee.io/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
+    
+    
+      <category term="RocketMQ" scheme="http://adbo.gitee.io/tags/RocketMQ/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>分布式锁</title>
+    <link href="http://adbo.gitee.io/2020/05/16/2020-05-16-fen-bu-shi-suo/"/>
+    <id>http://adbo.gitee.io/2020/05/16/2020-05-16-fen-bu-shi-suo/</id>
+    <published>2020-05-16T15:45:46.000Z</published>
+    <updated>2020-07-18T06:13:37.515Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="中间件" scheme="http://adbo.gitee.io/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
+    
+    
+      <category term="分布式锁" scheme="http://adbo.gitee.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring</title>
+    <link href="http://adbo.gitee.io/2020/05/14/2020-05-14-spring/"/>
+    <id>http://adbo.gitee.io/2020/05/14/2020-05-14-spring/</id>
+    <published>2020-05-14T15:45:46.000Z</published>
+    <updated>2020-07-18T06:13:37.499Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;什么是-Spring-框架&quot;&gt;&lt;a href=&quot;#什么是-Spring-框架&quot; class=&quot;headerlink&quot; title=&quot;什么是 Spring 框架&quot;&gt;&lt;/a&gt;什么是 Spring 框架&lt;/h2&gt;&lt;p&gt;Spring
+        
+      
+    
+    </summary>
+    
+      <category term="Spring" scheme="http://adbo.gitee.io/categories/Spring/"/>
+    
+    
+      <category term="Spring框架" scheme="http://adbo.gitee.io/tags/Spring%E6%A1%86%E6%9E%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring Cloud 解析</title>
+    <link href="http://adbo.gitee.io/2020/05/12/2020-05-12-springcloud/"/>
+    <id>http://adbo.gitee.io/2020/05/12/2020-05-12-springcloud/</id>
+    <published>2020-05-12T15:45:46.000Z</published>
+    <updated>2020-07-18T06:13:37.484Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;服务注册和发现是什么意思？Spring-Cloud-如何实现&quot;&gt;&lt;a href=&quot;#服务注册和发现是什么意思？Spring-Cloud-如何实现&quot; class=&quot;headerlink&quot; title=&quot;服务注册和发现是什么意思？Spring Cloud
+        
+      
+    
+    </summary>
+    
+      <category term="Spring" scheme="http://adbo.gitee.io/categories/Spring/"/>
+    
+    
+      <category term="SpringCloud" scheme="http://adbo.gitee.io/tags/SpringCloud/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ZooKeeper</title>
+    <link href="http://adbo.gitee.io/2020/04/18/2020-04-18-zookeeper-zhi-shi/"/>
+    <id>http://adbo.gitee.io/2020/04/18/2020-04-18-zookeeper-zhi-shi/</id>
+    <published>2020-04-18T15:45:46.000Z</published>
+    <updated>2020-07-18T06:13:37.468Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;zookeeper是什么&quot;&gt;&lt;a href=&quot;#zookeeper是什么&quot; class=&quot;headerlink&quot; title=&quot;zookeeper是什么&quot;&gt;&lt;/a&gt;zookeeper是什么&lt;/h2&gt;&lt;p&gt;官方说辞：Zookeeper 分布式服务框架是Apache
+        
+      
+    
+    </summary>
+    
+      <category term="中间件" scheme="http://adbo.gitee.io/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
+    
+    
+      <category term="ZooKeeper" scheme="http://adbo.gitee.io/tags/ZooKeeper/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ZooKeeper</title>
+    <link href="http://adbo.gitee.io/2020/04/16/2020-04-16-zookeeper/"/>
+    <id>http://adbo.gitee.io/2020/04/16/2020-04-16-zookeeper/</id>
+    <published>2020-04-16T15:45:46.000Z</published>
+    <updated>2020-07-18T06:13:37.453Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;什么是-ZooKeeper&quot;&gt;&lt;a href=&quot;#什么是-ZooKeeper&quot; class=&quot;headerlink&quot; title=&quot;什么是 ZooKeeper&quot;&gt;&lt;/a&gt;什么是 ZooKeeper&lt;/h2&gt;&lt;h3 id=&quot;ZooKeeper-概览&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="中间件" scheme="http://adbo.gitee.io/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
+    
+    
+      <category term="ZooKeeper" scheme="http://adbo.gitee.io/tags/ZooKeeper/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>葵花宝典-Dubbo总结</title>
+    <link href="http://adbo.gitee.io/2020/04/14/2020-04-14-kui-hua-bao-dian-dubbo-zong-jie/"/>
+    <id>http://adbo.gitee.io/2020/04/14/2020-04-14-kui-hua-bao-dian-dubbo-zong-jie/</id>
+    <published>2020-04-14T15:45:46.000Z</published>
+    <updated>2020-07-18T06:13:37.437Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;基础知识&quot;&gt;&lt;a href=&quot;#基础知识&quot; class=&quot;headerlink&quot; title=&quot;基础知识&quot;&gt;&lt;/a&gt;基础知识&lt;/h2&gt;&lt;h3 id=&quot;Dubbo定义&quot;&gt;&lt;a href=&quot;#Dubbo定义&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="葵花宝典" scheme="http://adbo.gitee.io/categories/%E8%91%B5%E8%8A%B1%E5%AE%9D%E5%85%B8/"/>
+    
+    
+      <category term="Dubbo" scheme="http://adbo.gitee.io/tags/Dubbo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>葵花宝典-Redis总结</title>
+    <link href="http://adbo.gitee.io/2020/04/12/2020-04-12-kui-hua-bao-dian-redis-zong-jie/"/>
+    <id>http://adbo.gitee.io/2020/04/12/2020-04-12-kui-hua-bao-dian-redis-zong-jie/</id>
+    <published>2020-04-12T15:45:46.000Z</published>
+    <updated>2020-07-18T06:13:37.437Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h2&gt;&lt;h3 id=&quot;Redis定义&quot;&gt;&lt;a href=&quot;#Redis定义&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="葵花宝典" scheme="http://adbo.gitee.io/categories/%E8%91%B5%E8%8A%B1%E5%AE%9D%E5%85%B8/"/>
+    
+    
+      <category term="Redis" scheme="http://adbo.gitee.io/tags/Redis/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>葵花宝典-JAVA集合</title>
+    <link href="http://adbo.gitee.io/2020/04/10/2020-04-10-kui-hua-bao-dian-java-ji-he/"/>
+    <id>http://adbo.gitee.io/2020/04/10/2020-04-10-kui-hua-bao-dian-java-ji-he/</id>
+    <published>2020-04-10T15:45:46.000Z</published>
+    <updated>2020-07-18T06:13:37.421Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;集合容器概述&quot;&gt;&lt;a href=&quot;#集合容器概述&quot; class=&quot;headerlink&quot; title=&quot;集合容器概述&quot;&gt;&lt;/a&gt;集合容器概述&lt;/h2&gt;&lt;h3 id=&quot;集合的特点&quot;&gt;&lt;a href=&quot;#集合的特点&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="葵花宝典" scheme="http://adbo.gitee.io/categories/%E8%91%B5%E8%8A%B1%E5%AE%9D%E5%85%B8/"/>
+    
+    
+      <category term="集合" scheme="http://adbo.gitee.io/tags/%E9%9B%86%E5%90%88/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>深入理解AQS</title>
+    <link href="http://adbo.gitee.io/2020/03/18/2020-03-18-bing-fa-aqs-shen-ru-li-jie/"/>
+    <id>http://adbo.gitee.io/2020/03/18/2020-03-18-bing-fa-aqs-shen-ru-li-jie/</id>
+    <published>2020-03-18T15:45:46.000Z</published>
+    <updated>2020-07-18T06:13:37.399Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;谈到并发，我们不得不说AQS(AbstractQueuedSynchronizer)，所谓的AQS即是抽象的队列式的同步器，内部定义了很多锁相关的方法，我们熟知的ReentrantLock、ReentrantReadWriteLock、CountDownLatch、Sema
+        
+      
+    
+    </summary>
+    
+      <category term="JAVA" scheme="http://adbo.gitee.io/categories/JAVA/"/>
+    
+    
+      <category term="JAVA并发" scheme="http://adbo.gitee.io/tags/JAVA%E5%B9%B6%E5%8F%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>深入分析CAS</title>
+    <link href="http://adbo.gitee.io/2020/03/17/2020-03-17-bing-fa-cas/"/>
+    <id>http://adbo.gitee.io/2020/03/17/2020-03-17-bing-fa-cas/</id>
+    <published>2020-03-17T15:45:46.000Z</published>
+    <updated>2020-07-18T06:13:37.384Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;CAS，Compare And
+        
+      
+    
+    </summary>
+    
+      <category term="JAVA" scheme="http://adbo.gitee.io/categories/JAVA/"/>
+    
+    
+      <category term="JAVA并发" scheme="http://adbo.gitee.io/tags/JAVA%E5%B9%B6%E5%8F%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>J.U.C之AQS：阻塞和唤醒线程</title>
+    <link href="http://adbo.gitee.io/2020/03/16/2020-03-16-bing-fa-aqs-zu-sai-he-huan-xing-xian-cheng/"/>
+    <id>http://adbo.gitee.io/2020/03/16/2020-03-16-bing-fa-aqs-zu-sai-he-huan-xing-xian-cheng/</id>
+    <published>2020-03-16T15:45:46.000Z</published>
+    <updated>2020-07-18T06:13:37.384Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;&lt;strong&gt;在AQS中维护着一个FIFO的同步队列，当线程获取同步状态失败后，则会加入到这个CLH同步队列的队尾并一直保持着自旋。在CLH同步队列中的线程在自旋时会判断其前驱节点是否为首节点，如果为首节点则不断尝试获取同步状态，获取成功则退出CLH同步队列。当线程执行完
+        
+      
+    
+    </summary>
+    
+      <category term="JAVA" scheme="http://adbo.gitee.io/categories/JAVA/"/>
+    
+    
+      <category term="JAVA并发" scheme="http://adbo.gitee.io/tags/JAVA%E5%B9%B6%E5%8F%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>J.U.C之AQS：同步状态的获取与释放</title>
+    <link href="http://adbo.gitee.io/2020/03/15/2020-03-15-bing-fa-aqs-tong-bu-zhuang-tai-de-huo-qu-yu-shi-fang/"/>
+    <id>http://adbo.gitee.io/2020/03/15/2020-03-15-bing-fa-aqs-tong-bu-zhuang-tai-de-huo-qu-yu-shi-fang/</id>
+    <published>2020-03-15T15:45:46.000Z</published>
+    <updated>2020-07-18T06:13:37.368Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;AQS是构建Java同步组件的基础，我们期待它能够成为实现大部分同步需求的基础。AQS的设计模式采用的模板方法模式，子类通过继承的方式，实现它的抽象方法来管理同步状态，对于子类而言它并没有太多的活要做，AQS提供了大量的模板方法来实现同步，主要是分为三类：独占式获取和释放同
+        
+      
+    
+    </summary>
+    
+      <category term="JAVA" scheme="http://adbo.gitee.io/categories/JAVA/"/>
+    
+    
+      <category term="JAVA并发" scheme="http://adbo.gitee.io/tags/JAVA%E5%B9%B6%E5%8F%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>J.U.C之AQS：CLH同步队列</title>
+    <link href="http://adbo.gitee.io/2020/03/14/2020-03-14-bing-fa-aqs-clh/"/>
+    <id>http://adbo.gitee.io/2020/03/14/2020-03-14-bing-fa-aqs-clh/</id>
+    <published>2020-03-14T15:45:46.000Z</published>
+    <updated>2020-07-18T06:13:37.368Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;&lt;strong&gt;AQS内部维护着一个FIFO队列，该队列就是CLH同步队列。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;CLH同步队列是一个FIFO双向队列，AQS依赖它来完成同步状态的管理，当前线程如果获取同步状态失败时，AQS则会将当前线程已经等待状态等信息构造成
+        
+      
+    
+    </summary>
+    
+      <category term="JAVA" scheme="http://adbo.gitee.io/categories/JAVA/"/>
+    
+    
+      <category term="JAVA并发" scheme="http://adbo.gitee.io/tags/JAVA%E5%B9%B6%E5%8F%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>J.U.C之AQS：AQS简介</title>
+    <link href="http://adbo.gitee.io/2020/03/13/2020-03-13-bing-fa-aqs/"/>
+    <id>http://adbo.gitee.io/2020/03/13/2020-03-13-bing-fa-aqs/</id>
+    <published>2020-03-13T15:45:46.000Z</published>
+    <updated>2020-07-18T06:13:37.368Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;AQS，AbstractQueuedSynchronizer，即队列同步器。它是构建锁或者其他同步组件的基础框架（如ReentrantLock、ReentrantReadWriteLock、Semaphore等），JUC并发包的作者（Doug
+        
+      
+    
+    </summary>
+    
+      <category term="JAVA" scheme="http://adbo.gitee.io/categories/JAVA/"/>
+    
+    
+      <category term="JAVA并发" scheme="http://adbo.gitee.io/tags/JAVA%E5%B9%B6%E5%8F%91/"/>
+    
+  </entry>
+  
+</feed>
