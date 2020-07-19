@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://adbo.gitee.io/"/>
-  <updated>2020-07-18T12:37:05.316Z</updated>
+  <updated>2020-07-19T03:58:48.268Z</updated>
   <id>http://adbo.gitee.io/</id>
   
   <author>
@@ -18,19 +18,19 @@
   
   <entry>
     <title>小李飞刀</title>
-    <link href="http://adbo.gitee.io/2020/07/18/2020-07-18-xiao-li-fei-dao/"/>
-    <id>http://adbo.gitee.io/2020/07/18/2020-07-18-xiao-li-fei-dao/</id>
+    <link href="http://adbo.gitee.io/2020/07/18/2020-07-18-xiao-li-fei-dao-xiao-xi-dui-lie/"/>
+    <id>http://adbo.gitee.io/2020/07/18/2020-07-18-xiao-li-fei-dao-xiao-xi-dui-lie/</id>
     <published>2020-07-18T11:05:31.000Z</published>
-    <updated>2020-07-18T12:37:05.316Z</updated>
+    <updated>2020-07-19T03:58:48.268Z</updated>
     
     <summary type="html">
     
     </summary>
     
-      <category term="大招" scheme="http://adbo.gitee.io/categories/%E5%A4%A7%E6%8B%9B/"/>
+      <category term="小李飞刀" scheme="http://adbo.gitee.io/categories/%E5%B0%8F%E6%9D%8E%E9%A3%9E%E5%88%80/"/>
     
     
-      <category term="小李飞刀" scheme="http://adbo.gitee.io/tags/%E5%B0%8F%E6%9D%8E%E9%A3%9E%E5%88%80/"/>
+      <category term="消息队列" scheme="http://adbo.gitee.io/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/"/>
     
   </entry>
   
@@ -173,7 +173,7 @@
     <link href="http://adbo.gitee.io/2020/05/18/2020-05-18-rocketmq/"/>
     <id>http://adbo.gitee.io/2020/05/18/2020-05-18-rocketmq/</id>
     <published>2020-05-18T15:45:46.000Z</published>
-    <updated>2020-07-18T06:13:37.522Z</updated>
+    <updated>2020-07-19T03:58:27.159Z</updated>
     
     <summary type="html">
     
@@ -190,7 +190,7 @@
       <category term="中间件" scheme="http://adbo.gitee.io/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
     
     
-      <category term="RocketMQ" scheme="http://adbo.gitee.io/tags/RocketMQ/"/>
+      <category term="消息队列" scheme="http://adbo.gitee.io/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/"/>
     
   </entry>
   
