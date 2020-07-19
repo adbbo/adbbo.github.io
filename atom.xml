@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://adbo.gitee.io/"/>
-  <updated>2020-07-19T11:01:47.374Z</updated>
+  <updated>2020-07-19T13:41:36.828Z</updated>
   <id>http://adbo.gitee.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://adbo.gitee.io/2020/07/21/2020-07-21-redis-shao-bing/"/>
     <id>http://adbo.gitee.io/2020/07/21/2020-07-21-redis-shao-bing/</id>
     <published>2020-07-21T10:55:19.000Z</published>
-    <updated>2020-07-19T11:01:47.374Z</updated>
+    <updated>2020-07-19T13:41:36.828Z</updated>
     
     <summary type="html">
     
@@ -29,7 +29,7 @@
       
         
         
-          &lt;p&gt;&lt;img src=&quot;/2020/07/21/2020-07-21-redis-shao-bing/async-replication-data-lose-case.png&quot;
+          &lt;h2 id=&quot;哨兵的介绍&quot;&gt;&lt;a href=&quot;#哨兵的介绍&quot; class=&quot;headerlink&quot; title=&quot;哨兵的介绍&quot;&gt;&lt;/a&gt;哨兵的介绍&lt;/h2&gt;&lt;p&gt;sentinel，中文名是哨兵。哨兵是 Redis
         
       
     
@@ -47,7 +47,7 @@
     <link href="http://adbo.gitee.io/2020/07/20/2020-07-20-redis-zhu-cong-jia-gou/"/>
     <id>http://adbo.gitee.io/2020/07/20/2020-07-20-redis-zhu-cong-jia-gou/</id>
     <published>2020-07-20T10:55:19.000Z</published>
-    <updated>2020-07-19T10:59:08.822Z</updated>
+    <updated>2020-07-19T11:23:11.383Z</updated>
     
     <summary type="html">
     
@@ -73,7 +73,7 @@
     <link href="http://adbo.gitee.io/2020/07/19/2020-07-19-xiao-li-fei-dao-redis/"/>
     <id>http://adbo.gitee.io/2020/07/19/2020-07-19-xiao-li-fei-dao-redis/</id>
     <published>2020-07-19T08:31:46.000Z</published>
-    <updated>2020-07-19T11:04:31.924Z</updated>
+    <updated>2020-07-19T11:06:30.878Z</updated>
     
     <summary type="html">
     
