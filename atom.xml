@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://adbo.gitee.io/"/>
-  <updated>2020-07-19T09:27:14.852Z</updated>
+  <updated>2020-07-19T11:01:47.374Z</updated>
   <id>http://adbo.gitee.io/</id>
   
   <author>
@@ -17,11 +17,63 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Redis哨兵集群实现高可用</title>
+    <link href="http://adbo.gitee.io/2020/07/21/2020-07-21-redis-shao-bing/"/>
+    <id>http://adbo.gitee.io/2020/07/21/2020-07-21-redis-shao-bing/</id>
+    <published>2020-07-21T10:55:19.000Z</published>
+    <updated>2020-07-19T11:01:47.374Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;&lt;img src=&quot;/2020/07/21/2020-07-21-redis-shao-bing/async-replication-data-lose-case.png&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="中间件" scheme="http://adbo.gitee.io/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
+    
+    
+      <category term="Redis" scheme="http://adbo.gitee.io/tags/Redis/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Redis主从架构</title>
+    <link href="http://adbo.gitee.io/2020/07/20/2020-07-20-redis-zhu-cong-jia-gou/"/>
+    <id>http://adbo.gitee.io/2020/07/20/2020-07-20-redis-zhu-cong-jia-gou/</id>
+    <published>2020-07-20T10:55:19.000Z</published>
+    <updated>2020-07-19T10:59:08.822Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;单机的 Redis，能够承载的 QPS 大概就在上万到几万不等。对于缓存来说，一般都是用来支撑读高并发的。因此架构做成主从(master-slave)架构，一主多从，主负责写，并且将数据复制到其它的 slave
+        
+      
+    
+    </summary>
+    
+      <category term="中间件" scheme="http://adbo.gitee.io/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
+    
+    
+      <category term="Redis" scheme="http://adbo.gitee.io/tags/Redis/"/>
+    
+  </entry>
+  
+  <entry>
     <title>消息队列</title>
     <link href="http://adbo.gitee.io/2020/07/19/2020-07-19-xiao-li-fei-dao-redis/"/>
     <id>http://adbo.gitee.io/2020/07/19/2020-07-19-xiao-li-fei-dao-redis/</id>
     <published>2020-07-19T08:31:46.000Z</published>
-    <updated>2020-07-19T09:27:14.852Z</updated>
+    <updated>2020-07-19T10:54:14.176Z</updated>
     
     <summary type="html">
     
@@ -477,58 +529,6 @@
         
         
           &lt;p&gt;CAS，Compare And
-        
-      
-    
-    </summary>
-    
-      <category term="JAVA" scheme="http://adbo.gitee.io/categories/JAVA/"/>
-    
-    
-      <category term="JAVA并发" scheme="http://adbo.gitee.io/tags/JAVA%E5%B9%B6%E5%8F%91/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>J.U.C之AQS：阻塞和唤醒线程</title>
-    <link href="http://adbo.gitee.io/2020/03/16/2020-03-16-bing-fa-aqs-zu-sai-he-huan-xing-xian-cheng/"/>
-    <id>http://adbo.gitee.io/2020/03/16/2020-03-16-bing-fa-aqs-zu-sai-he-huan-xing-xian-cheng/</id>
-    <published>2020-03-16T15:45:46.000Z</published>
-    <updated>2020-07-18T06:13:37.384Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;&lt;strong&gt;在AQS中维护着一个FIFO的同步队列，当线程获取同步状态失败后，则会加入到这个CLH同步队列的队尾并一直保持着自旋。在CLH同步队列中的线程在自旋时会判断其前驱节点是否为首节点，如果为首节点则不断尝试获取同步状态，获取成功则退出CLH同步队列。当线程执行完
-        
-      
-    
-    </summary>
-    
-      <category term="JAVA" scheme="http://adbo.gitee.io/categories/JAVA/"/>
-    
-    
-      <category term="JAVA并发" scheme="http://adbo.gitee.io/tags/JAVA%E5%B9%B6%E5%8F%91/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>J.U.C之AQS：同步状态的获取与释放</title>
-    <link href="http://adbo.gitee.io/2020/03/15/2020-03-15-bing-fa-aqs-tong-bu-zhuang-tai-de-huo-qu-yu-shi-fang/"/>
-    <id>http://adbo.gitee.io/2020/03/15/2020-03-15-bing-fa-aqs-tong-bu-zhuang-tai-de-huo-qu-yu-shi-fang/</id>
-    <published>2020-03-15T15:45:46.000Z</published>
-    <updated>2020-07-18T06:13:37.368Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;AQS是构建Java同步组件的基础，我们期待它能够成为实现大部分同步需求的基础。AQS的设计模式采用的模板方法模式，子类通过继承的方式，实现它的抽象方法来管理同步状态，对于子类而言它并没有太多的活要做，AQS提供了大量的模板方法来实现同步，主要是分为三类：独占式获取和释放同
         
       
     

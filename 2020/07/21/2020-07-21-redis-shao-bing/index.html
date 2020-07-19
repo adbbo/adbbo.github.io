@@ -4,8 +4,8 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="消息队列, Adbo~Blog">
-    <meta name="description" content="接住，It will pass">
+    <meta name="keywords" content="Redis哨兵集群实现高可用, Adbo~Blog">
+    <meta name="description" content="Redis哨兵集群实现高可用">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>消息队列 | Adbo</title>
+    <title>Redis哨兵集群实现高可用 | Adbo</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -278,7 +278,7 @@
 <script src="/libs/cryptojs/crypto-js.min.js"></script>
 <script>
     (function() {
-        let pwd = '384b7beaa046dce4ac43fb4621a3f6b1efae220d34c3659fb8de8eece36f7864';
+        let pwd = '';
         if (pwd && pwd.length > 0) {
             if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
                 alert('密码错误，将返回主页！');
@@ -291,12 +291,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/cover/3ks20rph.bmp')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">消息队列</h1>
+                    <h1 class="description center-align post-title">Redis哨兵集群实现高可用</h1>
                 </div>
             </div>
         </div>
@@ -425,8 +425,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/小李飞刀/" class="post-category">
-                                小李飞刀
+                            <a href="/categories/中间件/" class="post-category">
+                                中间件
                             </a>
                         
                     </div>
@@ -438,7 +438,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-07-19
+                    2020-07-21
                 </div>
                 
 
@@ -455,210 +455,7 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="面试题"><a href="#面试题" class="headerlink" title="面试题"></a>面试题</h2><p>项目中缓存是如何使用的？为什么要用缓存？缓存使用不当会造成什么后果？</p>
-<h3 id="面试官心理分析"><a href="#面试官心理分析" class="headerlink" title="面试官心理分析"></a>面试官心理分析</h3><p>这个问题，互联网公司必问，要是一个人连缓存都不太清楚，那确实比较尴尬。</p>
-<p>只要问到缓存，上来第一个问题，肯定是先问问你项目哪里用了缓存？为啥要用？不用行不行？如果用了以后可能会有什么不良的后果？</p>
-<p>这就是看看你对缓存这个东西背后有没有思考，如果你就是傻乎乎的瞎用，没法给面试官一个合理的解答，那面试官对你印象肯定不太好，觉得你平时思考太少，就知道干活儿。</p>
-<blockquote>
-<p>面试题剖析:<br>项目中缓存是如何使用的？这个，需要结合自己项目的业务来。</p>
-</blockquote>
-<h2 id="为什么要用缓存？"><a href="#为什么要用缓存？" class="headerlink" title="* 为什么要用缓存？"></a>* 为什么要用缓存？</h2><p>用缓存，主要有两个用途：高性能、高并发。</p>
-<h3 id="高性能"><a href="#高性能" class="headerlink" title="高性能"></a>高性能</h3><p>假设这么个场景，你有个操作，一个请求过来，吭哧吭哧你各种乱七八糟操作 mysql，半天查出来一个结果，耗时 600ms。但是这个结果可能接下来几个小时都不会变了，或者变了也可以不用立即反馈给用户。那么此时咋办？</p>
-<p>缓存啊，折腾 600ms 查出来的结果，扔缓存里，一个 key 对应一个 value，下次再有人查，别走 mysql 折腾 600ms 了，直接从缓存里，通过一个 key 查出来一个 value，2ms 搞定。性能提升 300 倍。</p>
-<p>就是说对于一些需要复杂操作耗时查出来的结果，且确定后面不怎么变化，但是有很多读请求，那么直接将查询出来的结果放在缓存中，后面直接读缓存就好。</p>
-<h3 id="高并发"><a href="#高并发" class="headerlink" title="高并发"></a>高并发</h3><p>mysql 这么重的数据库，压根儿设计不是让你玩儿高并发的，虽然也可以玩儿，但是天然支持不好。mysql 单机支撑到 2000QPS 也开始容易报警了。</p>
-<p>所以要是你有个系统，高峰期一秒钟过来的请求有 1万，那一个 mysql 单机绝对会死掉。你这个时候就只能上缓存，把很多数据放缓存，别放 mysql。缓存功能简单，说白了就是 key-value 式操作，单机支撑的并发量轻松一秒几万十几万，支撑高并发 so easy。单机承载并发量是 mysql 单机的几十倍。</p>
-<p><strong>缓存是走内存的，内存天然就支撑高并发。</strong></p>
-<h2 id="用了缓存之后会有什么不良后果？"><a href="#用了缓存之后会有什么不良后果？" class="headerlink" title="* 用了缓存之后会有什么不良后果？"></a>* 用了缓存之后会有什么不良后果？</h2><p>常见的缓存问题有以下几个：</p>
-<ul>
-<li>缓存与数据库双写不一致</li>
-<li>缓存雪崩、缓存穿透、缓存击穿</li>
-<li>缓存并发竞争</li>
-</ul>
-<hr>
-<h2 id="面试题-1"><a href="#面试题-1" class="headerlink" title="面试题"></a>面试题</h2><p>Redis 和 Memcached 有什么区别？Redis 的线程模型是什么？为什么 Redis 单线程却能支撑高并发？</p>
-<h3 id="面试官心理分析-1"><a href="#面试官心理分析-1" class="headerlink" title="面试官心理分析"></a>面试官心理分析</h3><p>这个是问 Redis 的时候，最基本的问题吧，Redis 最基本的一个内部原理和特点，就是 Redis 实际上是个单线程工作模型，你要是这个都不知道，那后面玩儿 Redis 的时候，出了问题岂不是什么都不知道？</p>
-<p>还有可能面试官会问问你 Redis 和 Memcached 的区别，但是 Memcached 是早些年各大互联网公司常用的缓存方案，但是现在近几年基本都是 Redis，没什么公司用 Memcached 了。</p>
-<h2 id="Redis-和-Memcached-有啥区别？"><a href="#Redis-和-Memcached-有啥区别？" class="headerlink" title="* Redis 和 Memcached 有啥区别？"></a>* Redis 和 Memcached 有啥区别？</h2><h3 id="Redis-支持复杂的数据结构"><a href="#Redis-支持复杂的数据结构" class="headerlink" title="Redis 支持复杂的数据结构"></a>Redis 支持复杂的数据结构</h3><p>Redis 相比 Memcached 来说，拥有更多的数据结构，能支持更丰富的数据操作。如果需要缓存能够支持更复杂的结构和操作， Redis 会是不错的选择。</p>
-<h3 id="Redis-原生支持集群模式"><a href="#Redis-原生支持集群模式" class="headerlink" title="Redis 原生支持集群模式"></a>Redis 原生支持集群模式</h3><p>在 Redis3.x 版本中，便能支持 cluster 模式，而 Memcached 没有原生的集群模式，需要依靠客户端来实现往集群中分片写入数据。</p>
-<h3 id="性能对比"><a href="#性能对比" class="headerlink" title="性能对比"></a>性能对比</h3><p>由于 Redis 只使用单核，而 Memcached 可以使用多核，所以平均每一个核上 Redis 在存储小数据时比 Memcached 性能更高。而在 100k 以上的数据中，Memcached 性能要高于 Redis。虽然 Redis 最近也在存储大数据的性能上进行优化，但是比起 Memcached，还是稍有逊色。</p>
-<h2 id="Redis-的线程模型-重要，灵魂之处"><a href="#Redis-的线程模型-重要，灵魂之处" class="headerlink" title="* Redis 的线程模型(重要，灵魂之处)"></a>* Redis 的线程模型(重要，灵魂之处)</h2><p>Redis 内部使用<strong>文件事件处理器</strong> file event handler ，<strong>这个文件事件处理器是单线程的，所以 Redis 才叫做单线程的模型</strong>。<strong>它采用 IO 多路复用机制同时监听多个 socket，将产生事件的 socket 压入内存队列中，事件分派器根据 socket 上的事件类型来选择对应的事件处理器进行处理</strong>。</p>
-<p>文件事件处理器的结构包含 4 个部分：</p>
-<ul>
-<li>多个 socket</li>
-<li>IO 多路复用程序</li>
-<li>文件事件分派器</li>
-<li>事件处理器（连接应答处理器、命令请求处理器、命令回复处理器）</li>
-</ul>
-<p><strong>多个 socket 可能会并发产生不同的操作，每个操作对应不同的文件事件，但是 IO 多路复用程序会监听多个 socket，会将产生事件的 socket 放入队列中排队，事件分派器每次从队列中取出一个 socket，根据 socket 的事件类型交给对应的事件处理器进行处理。</strong></p>
-<p>来看客户端与 Redis 的一次通信过程：</p>
-<p><img src="/2020/07/19/2020-07-19-xiao-li-fei-dao-redis/redis-single-thread-model.png" alt></p>
-<p>要明白，通信是通过 socket 来完成的，不懂的同学可以先去看一看 socket 网络编程。</p>
-<p>首先，Redis 服务端进程初始化的时候，会将 server socket 的 AE_READABLE 事件与连接应答处理器关联。</p>
-<p>客户端 socket01 向 Redis 进程的 server socket 请求建立连接，此时 server socket 会产生一个 AE_READABLE 事件，IO 多路复用程序监听到 server socket 产生的事件后，将该 socket 压入队列中。文件事件分派器从队列中获取 socket，交给连接应答处理器。连接应答处理器会创建一个能与客户端通信的 socket01，并将该 socket01 后面产生的 AE_READABLE 事件与命令请求处理器关联。</p>
-<p>假设此时客户端发送了一个 set key value 请求，此时 Redis 中的 socket01 会产生 AE_READABLE 事件，IO 多路复用程序将 socket01 压入队列，此时事件分派器从队列中获取到 socket01 产生的 AE_READABLE 事件，由于前面 socket01 的 AE_READABLE 事件已经与命令请求处理器关联，因此事件分派器将事件交给命令请求处理器来处理。命令请求处理器读取 socket01 的 key value 并在自己内存中完成 key value 的设置。操作完成后，它会将 socket01 的 AE_WRITABLE 事件与命令回复处理器关联。</p>
-<p>如果此时客户端准备好接收返回结果了，那么 Redis 中的 socket01 会产生一个 AE_WRITABLE 事件，同样压入队列中，事件分派器找到相关联的命令回复处理器，由命令回复处理器对 socket01 输入本次操作的一个结果，比如 ok ，之后解除 socket01 的 AE_WRITABLE 事件与命令回复处理器的关联。</p>
-<h2 id="为啥-Redis-单线程模型也能效率这么高？"><a href="#为啥-Redis-单线程模型也能效率这么高？" class="headerlink" title="* 为啥 Redis 单线程模型也能效率这么高？"></a>* 为啥 Redis 单线程模型也能效率这么高？</h2><ul>
-<li>纯内存操作。</li>
-<li>核心是基于非阻塞的 IO 多路复用机制。</li>
-<li>C 语言实现，一般来说，C 语言实现的程序“距离”操作系统更近，执行速度相对会更快。</li>
-<li>单线程反而避免了多线程的频繁上下文切换问题，预防了多线程可能产生的竞争问题。</li>
-</ul>
-<hr>
-<h2 id="面试题-2"><a href="#面试题-2" class="headerlink" title="面试题"></a>面试题</h2><p>Redis 都有哪些数据类型？分别在哪些场景下使用比较合适？</p>
-<h3 id="面试官心理分析-2"><a href="#面试官心理分析-2" class="headerlink" title="面试官心理分析"></a>面试官心理分析</h3><p>除非是面试官感觉看你简历，是工作 3 年以内的比较初级的同学，可能对技术没有很深入的研究，面试官才会问这类问题。否则，在宝贵的面试时间里，面试官实在不想多问。</p>
-<p>其实问这个问题，主要有两个原因：</p>
-<ul>
-<li>看看你到底有没有全面的了解 Redis 有哪些功能，一般怎么来用，啥场景用什么，就怕你别就会最简单的 KV 操作；</li>
-<li>看看你在实际项目里都怎么玩儿过 Redis。</li>
-</ul>
-<p>要是你回答的不好，没说出几种数据类型，也没说什么场景，你完了，面试官对你印象肯定不好，觉得你平时就是做个简单的 set 和 get。</p>
-<h2 id="Redis-都有哪些数据类型？分别在哪些场景下使用比较合适？"><a href="#Redis-都有哪些数据类型？分别在哪些场景下使用比较合适？" class="headerlink" title="* Redis 都有哪些数据类型？分别在哪些场景下使用比较合适？"></a>* Redis 都有哪些数据类型？分别在哪些场景下使用比较合适？</h2><p>Redis 主要有以下几种数据类型：</p>
-<ul>
-<li>Strings</li>
-<li>Hashes</li>
-<li>Lists</li>
-<li>Sets</li>
-<li>Sorted Sets</li>
-</ul>
-<blockquote>
-<p>Redis 除了这 5 种数据类型之外，还有 Bitmaps、HyperLogLogs、Streams 等。</p>
-</blockquote>
-<h3 id="Strings"><a href="#Strings" class="headerlink" title="Strings"></a>Strings</h3><p>这是最简单的类型，就是普通的 set 和 get，做简单的 KV 缓存。</p>
-<pre><code>set key1 value1</code></pre><h3 id="Hashes"><a href="#Hashes" class="headerlink" title="Hashes"></a>Hashes</h3><p>这个是类似 map 的一种结构，这个一般就是可以将结构化的数据，比如一个对象（前提是这个对象没嵌套其他的对象）给缓存在 Redis 里，然后每次读写缓存的时候，可以就操作 hash 里的某个字段。</p>
-<pre><code>hset person name bingo
-hset person age 20
-hset person id 1
-hget person name</code></pre><pre><code>person = {
-    &quot;name&quot;: &quot;bingo&quot;,
-    &quot;age&quot;: 20,
-    &quot;id&quot;: 1
-}</code></pre><h3 id="Lists"><a href="#Lists" class="headerlink" title="Lists"></a>Lists</h3><p>Lists 是有序列表，这个可以玩儿出很多花样。</p>
-<p>比如可以通过 list 存储一些列表型的数据结构，类似粉丝列表、文章的评论列表之类的东西。</p>
-<p>比如可以通过 lrange 命令，读取某个闭区间内的元素，可以基于 list 实现分页查询，这个是很棒的一个功能，基于 Redis 实现简单的高性能分页，可以做类似微博那种下拉不断分页的东西，性能高，就一页一页走。</p>
-<pre><code># 0开始位置，-1结束位置，结束位置为-1时，表示列表的最后一个位置，即查看所有。
-lrange mylist 0 -1</code></pre><p>比如可以搞个简单的消息队列，从 list 头怼进去，从 list 尾巴那里弄出来。</p>
-<pre><code>lpush mylist 1
-lpush mylist 2
-lpush mylist 3 4 5
-
-# 1
-rpop mylist</code></pre><h3 id="Sets"><a href="#Sets" class="headerlink" title="Sets"></a>Sets</h3><p>Sets 是无序集合，自动去重。</p>
-<p>直接基于 set 将系统里需要去重的数据扔进去，自动就给去重了，如果你需要对一些数据进行快速的全局去重，你当然也可以基于 jvm 内存里的 HashSet 进行去重，但是如果你的某个系统部署在多台机器上呢？得基于 Redis 进行全局的 set 去重。</p>
-<p>可以基于 set 玩儿交集、并集、差集的操作，比如交集吧，可以把两个人的粉丝列表整一个交集，看看俩人的共同好友是谁？对吧。</p>
-<p>把两个大 V 的粉丝都放在两个 set 中，对两个 set 做交集。</p>
-<pre><code>#-------操作一个set-------
-# 添加元素
-sadd mySet 1
-
-# 查看全部元素
-smembers mySet
-
-# 判断是否包含某个值
-sismember mySet 3
-
-# 删除某个/些元素
-srem mySet 1
-srem mySet 2 4
-
-# 查看元素个数
-scard mySet
-
-# 随机删除一个元素
-spop mySet
-
-#-------操作多个set-------
-# 将一个set的元素移动到另外一个set
-smove yourSet mySet 2
-
-# 求两set的交集
-sinter yourSet mySet
-
-# 求两set的并集
-sunion yourSet mySet
-
-# 求在yourSet中而不在mySet中的元素
-sdiff yourSet mySet</code></pre><h3 id="Sorted-Sets"><a href="#Sorted-Sets" class="headerlink" title="Sorted Sets"></a>Sorted Sets</h3><p>Sorted Sets 是排序的 set，去重但可以排序，写进去的时候给一个分数，自动根据分数排序。</p>
-<pre><code>zadd board 85 zhangsan
-zadd board 72 lisi
-zadd board 96 wangwu
-zadd board 63 zhaoliu
-
-# 获取排名前三的用户（默认是升序，所以需要 rev 改为降序）
-zrevrange board 0 3
-
-# 获取某用户的排名
-zrank board zhaoliu</code></pre><hr>
-<h2 id="面试题-3"><a href="#面试题-3" class="headerlink" title="面试题"></a>面试题</h2><p>Redis 的过期策略都有哪些？内存淘汰机制都有哪些？手写一下 LRU 代码实现？</p>
-<h3 id="面试官心理分析-3"><a href="#面试官心理分析-3" class="headerlink" title="面试官心理分析"></a>面试官心理分析</h3><p>如果你连这个问题都不知道，上来就懵了，回答不出来，那线上你写代码的时候，想当然的认为写进 Redis 的数据就一定会存在，后面导致系统各种 bug，谁来负责？</p>
-<h3 id="面试题剖析"><a href="#面试题剖析" class="headerlink" title="面试题剖析"></a>面试题剖析</h3><ul>
-<li><p>往 Redis 写入的数据怎么没了？</p>
-<p>  可能有同学会遇到，在生产环境的 Redis 经常会丢掉一些数据，写进去了，过一会儿可能就没了。我的天，同学，你问这个问题就说明 Redis 你就没用对啊。Redis 是缓存，你给当存储了是吧？</p>
-<p>  啥叫缓存？用内存当缓存。内存是无限的吗，内存是很宝贵而且是有限的，磁盘是廉价而且是大量的。可能一台机器就几十个 G 的内存，但是可以有几个 T 的硬盘空间。Redis 主要是基于内存来进行高性能、高并发的读写操作的。</p>
-<p>  那既然内存是有限的，比如 Redis 就只能用 10G，你要是往里面写了 20G 的数据，会咋办？当然会干掉 10G 的数据，然后就保留 10G 的数据了。那干掉哪些数据？保留哪些数据？当然是干掉不常用的数据，保留常用的数据了。</p>
-</li>
-<li><p>数据明明过期了，怎么还占用着内存？</p>
-<p>  这是由 Redis 的过期策略来决定。</p>
-</li>
-</ul>
-<h2 id="Redis-过期策略"><a href="#Redis-过期策略" class="headerlink" title="* Redis 过期策略"></a>* Redis 过期策略</h2><p><strong>Redis 过期策略是：定期删除+惰性删除。</strong></p>
-<p>所谓定期删除，指的是 Redis 默认是每隔 100ms 就随机抽取一些设置了过期时间的 key，检查其是否过期，如果过期就删除。</p>
-<p>假设 Redis 里放了 10w 个 key，都设置了过期时间，你每隔几百毫秒，就检查 10w 个 key，那 Redis 基本上就死了，cpu 负载会很高的，消耗在你的检查过期 key 上了。注意，这里可不是每隔 100ms 就遍历所有的设置过期时间的 key，那样就是一场性能上的灾难。实际上 Redis 是每隔 100ms 随机抽取一些 key 来检查和删除的。</p>
-<p>但是问题是，定期删除可能会导致很多过期 key 到了时间并没有被删除掉，那咋整呢？所以就是惰性删除了。这就是说，在你获取某个 key 的时候，Redis 会检查一下 ，这个 key 如果设置了过期时间那么是否过期了？如果过期了此时就会删除，不会给你返回任何东西。</p>
-<blockquote>
-<p>获取 key 的时候，如果此时 key 已经过期，就删除，不会返回任何东西。</p>
-</blockquote>
-<p>但是实际上这还是有问题的，如果定期删除漏掉了很多过期 key，然后你也没及时去查，也就没走惰性删除，此时会怎么样？如果大量过期 key 堆积在内存里，导致 Redis 内存块耗尽了，咋整？</p>
-<p>答案是：走内存淘汰机制。</p>
-<h2 id="内存淘汰机制"><a href="#内存淘汰机制" class="headerlink" title="* 内存淘汰机制"></a>* 内存淘汰机制</h2><p>Redis 内存淘汰机制有以下几个：</p>
-<ul>
-<li>noeviction: 当内存不足以容纳新写入数据时，新写入操作会报错，这个一般没人用吧，实在是太恶心了。</li>
-<li>allkeys-lru：当内存不足以容纳新写入数据时，在键空间中，移除最近最少使用的 key（这个是最常用的）。</li>
-<li>allkeys-random：当内存不足以容纳新写入数据时，在键空间中，随机移除某个 key，这个一般没人用吧，为啥要随机，肯定是把最近最少使用的 key 给干掉啊。</li>
-<li>volatile-lru：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，移除最近最少使用的 key（这个一般不太合适）。</li>
-<li>volatile-random：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，随机移除某个 key。</li>
-<li>volatile-ttl：当内存不足以容纳新写入数据时，在设置了过期时间的键空间中，有更早过期时间的 key 优先移除。</li>
-</ul>
-<h2 id="手写一个-LRU-算法"><a href="#手写一个-LRU-算法" class="headerlink" title="* 手写一个 LRU 算法"></a>* 手写一个 LRU 算法</h2><p>你可以现场手写最原始的 LRU 算法，那个代码量太大了，似乎不太现实。</p>
-<p>不求自己纯手工从底层开始打造出自己的 LRU，但是起码要知道如何利用已有的 JDK 数据结构实现一个 Java 版的 LRU。</p>
-<pre><code>class LRUCache&lt;K, V&gt; extends LinkedHashMap&lt;K, V&gt; {
-    private final int CACHE_SIZE;
-
-    /**
-     * 传递进来最多能缓存多少数据
-     *
-     * @param cacheSize 缓存大小
-     */
-    public LRUCache(int cacheSize) {
-        // true 表示让 linkedHashMap 按照访问顺序来进行排序，最近访问的放在头部，最老访问的放在尾部。
-        super((int) Math.ceil(cacheSize / 0.75) + 1, 0.75f, true);
-        CACHE_SIZE = cacheSize;
-    }
-
-    /**
-     * 钩子方法，通过put新增键值对的时候，若该方法返回true
-     * 便移除该map中最老的键和值
-     */
-    @Override
-    protected boolean removeEldestEntry(Map.Entry&lt;K, V&gt; eldest) {
-        // 当 map中的数据量大于指定的缓存个数的时候，就自动删除最老的数据。
-        return size() &gt; CACHE_SIZE;
-    }
-}</code></pre><hr>
-<h2 id="面试题-4"><a href="#面试题-4" class="headerlink" title="面试题"></a>面试题</h2><p>如何保证 redis 的高并发和高可用？redis 的主从复制原理能介绍一下么？redis 的哨兵原理能介绍一下么？</p>
-<h3 id="面试官心理分析-4"><a href="#面试官心理分析-4" class="headerlink" title="面试官心理分析"></a>面试官心理分析</h3><p>其实问这个问题，主要是考考你，redis 单机能承载多高并发？如果单机扛不住如何扩容扛更多的并发？redis 会不会挂？既然 redis 会挂那怎么保证 redis 是高可用的？</p>
-<p>其实针对的都是项目中你肯定要考虑的一些问题，如果你没考虑过，那确实你对生产系统中的问题思考太少。</p>
-<h2 id="如何保证-redis-的高并发和高可用？"><a href="#如何保证-redis-的高并发和高可用？" class="headerlink" title="* 如何保证 redis 的高并发和高可用？"></a>* 如何保证 redis 的高并发和高可用？</h2><p>如果你用 redis 缓存技术的话，肯定要考虑如何用 redis 来加多台机器，保证 redis 是高并发的，还有就是如何让 redis 保证自己不是挂掉以后就直接死掉了，即 redis 高可用。</p>
-<p>redis 实现高并发主要依靠主从架构，一主多从，一般来说，很多项目其实就足够了，单主用来写入数据，单机几万 QPS，多从用来查询数据，多个从实例可以提供每秒 10w 的 QPS。</p>
-<p>如果想要在实现高并发的同时，容纳大量的数据，那么就需要 redis 集群，使用 redis 集群之后，可以提供每秒几十万的读写并发。</p>
-<p>redis 高可用，如果是做主从架构部署，那么加上哨兵就可以了，就可以实现，任何一个实例宕机，可以进行主备切换。</p>
-<p>由于此节内容较多，因此，会分为两个小节进行讲解。</p>
-<ul>
-<li><a href>redis 主从架构</a></li>
-<li><a href>redis 基于哨兵实现高可用</a></li>
-</ul>
-<p><img src="/2020/07/19/2020-07-19-xiao-li-fei-dao-redis/m2x109fl.bmp" alt></p>
-<hr>
+                <p><img src="/2020/07/21/2020-07-21-redis-shao-bing/async-replication-data-lose-case.png" alt></p>
 
             </div>
             <hr>
@@ -684,7 +481,7 @@ zrank board zhaoliu</code></pre><hr>
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://adbo.gitee.io/2020/07/19/2020-07-19-xiao-li-fei-dao-redis/">http://adbo.gitee.io/2020/07/19/2020-07-19-xiao-li-fei-dao-redis/</a>
+                    <a href="http://adbo.gitee.io/2020/07/21/2020-07-21-redis-shao-bing/">http://adbo.gitee.io/2020/07/21/2020-07-21-redis-shao-bing/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -894,7 +691,7 @@ zrank board zhaoliu</code></pre><hr>
         repo: 'gitalk',
         owner: 'FlynnCN',
         admin: "FlynnCN",
-        id: '2020-07-19T16-31-46',
+        id: '2020-07-21T18-55-19',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -917,27 +714,28 @@ zrank board zhaoliu</code></pre><hr>
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2020/07/20/2020-07-20-redis-zhu-cong-jia-gou/">
+                <a href="/2020/07/21/2020-07-21-redis-shao-bing/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="Redis主从架构">
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="Redis哨兵集群实现高可用">
                         
-                        <span class="card-title">Redis主从架构</span>
+                        <span class="card-title">Redis哨兵集群实现高可用</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Redis主从架构
+                            Redis哨兵集群实现高可用
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-07-20
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-21
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -950,6 +748,7 @@ zrank board zhaoliu</code></pre><hr>
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -968,30 +767,31 @@ zrank board zhaoliu</code></pre><hr>
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/07/18/2020-07-18-xiao-li-fei-dao-xiao-xi-dui-lie/">
+                <a href="/2020/07/20/2020-07-20-redis-zhu-cong-jia-gou/">
                     <div class="card-image">
                         
-                        <img src="/medias/cover/3ks20rph.bmp" class="responsive-img" alt="消息队列">
                         
-                        <span class="card-title">消息队列</span>
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="Redis主从架构">
+                        
+                        <span class="card-title">Redis主从架构</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            接住，It will pass
+                            Redis主从架构
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-18
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-20
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/小李飞刀/" class="post-category">
-                                    小李飞刀
+                            <a href="/categories/中间件/" class="post-category">
+                                    中间件
                                 </a>
                             
                             
@@ -1001,8 +801,8 @@ zrank board zhaoliu</code></pre><hr>
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/消息队列/">
-                        <span class="chip bg-color">消息队列</span>
+                    <a href="/tags/Redis/">
+                        <span class="chip bg-color">Redis</span>
                     </a>
                     
                 </div>
