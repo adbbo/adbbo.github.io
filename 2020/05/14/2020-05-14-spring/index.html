@@ -494,14 +494,18 @@
 <p>将对象之间的相互依赖关系交给 IoC 容器来管理，并由 IoC 容器完成对象的注入。这样可以很大程度上简化应用的开发，把应用从复杂的依赖关系中解放出来。 IoC 容器就像是一个工厂一样，当我们需要创建一个对象的时候，只需要配置好配置文件/注解即可，完全不用考虑对象是如何被创建出来的。 在实际项目中一个 Service 类可能有几百甚至上千个类作为它的底层，假如我们需要实例化这个 Service，你可能要每次都要搞清这个 Service 所有底层类的构造函数，这可能会把人逼疯。如果利用 IoC 的话，你只需要配置好，然后在需要的地方引用就行了，这大大增加了项目的可维护性且降低了开发难度。</p>
 <p>Spring IoC的初始化过程：</p>
 <p><img src="/2020/05/14/2020-05-14-spring/2020051405.png" alt></p>
+<p>个人术语：</p>
+<p><strong>IoC又叫控制反转，是一种设计思想。IoC的意思就是将原本在程序中手动创建对象的控制权，交给Spring框架来管理。IoC容器实际上就是个Map，以key，value的形式存在，map中存放的就是各种对象。IoC容器解决了各种对象之前复杂的依赖关系，只要加个注解引用就可以。</strong></p>
 <h4 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h4><p>AOP(Aspect-Oriented Programming:面向切面编程)能够将那些与业务无关，却为业务模块所共同调用的逻辑或责任（例如事务处理、日志管理、权限控制等）封装起来，便于减少系统的重复代码，降低模块间的耦合度，并有利于未来的可拓展性和可维护性。</p>
 <p>Spring AOP就是基于动态代理的，如果要代理的对象，<strong>实现了某个接口，那么Spring AOP会使用JDK Proxy</strong>，去创建代理对象，而对于<strong>没有实现接口的对象，就无法使用 JDK Proxy 去进行代理了</strong>，这时候Spring AOP会使用Cglib ，这时候Spring AOP会使用 Cglib 生成一个被代理对象的子类来作为代理，如下图所示：</p>
 <p><img src="/2020/05/14/2020-05-14-spring/2020051406.png" alt></p>
 <p>当然你也可以使用 AspectJ ,Spring AOP 已经集成了AspectJ ，AspectJ 应该算的上是 Java 生态系统中最完整的 AOP 框架了。</p>
 <p>使用 AOP 之后我们可以把一些通用功能抽象出来，在需要用到的地方直接使用即可，这样大大简化了代码量。我们需要增加新功能时也方便，这样也提高了系统扩展性。日志功能、事务管理等等场景都用到了 AOP 。</p>
-<h2 id="Spring-AOP-和-AspectJ-AOP-区别"><a href="#Spring-AOP-和-AspectJ-AOP-区别" class="headerlink" title="Spring AOP 和 AspectJ AOP 区别"></a>Spring AOP 和 AspectJ AOP 区别</h2><p>Spring AOP 属于运行时增强，而 AspectJ 是编译时增强。 Spring AOP 基于代理(Proxying)，而 AspectJ 基于字节码操作(Bytecode Manipulation)。</p>
+<p>个人话术：</p>
+<p><strong>AOP又叫面向切面编程，将那些与业务无关的公共调用的逻辑（如事务处理，日志管理，权限管理等）封装起来，减少代码的冗余度，也降低模块间的耦合度。Spring AOP是基于动态代理的。当被代理的对象，实现了某个接口，那么就会使用JDK Proxy，否则将会使用Cglib，这个时候Cglib会生成一个被代理对象的子类来代理。</strong></p>
+<h2 id="Spring-AOP-和-AspectJ-AOP-区别"><a href="#Spring-AOP-和-AspectJ-AOP-区别" class="headerlink" title="Spring AOP 和 AspectJ AOP 区别"></a>Spring AOP 和 AspectJ AOP 区别</h2><p><strong>Spring AOP 属于运行时增强，而 AspectJ 是编译时增强。 Spring AOP 基于代理(Proxying)，而 AspectJ 基于字节码操作(Bytecode Manipulation)。</strong></p>
 <p>Spring AOP 已经集成了 AspectJ ，AspectJ 应该算的上是 Java 生态系统中最完整的 AOP 框架了。AspectJ 相比于 Spring AOP 功能更加强大，但是 Spring AOP 相对来说更简单，</p>
-<p>如果我们的切面比较少，那么两者性能差异不大。但是，当切面太多的话，最好选择 AspectJ ，它比Spring AOP 快很多。</p>
+<p>如果我们的切面比较少，那么两者性能差异不大。但是，<strong>当切面太多的话，最好选择 AspectJ ，它比Spring AOP 快很多</strong>。</p>
 <h2 id="Spring-bean"><a href="#Spring-bean" class="headerlink" title="Spring bean"></a>Spring bean</h2><h3 id="Spring-中的-bean-的作用域有哪些"><a href="#Spring-中的-bean-的作用域有哪些" class="headerlink" title="Spring 中的 bean 的作用域有哪些?"></a>Spring 中的 bean 的作用域有哪些?</h3><ul>
 <li>singleton : 唯一 bean 实例，Spring 中的 bean 默认都是单例的。</li>
 <li>prototype : 每次请求都会创建一个新的 bean 实例。</li>
@@ -579,6 +583,20 @@ public OneService getService(status) {
 <li>ViewResolver 会根据逻辑 View 查找实际的 View。</li>
 <li>DispaterServlet 把返回的 Model 传给 View（视图渲染）。</li>
 <li>把 View 返回给请求者（浏览器）。</li>
+</ol>
+<p>个人术语：</p>
+<ol>
+<li>客户端的所有请求都交给前端控制器DispatcherServlet来处理，DispatcherServlet会负责调用系统的其他模块来真正处理用户的请求；</li>
+<li>DispatcherServlet收到请求后，将根据请求的信息（包括URL、请求参数等）以及映射处理器HandlerMapping的配置找到处理该请求的处理器；</li>
+<li>在这个地方Spring会通过适配器处理器HandlerAdapter对该处理器进行封装；</li>
+<li>处理器完成对用户请求的处理后，会返回一个ModelAndView对象给DispatcherServlet；</li>
+<li>DispatcherServlet还要借助视图解析器ViewResolver完成从逻辑视图到真实视图对象的解析工作；</li>
+<li>当得到真正的视图对象后，DispatcherServlet会利用视图对象对模型数据进行渲染。</li>
+</ol>
+<h2 id="Spring-启动过程"><a href="#Spring-启动过程" class="headerlink" title="Spring 启动过程"></a>Spring 启动过程</h2><ol>
+<li>首先，web容器会创建一个上下文环境，这个上下文就是ServletContext，其为后面的spring IoC容器提供宿主环境；</li>
+<li>其次，在web.xml中会提供有contextLoaderListener监听器。在web容器启动时，监听器会监听到容器初始化事件，其contextInitialized方法会被调用，在这个方法中，spring会初始化一个启动上下文，这个上下文被称为根上下文，即WebApplicationContext</li>
+<li>再次，监听器初始化完毕后，开始初始化web.xml中配置的Servlet，这个servlet可以配置多个，以最常见的DispatcherServlet为例，这个servlet实际上是一个标准的前端控制器，用以转发、匹配、处理每个servlet请求。</li>
 </ol>
 <h2 id="Spring-框架中用到了哪些设计模式？"><a href="#Spring-框架中用到了哪些设计模式？" class="headerlink" title="Spring 框架中用到了哪些设计模式？"></a>Spring 框架中用到了哪些设计模式？</h2><ul>
 <li>工厂设计模式 : Spring使用工厂模式通过 BeanFactory、ApplicationContext 创建 bean 对象。</li>
@@ -935,30 +953,30 @@ public OneService getService(status) {
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/05/12/2020-05-12-springcloud/">
+                <a href="/2020/04/18/2020-04-18-zookeeper-zhi-shi/">
                     <div class="card-image">
                         
-                        <img src="/medias/cover/SpringCloud.bmp" class="responsive-img" alt="Spring Cloud 解析">
+                        <img src="/medias/cover/zk.bmp" class="responsive-img" alt="ZooKeeper">
                         
-                        <span class="card-title">Spring Cloud 解析</span>
+                        <span class="card-title">ZooKeeper</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Spring Cloud 解析
+                            ZooKeeper知识
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-05-12
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-04-18
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Spring/" class="post-category">
-                                    Spring
+                            <a href="/categories/中间件/" class="post-category">
+                                    中间件
                                 </a>
                             
                             
@@ -968,8 +986,8 @@ public OneService getService(status) {
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/SpringCloud/">
-                        <span class="chip bg-color">SpringCloud</span>
+                    <a href="/tags/ZooKeeper/">
+                        <span class="chip bg-color">ZooKeeper</span>
                     </a>
                     
                 </div>

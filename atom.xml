@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://adbo.gitee.io/"/>
-  <updated>2020-07-19T13:41:36.828Z</updated>
+  <updated>2020-08-01T03:31:41.185Z</updated>
   <id>http://adbo.gitee.io/</id>
   
   <author>
@@ -15,6 +15,220 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Smile</title>
+    <link href="http://adbo.gitee.io/2020/08/01/2020-08-01-zhong-ji-yi-zhan/"/>
+    <id>http://adbo.gitee.io/2020/08/01/2020-08-01-zhong-ji-yi-zhan/</id>
+    <published>2020-08-01T03:23:46.000Z</published>
+    <updated>2020-08-01T03:31:41.185Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;当你再次迷茫或难过时，静下心来，思考一下：什么才是最重要的？&lt;br&gt;一切都不重要，其实重要美好的东西一直围绕着你! Smile ^_^&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img
+        
+      
+    
+    </summary>
+    
+      <category term="小李飞刀" scheme="http://adbo.gitee.io/categories/%E5%B0%8F%E6%9D%8E%E9%A3%9E%E5%88%80/"/>
+    
+    
+      <category term="smile" scheme="http://adbo.gitee.io/tags/smile/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>TCP&amp;UDP</title>
+    <link href="http://adbo.gitee.io/2020/07/28/2020-07-28-tcp-udp/"/>
+    <id>http://adbo.gitee.io/2020/07/28/2020-07-28-tcp-udp/</id>
+    <published>2020-07-28T15:45:46.000Z</published>
+    <updated>2020-08-01T03:19:16.302Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;TCP-三次握手&quot;&gt;&lt;a href=&quot;#TCP-三次握手&quot; class=&quot;headerlink&quot; title=&quot;* TCP 三次握手&quot;&gt;&lt;/a&gt;* TCP 三次握手&lt;/h2&gt;&lt;p&gt;为了准确无误地把数据送达目标处，TCP协议采用了三次握手策略。&lt;/p&gt;
+&lt;h3
+        
+      
+    
+    </summary>
+    
+      <category term="计算机网络" scheme="http://adbo.gitee.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
+    
+    
+      <category term="TCP&amp;UDP" scheme="http://adbo.gitee.io/tags/TCP-UDP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>分库分表&amp;读写分离</title>
+    <link href="http://adbo.gitee.io/2020/07/27/2020-07-27-xiao-li-fei-dao-fen-ku-fen-biao-du-xie-fen-chi/"/>
+    <id>http://adbo.gitee.io/2020/07/27/2020-07-27-xiao-li-fei-dao-fen-ku-fen-biao-du-xie-fen-chi/</id>
+    <published>2020-07-27T03:50:54.000Z</published>
+    <updated>2020-08-01T03:19:16.302Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;面试题&quot;&gt;&lt;a href=&quot;#面试题&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="小李飞刀" scheme="http://adbo.gitee.io/categories/%E5%B0%8F%E6%9D%8E%E9%A3%9E%E5%88%80/"/>
+    
+    
+      <category term="MySQL" scheme="http://adbo.gitee.io/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>海量数据处理</title>
+    <link href="http://adbo.gitee.io/2020/07/26/2020-07-26-xiao-li-fei-dao-hai-liang-shu-ju-chu-li/"/>
+    <id>http://adbo.gitee.io/2020/07/26/2020-07-26-xiao-li-fei-dao-hai-liang-shu-ju-chu-li/</id>
+    <published>2020-07-26T03:50:54.000Z</published>
+    <updated>2020-08-01T03:19:16.302Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;如何从大量的-URL-中找出相同的-URL？&quot;&gt;&lt;a href=&quot;#如何从大量的-URL-中找出相同的-URL？&quot; class=&quot;headerlink&quot; title=&quot;* 如何从大量的 URL 中找出相同的 URL？&quot;&gt;&lt;/a&gt;* 如何从大量的 URL
+        
+      
+    
+    </summary>
+    
+      <category term="小李飞刀" scheme="http://adbo.gitee.io/categories/%E5%B0%8F%E6%9D%8E%E9%A3%9E%E5%88%80/"/>
+    
+    
+      <category term="海量数据处理" scheme="http://adbo.gitee.io/tags/%E6%B5%B7%E9%87%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring Cloud</title>
+    <link href="http://adbo.gitee.io/2020/07/25/2020-07-25-springcloud/"/>
+    <id>http://adbo.gitee.io/2020/07/25/2020-07-25-springcloud/</id>
+    <published>2020-07-25T15:45:46.000Z</published>
+    <updated>2020-08-01T03:19:16.287Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;一、业务场景介绍&quot;&gt;&lt;a href=&quot;#一、业务场景介绍&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Spring" scheme="http://adbo.gitee.io/categories/Spring/"/>
+    
+    
+      <category term="SpringCloud" scheme="http://adbo.gitee.io/tags/SpringCloud/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>分布式系统（分布式锁、分布式事务）</title>
+    <link href="http://adbo.gitee.io/2020/07/24/2020-07-24-xiao-li-fei-dao-fen-bu-shi/"/>
+    <id>http://adbo.gitee.io/2020/07/24/2020-07-24-xiao-li-fei-dao-fen-bu-shi/</id>
+    <published>2020-07-24T03:50:54.000Z</published>
+    <updated>2020-08-01T03:19:16.287Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;面试题&quot;&gt;&lt;a href=&quot;#面试题&quot; class=&quot;headerlink&quot; title=&quot;面试题&quot;&gt;&lt;/a&gt;面试题&lt;/h2&gt;&lt;p&gt;zookeeper 都有哪些使用场景？&lt;/p&gt;
+&lt;h3 id=&quot;面试官心理分析&quot;&gt;&lt;a href=&quot;#面试官心理分析&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="小李飞刀" scheme="http://adbo.gitee.io/categories/%E5%B0%8F%E6%9D%8E%E9%A3%9E%E5%88%80/"/>
+    
+    
+      <category term="分布式" scheme="http://adbo.gitee.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Dubbo</title>
+    <link href="http://adbo.gitee.io/2020/07/23/2020-07-23-xiao-li-fei-dao-dubbo/"/>
+    <id>http://adbo.gitee.io/2020/07/23/2020-07-23-xiao-li-fei-dao-dubbo/</id>
+    <published>2020-07-23T03:50:54.000Z</published>
+    <updated>2020-08-01T03:19:16.271Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;面试题&quot;&gt;&lt;a href=&quot;#面试题&quot; class=&quot;headerlink&quot; title=&quot;面试题&quot;&gt;&lt;/a&gt;面试题&lt;/h2&gt;&lt;p&gt;说一下的 dubbo 的工作原理？注册中心挂了可以继续通信吗？说说一次 rpc 请求的流程？&lt;/p&gt;
+&lt;h3
+        
+      
+    
+    </summary>
+    
+      <category term="小李飞刀" scheme="http://adbo.gitee.io/categories/%E5%B0%8F%E6%9D%8E%E9%A3%9E%E5%88%80/"/>
+    
+    
+      <category term="Dubbo" scheme="http://adbo.gitee.io/tags/Dubbo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>布隆过滤器</title>
+    <link href="http://adbo.gitee.io/2020/07/22/2020-07-22-bu-long-guo-lu-qi/"/>
+    <id>http://adbo.gitee.io/2020/07/22/2020-07-22-bu-long-guo-lu-qi/</id>
+    <published>2020-07-22T12:25:37.000Z</published>
+    <updated>2020-08-01T03:19:16.271Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;1-什么是布隆过滤器？&quot;&gt;&lt;a href=&quot;#1-什么是布隆过滤器？&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="中间件" scheme="http://adbo.gitee.io/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
+    
+    
+      <category term="布隆过滤器" scheme="http://adbo.gitee.io/tags/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/"/>
+    
+  </entry>
   
   <entry>
     <title>Redis哨兵集群实现高可用</title>
@@ -69,11 +283,11 @@
   </entry>
   
   <entry>
-    <title>消息队列</title>
+    <title>Redis</title>
     <link href="http://adbo.gitee.io/2020/07/19/2020-07-19-xiao-li-fei-dao-redis/"/>
     <id>http://adbo.gitee.io/2020/07/19/2020-07-19-xiao-li-fei-dao-redis/</id>
     <published>2020-07-19T08:31:46.000Z</published>
-    <updated>2020-07-19T14:33:35.459Z</updated>
+    <updated>2020-08-01T03:19:16.260Z</updated>
     
     <summary type="html">
     
@@ -118,24 +332,6 @@
     
     
       <category term="消息队列" scheme="http://adbo.gitee.io/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MySQL</title>
-    <link href="http://adbo.gitee.io/2020/06/04/2020-06-04-mysql-04/"/>
-    <id>http://adbo.gitee.io/2020/06/04/2020-06-04-mysql-04/</id>
-    <published>2020-06-04T15:45:46.000Z</published>
-    <updated>2020-07-18T06:13:37.600Z</updated>
-    
-    <summary type="html">
-    
-    </summary>
-    
-      <category term="SQL" scheme="http://adbo.gitee.io/categories/SQL/"/>
-    
-    
-      <category term="MySQL" scheme="http://adbo.gitee.io/tags/MySQL/"/>
     
   </entry>
   
@@ -231,7 +427,7 @@
     <link href="http://adbo.gitee.io/2020/05/19/2020-05-19-oauth2-0/"/>
     <id>http://adbo.gitee.io/2020/05/19/2020-05-19-oauth2-0/</id>
     <published>2020-05-19T15:45:46.000Z</published>
-    <updated>2020-07-18T07:50:01.624Z</updated>
+    <updated>2020-08-01T03:19:16.259Z</updated>
     
     <summary type="html">
     
@@ -312,7 +508,7 @@
     <link href="http://adbo.gitee.io/2020/05/14/2020-05-14-spring/"/>
     <id>http://adbo.gitee.io/2020/05/14/2020-05-14-spring/</id>
     <published>2020-05-14T15:45:46.000Z</published>
-    <updated>2020-07-18T06:13:37.499Z</updated>
+    <updated>2020-08-01T03:19:16.258Z</updated>
     
     <summary type="html">
     
@@ -330,32 +526,6 @@
     
     
       <category term="Spring框架" scheme="http://adbo.gitee.io/tags/Spring%E6%A1%86%E6%9E%B6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Spring Cloud 解析</title>
-    <link href="http://adbo.gitee.io/2020/05/12/2020-05-12-springcloud/"/>
-    <id>http://adbo.gitee.io/2020/05/12/2020-05-12-springcloud/</id>
-    <published>2020-05-12T15:45:46.000Z</published>
-    <updated>2020-07-18T06:13:37.484Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;服务注册和发现是什么意思？Spring-Cloud-如何实现&quot;&gt;&lt;a href=&quot;#服务注册和发现是什么意思？Spring-Cloud-如何实现&quot; class=&quot;headerlink&quot; title=&quot;服务注册和发现是什么意思？Spring Cloud
-        
-      
-    
-    </summary>
-    
-      <category term="Spring" scheme="http://adbo.gitee.io/categories/Spring/"/>
-    
-    
-      <category term="SpringCloud" scheme="http://adbo.gitee.io/tags/SpringCloud/"/>
     
   </entry>
   
@@ -382,162 +552,6 @@
     
     
       <category term="ZooKeeper" scheme="http://adbo.gitee.io/tags/ZooKeeper/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>ZooKeeper</title>
-    <link href="http://adbo.gitee.io/2020/04/16/2020-04-16-zookeeper/"/>
-    <id>http://adbo.gitee.io/2020/04/16/2020-04-16-zookeeper/</id>
-    <published>2020-04-16T15:45:46.000Z</published>
-    <updated>2020-07-18T06:13:37.453Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;什么是-ZooKeeper&quot;&gt;&lt;a href=&quot;#什么是-ZooKeeper&quot; class=&quot;headerlink&quot; title=&quot;什么是 ZooKeeper&quot;&gt;&lt;/a&gt;什么是 ZooKeeper&lt;/h2&gt;&lt;h3 id=&quot;ZooKeeper-概览&quot;&gt;&lt;a
-        
-      
-    
-    </summary>
-    
-      <category term="中间件" scheme="http://adbo.gitee.io/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
-    
-    
-      <category term="ZooKeeper" scheme="http://adbo.gitee.io/tags/ZooKeeper/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>葵花宝典-Dubbo总结</title>
-    <link href="http://adbo.gitee.io/2020/04/14/2020-04-14-kui-hua-bao-dian-dubbo-zong-jie/"/>
-    <id>http://adbo.gitee.io/2020/04/14/2020-04-14-kui-hua-bao-dian-dubbo-zong-jie/</id>
-    <published>2020-04-14T15:45:46.000Z</published>
-    <updated>2020-07-18T06:13:37.437Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;基础知识&quot;&gt;&lt;a href=&quot;#基础知识&quot; class=&quot;headerlink&quot; title=&quot;基础知识&quot;&gt;&lt;/a&gt;基础知识&lt;/h2&gt;&lt;h3 id=&quot;Dubbo定义&quot;&gt;&lt;a href=&quot;#Dubbo定义&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="葵花宝典" scheme="http://adbo.gitee.io/categories/%E8%91%B5%E8%8A%B1%E5%AE%9D%E5%85%B8/"/>
-    
-    
-      <category term="Dubbo" scheme="http://adbo.gitee.io/tags/Dubbo/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>葵花宝典-Redis总结</title>
-    <link href="http://adbo.gitee.io/2020/04/12/2020-04-12-kui-hua-bao-dian-redis-zong-jie/"/>
-    <id>http://adbo.gitee.io/2020/04/12/2020-04-12-kui-hua-bao-dian-redis-zong-jie/</id>
-    <published>2020-04-12T15:45:46.000Z</published>
-    <updated>2020-07-18T06:13:37.437Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h2&gt;&lt;h3 id=&quot;Redis定义&quot;&gt;&lt;a href=&quot;#Redis定义&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="葵花宝典" scheme="http://adbo.gitee.io/categories/%E8%91%B5%E8%8A%B1%E5%AE%9D%E5%85%B8/"/>
-    
-    
-      <category term="Redis" scheme="http://adbo.gitee.io/tags/Redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>葵花宝典-JAVA集合</title>
-    <link href="http://adbo.gitee.io/2020/04/10/2020-04-10-kui-hua-bao-dian-java-ji-he/"/>
-    <id>http://adbo.gitee.io/2020/04/10/2020-04-10-kui-hua-bao-dian-java-ji-he/</id>
-    <published>2020-04-10T15:45:46.000Z</published>
-    <updated>2020-07-18T06:13:37.421Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;集合容器概述&quot;&gt;&lt;a href=&quot;#集合容器概述&quot; class=&quot;headerlink&quot; title=&quot;集合容器概述&quot;&gt;&lt;/a&gt;集合容器概述&lt;/h2&gt;&lt;h3 id=&quot;集合的特点&quot;&gt;&lt;a href=&quot;#集合的特点&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="葵花宝典" scheme="http://adbo.gitee.io/categories/%E8%91%B5%E8%8A%B1%E5%AE%9D%E5%85%B8/"/>
-    
-    
-      <category term="集合" scheme="http://adbo.gitee.io/tags/%E9%9B%86%E5%90%88/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>深入理解AQS</title>
-    <link href="http://adbo.gitee.io/2020/03/18/2020-03-18-bing-fa-aqs-shen-ru-li-jie/"/>
-    <id>http://adbo.gitee.io/2020/03/18/2020-03-18-bing-fa-aqs-shen-ru-li-jie/</id>
-    <published>2020-03-18T15:45:46.000Z</published>
-    <updated>2020-07-18T06:13:37.399Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;谈到并发，我们不得不说AQS(AbstractQueuedSynchronizer)，所谓的AQS即是抽象的队列式的同步器，内部定义了很多锁相关的方法，我们熟知的ReentrantLock、ReentrantReadWriteLock、CountDownLatch、Sema
-        
-      
-    
-    </summary>
-    
-      <category term="JAVA" scheme="http://adbo.gitee.io/categories/JAVA/"/>
-    
-    
-      <category term="JAVA并发" scheme="http://adbo.gitee.io/tags/JAVA%E5%B9%B6%E5%8F%91/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>深入分析CAS</title>
-    <link href="http://adbo.gitee.io/2020/03/17/2020-03-17-bing-fa-cas/"/>
-    <id>http://adbo.gitee.io/2020/03/17/2020-03-17-bing-fa-cas/</id>
-    <published>2020-03-17T15:45:46.000Z</published>
-    <updated>2020-07-18T06:13:37.384Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;CAS，Compare And
-        
-      
-    
-    </summary>
-    
-      <category term="JAVA" scheme="http://adbo.gitee.io/categories/JAVA/"/>
-    
-    
-      <category term="JAVA并发" scheme="http://adbo.gitee.io/tags/JAVA%E5%B9%B6%E5%8F%91/"/>
     
   </entry>
   
