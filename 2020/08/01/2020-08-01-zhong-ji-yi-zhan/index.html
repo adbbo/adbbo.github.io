@@ -629,6 +629,50 @@
 <li><strong>wait() 方法被调用后，线程不会自动苏醒，需要别的线程调用同一个对象上的 notify() 或者 notifyAll() 方法。sleep() 方法执行完成后，线程会自动苏醒。或者可以使用 wait(long timeout)超时后线程会自动苏醒。</strong></li>
 </ul>
 <hr>
+<h2 id="线程池的主要参数"><a href="#线程池的主要参数" class="headerlink" title="线程池的主要参数"></a>线程池的主要参数</h2><ul>
+<li>corePoolSize（线程池核心线程大小）：线程池中会维护一个最小的线程数量，即使这些线程处理空闲状态，他们也不会 被销毁，除非设置了allowCoreThreadTimeOut。这里的最小线程数量即是corePoolSize。</li>
+<li>maximumPoolSize（线程池最大线程数量）：一个任务被提交到线程池后，首先会缓存到工作队列（后面会介绍）中，如果工作队列满了，则会创建一个新线程，然后从工作队列中的取出一个任务交由新线程来处理，而将刚提交的任务放入工作队列。线程池不会无限制的去创建新线程，它会有一个最大线程数量的限制，这个数量即由maximunPoolSize来指定。</li>
+<li>keepAliveTime（空闲线程存活时间）：一个线程如果处于空闲状态，并且当前的线程数量大于corePoolSize，那么在指定时间后，这个空闲线程会被销毁，这里的指定时间由keepAliveTime来设定</li>
+<li>unit（空间线程存活时间单位）：keepAliveTime的计量单位</li>
+<li>workQueue（工作队列）：新任务被提交后，会先进入到此工作队列中，任务调度时再从队列中取出任务。jdk中提供了四种工作队列：<ul>
+<li>ArrayBlockingQueue：基于数组的有界阻塞队列，按FIFO排序。新任务进来后，会放到该队列的队尾，有界的数组可以防止资源耗尽问题。当线程池中线程数量达到corePoolSize后，再有新任务进来，则会将任务放入该队列的队尾，等待被调度。如果队列已经是满的，则创建一个新线程，如果线程数量已经达到maxPoolSize，则会执行拒绝策略。</li>
+<li>LinkedBlockingQuene：基于链表的无界阻塞队列（其实最大容量为Interger.MAX），按照FIFO排序。由于该队列的近似无界性，当线程池中线程数量达到corePoolSize后，再有新任务进来，会一直存入该队列，而不会去创建新线程直到maxPoolSize，因此使用该工作队列时，参数maxPoolSize其实是不起作用的。</li>
+<li>SynchronousQuene：一个不缓存任务的阻塞队列，生产者放入一个任务必须等到消费者取出这个任务。也就是说新任务进来时，不会缓存，而是直接被调度执行该任务，如果没有可用线程，则创建新线程，如果线程数量达到maxPoolSize，则执行拒绝策略。</li>
+<li>PriorityBlockingQueue：具有优先级的无界阻塞队列，优先级通过参数Comparator实现。</li>
+</ul>
+</li>
+<li>threadFactory（线程工厂）：创建一个新线程时使用的工厂，可以用来设定线程名、是否为daemon线程等等</li>
+<li>handler（拒绝策略）：当工作队列中的任务已到达最大限制，并且线程池中的线程数量也达到最大限制，这时如果有新任务提交进来，该如何处理呢。这里的拒绝策略，就是解决这个问题的，jdk中提供了4中拒绝策略：<ul>
+<li>CallerRunsPolicy：该策略下，在调用者线程中直接执行被拒绝任务的run方法，除非线程池已经shutdown，则直接抛弃任务。</li>
+<li>AbortPolicy：该策略下，直接丢弃任务，并抛出RejectedExecutionException异常。</li>
+<li>DiscardPolicy：该策略下，直接丢弃任务，什么都不做。</li>
+<li>DiscardOldestPolicy：该策略下，抛弃进入队列最早的那个任务，然后尝试把这次拒绝的任务放入队列</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="线程池的优势"><a href="#线程池的优势" class="headerlink" title="线程池的优势"></a>线程池的优势</h2><ul>
+<li>降低系统资源消耗，通过重用已存在的线程，降低线程创建和销毁造成的消耗；</li>
+<li>提高系统响应速度，当有任务到达时，通过复用已存在的线程，无需等待新线程的创建便能立即执行；</li>
+<li>方便线程并发数的管控。因为线程若是无限制的创建，可能会导致内存占用过多而产生OOM，并且会造成cpu过度切换。</li>
+</ul>
+<hr>
+<h2 id="线程池为什么要使用阻塞队列而不使用非阻塞队列"><a href="#线程池为什么要使用阻塞队列而不使用非阻塞队列" class="headerlink" title="线程池为什么要使用阻塞队列而不使用非阻塞队列"></a>线程池为什么要使用阻塞队列而不使用非阻塞队列</h2><ul>
+<li>因为线程若是无限制的创建，可能会导致内存占用过多而产生OOM，并且会造成cpu过度切换。</li>
+<li>阻塞队列可以保证任务队列中没有任务时阻塞获取任务的线程，使得线程进入wait状态，释放cpu资源。当队列中有任务时才唤醒对应线程从队列中取出消息进行执行。</li>
+<li>使得在线程不至于一直占用cpu资源。</li>
+</ul>
+<hr>
+<h2 id="如何配置线程池"><a href="#如何配置线程池" class="headerlink" title="如何配置线程池"></a>如何配置线程池</h2><ul>
+<li>CPU密集型任务：尽量使用较小的线程池，一般为CPU核心数+1。 因为CPU密集型任务使得CPU使用率很高，若开过多的线程数，会造成CPU过度切换。</li>
+<li>IO密集型任务：可以使用稍大的线程池，一般为2*CPU核心数。 IO密集型任务CPU使用率并不高，因此可以让CPU在等待IO的时候有其他线程去处理别的任务，充分利用CPU时间。</li>
+</ul>
+<hr>
+<h2 id="线程池的execute-和submit-方法"><a href="#线程池的execute-和submit-方法" class="headerlink" title="线程池的execute()和submit()方法"></a>线程池的execute()和submit()方法</h2><ul>
+<li>execute()，执行一个任务，没有返回值。</li>
+<li>submit()，提交一个线程任务，有返回值。submit(Callable<t> task)能获取到它的返回值，通过future.get()获取（阻塞直到任务执行完）。</t></li>
+</ul>
+<hr>
 <h2 id="集合框架"><a href="#集合框架" class="headerlink" title="集合框架"></a>集合框架</h2><p><img src="/2020/08/01/2020-08-01-zhong-ji-yi-zhan/0001.png" alt></p>
 <hr>
 <h2 id="ArrayList-和-LinkedList-的区别"><a href="#ArrayList-和-LinkedList-的区别" class="headerlink" title="ArrayList 和 LinkedList 的区别"></a>ArrayList 和 LinkedList 的区别</h2><ul>
