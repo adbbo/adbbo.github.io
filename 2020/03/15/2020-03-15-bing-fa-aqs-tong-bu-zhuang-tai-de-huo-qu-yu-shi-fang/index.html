@@ -646,6 +646,11 @@
     }
     return false;
 }</code></pre><p>因为可能会存在多个线程同时进行释放同步状态资源，所以需要确保同步状态安全地成功释放，一般都是通过CAS和循环来完成的。</p>
+<h2 id="划重点，总结辣："><a href="#划重点，总结辣：" class="headerlink" title="划重点，总结辣："></a>划重点，总结辣：</h2><ul>
+<li><p>acquire(int arg)方法流程图如下：</p>
+<p>  <img src="/2020/03/15/2020-03-15-bing-fa-aqs-tong-bu-zhuang-tai-de-huo-qu-yu-shi-fang/34hrfcfc.bmp" alt></p>
+</li>
+</ul>
 
             </div>
             <hr>

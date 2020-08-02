@@ -605,7 +605,18 @@ private volatile Pair&lt;V&gt; pair;</code></pre><p>Pair记录着对象的引用
 <p>运行结果充分展示了AtomicInteger的ABA问题和AtomicStampedReference解决ABA问题。</p>
 <p>其他用法：</p>
 <pre><code>private static AtomicReference&lt;String&gt; ar = new AtomicReference&lt;String&gt;();
-private static AtomicStampedReference&lt;Integer&gt; atomicStampedRef = new AtomicStampedReference&lt;&gt;(1, 0);</code></pre>
+private static AtomicStampedReference&lt;Integer&gt; atomicStampedRef = new AtomicStampedReference&lt;&gt;(1, 0);</code></pre><p>##</p>
+<ul>
+<li>CAS，Compare And Swap，即比较和交换。</li>
+<li>在CAS中有三个参数：内存值V、旧的预期值A、要更新的值B，当且仅当内存值V的值等于旧的预期值A时才会将内存值V的值修改为B，否则什么都不干。</li>
+<li>CAS虽然高效地解决了原子操作，但是还是存在一些缺陷的，主要表现在三个方法：循环时间太长、只能保证一个共享变量原子操作、ABA问题。<ul>
+<li>循环时间太长：如果自旋CAS长时间地不成功，则会给CPU带来非常大的开销。在JUC中有些地方就限制了CAS自旋的次数，例如BlockingQueue的SynchronousQueue。</li>
+<li>只能保证一个共享变量原子操作：看了CAS的实现就知道这只能针对一个共享变量，如果是多个共享变量就只能使用锁了，当然如果你有办法把多个变量整成一个变量，利用CAS也不错。</li>
+<li>ABA问题：对于ABA问题其解决方案是加上版本号，即在每个变量都加上一个版本号，每次改变时加1，即A —&gt; B —&gt; A，变成1A —&gt; 2B —&gt; 3A。</li>
+</ul>
+</li>
+</ul>
+
             </div>
             <hr>
 

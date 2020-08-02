@@ -709,7 +709,14 @@ private final boolean parkAndCheckInterrupt() {
 <p><img src="/2020/03/18/2020-03-18-bing-fa-aqs-shen-ru-li-jie/656.png" alt></p>
 <p>此时AQS中队列数据如图：</p>
 <p><img src="/2020/03/18/2020-03-18-bing-fa-aqs-shen-ru-li-jie/657.png" alt></p>
-<h2 id="总结辣，看这里咯"><a href="#总结辣，看这里咯" class="headerlink" title="总结辣，看这里咯"></a>总结辣，看这里咯</h2><h3 id="加锁和挂起线程流程："><a href="#加锁和挂起线程流程：" class="headerlink" title="加锁和挂起线程流程："></a>加锁和挂起线程流程：</h3><ol>
+<h2 id="总结辣，看这里咯"><a href="#总结辣，看这里咯" class="headerlink" title="总结辣，看这里咯"></a>总结辣，看这里咯</h2><h3 id="AQS实现原理："><a href="#AQS实现原理：" class="headerlink" title="AQS实现原理："></a>AQS实现原理：</h3><ol>
+<li>AQS中 维护了一个volatile int state（代表共享资源）和一个FIFO双向等待CLH队列（多线程争用资源被阻塞时会进入此队列）。</li>
+<li>这里volatile能够保证多线程下的可见性，当state=1则代表当前对象锁已经被占有，其他线程来加锁时则会失败，加锁失败的线程会被放入一个FIFO的等待队列中，比列会被UNSAFE.park()操作挂起，等待其他获取锁的线程释放锁才能够被唤醒。</li>
+</ol>
+<ul>
+<li>另外state的操作都是通过CAS来保证其并发修改的安全性。</li>
+</ul>
+<h3 id="加锁和挂起线程流程："><a href="#加锁和挂起线程流程：" class="headerlink" title="加锁和挂起线程流程："></a>加锁和挂起线程流程：</h3><ol>
 <li><p>首先调用nonfairTryAcquire()获取<code>state</code>的值。如果为0，利用<code>CAS</code>尝试抢占锁compareAndSetState(0, 1)，且设置对象独占锁线程为当前线程setExclusiveOwnerThread(Thread.currentThread())；如果不为0则说明当前对象的锁已经被其他线程所占有，接着判断占有锁的线程是否为当前线程，如果是则累加<code>state</code>值。获取锁成功。</p>
 </li>
 <li><p>如果获取锁失败：首先执行<code>addWaiter(Node.EXCLUSIVE)</code>，加入到一个<code>FIFO</code>   CLH等待队列中。<code>addWaiter()</code>方法执行完后，会返回当前线程创建的节点信息。继续往后执行<code>acquireQueued(addWaiter(Node.EXCLUSIVE), arg)</code>逻辑。<code>acquireQueued()</code>这个方法会先判断当前传入的<code>Node</code>对应的前置节点是否为<code>head</code>，如果是则尝试加锁。加锁成功过则将当前节点设置为<code>head</code>节点，然后空置之前的<code>head</code>节点，方便后续被垃圾回收掉。如果加锁失败或者<code>Node</code>的前置节点不是<code>head</code>节点，就会通过<code>shouldParkAfterFailedAcquire</code>方法 将前一个节点的<code>waitStatus</code>变为了<code>SIGNAL=-1</code>，最后执行<code>parkAndChecknIterrupt</code>方法，调用<code>LockSupport.park()</code>挂起当前线程，等着其他线程释放锁来唤醒它。</p>

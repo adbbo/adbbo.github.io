@@ -565,6 +565,9 @@
 }</code></pre><p>从上面可以看出，其内部的实现都是通过UNSAFE（sun.misc.Unsafe UNSAFE）来实现的，其定义如下：</p>
 <pre><code>public native void park(boolean var1, long var2);
 public native void unpark(Object var1);</code></pre><p>两个都是native本地方法。Unsafe 是一个比较危险的类，主要是用于执行低级别、不安全的方法集合。尽管这个类和所有的方法都是公开的（public），但是这个类的使用仍然受限，你无法在自己的java程序中直接使用该类，因为只有授信的代码才能获得该类的实例。</p>
+<h2 id="划重点，总结辣："><a href="#划重点，总结辣：" class="headerlink" title="划重点，总结辣："></a>划重点，总结辣：</h2><ul>
+<li>在AQS中维护着一个FIFO的同步队列，当线程获取同步状态失败后，则会加入到这个CLH同步队列的队尾并一直保持着自旋。在CLH同步队列中的线程在自旋时会判断其前驱节点是否为首节点，如果为首节点则不断尝试获取同步状态，获取成功则退出CLH同步队列。当线程执行完逻辑后，会释放同步状态，释放后会唤醒其后继节点。</li>
+</ul>
 
             </div>
             <hr>
