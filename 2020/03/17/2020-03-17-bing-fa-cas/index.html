@@ -605,8 +605,7 @@ private volatile Pair&lt;V&gt; pair;</code></pre><p>Pair记录着对象的引用
 <p>运行结果充分展示了AtomicInteger的ABA问题和AtomicStampedReference解决ABA问题。</p>
 <p>其他用法：</p>
 <pre><code>private static AtomicReference&lt;String&gt; ar = new AtomicReference&lt;String&gt;();
-private static AtomicStampedReference&lt;Integer&gt; atomicStampedRef = new AtomicStampedReference&lt;&gt;(1, 0);</code></pre><p>##</p>
-<ul>
+private static AtomicStampedReference&lt;Integer&gt; atomicStampedRef = new AtomicStampedReference&lt;&gt;(1, 0);</code></pre><h2 id="划重点，总结辣："><a href="#划重点，总结辣：" class="headerlink" title="划重点，总结辣："></a>划重点，总结辣：</h2><ul>
 <li>CAS，Compare And Swap，即比较和交换。</li>
 <li>在CAS中有三个参数：内存值V、旧的预期值A、要更新的值B，当且仅当内存值V的值等于旧的预期值A时才会将内存值V的值修改为B，否则什么都不干。</li>
 <li>CAS虽然高效地解决了原子操作，但是还是存在一些缺陷的，主要表现在三个方法：循环时间太长、只能保证一个共享变量原子操作、ABA问题。<ul>
