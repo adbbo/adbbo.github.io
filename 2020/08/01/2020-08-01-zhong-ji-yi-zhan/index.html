@@ -873,6 +873,57 @@
 　　　　}
 　　}
 } </code></pre><hr>
+<h2 id="StringBuffer-和-StringBuilder-的区别"><a href="#StringBuffer-和-StringBuilder-的区别" class="headerlink" title="StringBuffer 和 StringBuilder 的区别"></a>StringBuffer 和 StringBuilder 的区别</h2><p>String 中的对象是不可变的，也就可以理解为常量，线程安全。StringBuffer 对方法加了同步锁或者对调用的方法加了同步锁，所以是线程安全的。StringBuilder 并没有对方法进行加同步锁，所以是非线程安全的。</p>
+<hr>
+<h2 id="与-equals-重要"><a href="#与-equals-重要" class="headerlink" title="== 与 equals(重要)"></a>== 与 equals(重要)</h2><ul>
+<li>== : 它的作用是判断两个对象的地址是不是相等。即，判断两个对象是不是同一个对象(基本数据类型==比较的是值，引用数据类型==比较的是内存地址)。</li>
+<li>equals() : 它的作用也是判断两个对象是否相等。但它一般有两种使用情况：</li>
+</ul>
+<ol>
+<li>情况 1：类没有覆盖 equals() 方法。则通过 equals() 比较该类的两个对象时，等价于通过“==”比较这两个对象。</li>
+<li>情况 2：类覆盖了 equals() 方法。一般，我们都覆盖 equals() 方法来比较两个对象的内容是否相等；若它们的内容相等，则返回 true (即，认为这两个对象相等)。</li>
+</ol>
+<pre><code>public class test1 {
+    public static void main(String[] args) {
+        String a = new String(&quot;ab&quot;); // a 为一个引用
+        String b = new String(&quot;ab&quot;); // b为另一个引用,对象的内容一样
+        String aa = &quot;ab&quot;; // 放在常量池中
+        String bb = &quot;ab&quot;; // 从常量池中查找
+        if (aa == bb) // true
+            System.out.println(&quot;aa==bb&quot;);
+        if (a == b) // false，非同一对象
+            System.out.println(&quot;a==b&quot;);
+        if (a.equals(b)) // true
+            System.out.println(&quot;aEQb&quot;);
+        if (42 == 42.0) { // true
+            System.out.println(&quot;true&quot;);
+        }
+    }
+}</code></pre><hr>
+<p>## </p>
+<ol>
+<li>Java 中 IO 流分为几种?</li>
+</ol>
+<ul>
+<li>按照流的流向分，可以分为输入流和输出流；</li>
+<li>按照操作单元划分，可以划分为字节流和字符流；</li>
+<li>按照流的角色划分为节点流和处理流。</li>
+</ul>
+<ol start="2">
+<li>Java I0 流的 40 多个类都是从如下 4 个抽象类基类中派生出来的。</li>
+</ol>
+<ul>
+<li><strong>InputStream/Reader: 所有的输入流的基类，前者是字节输入流，后者是字符输入流。</strong></li>
+<li><strong>OutputStream/Writer: 所有输出流的基类，前者是字节输出流，后者是字符输出流。</strong></li>
+</ul>
+<p><img src="/2020/08/01/2020-08-01-zhong-ji-yi-zhan/ep4ijzng.bmp" alt></p>
+<p><img src="/2020/08/01/2020-08-01-zhong-ji-yi-zhan/755xfuro.bmp" alt></p>
+<hr>
+<h2 id="BIO-NIO-AIO-区别"><a href="#BIO-NIO-AIO-区别" class="headerlink" title="BIO,NIO,AIO 区别"></a>BIO,NIO,AIO 区别</h2><ul>
+<li>BIO (Blocking I/O): 同步阻塞 I/O 模式，数据的读取写入必须阻塞在一个线程内等待其完成。</li>
+<li>NIO (Non-blocking/New I/O): NIO 是一种同步非阻塞的 I/O 模型.</li>
+<li>AIO (Asynchronous I/O): AIO 是异步非阻塞的 IO 模型。异步 IO 是基于事件和回调机制实现的，也就是应用操作之后会直接返回，不会堵塞在那里，当后台处理完成，操作系统会通知相应的线程进行后续的操作。</li>
+</ul>
 
             </div>
             <hr>
