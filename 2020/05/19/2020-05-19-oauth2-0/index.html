@@ -5,7 +5,7 @@
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
     <meta name="keywords" content="OAuth2.0, Adbo~Blog">
-    <meta name="description" content="手把手教你写OAuth2.0">
+    <meta name="description" content="OAuth2.0授权">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -456,10 +456,402 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <blockquote>
-<p>本篇主要记录和总结工作中用到授权认证的OAuth2.0</p>
+<p>本篇主要记录和总结工作中用到授权认证的OAuth2.0<br>如果有人再问你OAuth2.0,你就把这篇文章扔给他</p>
 </blockquote>
-<p><img src="/2020/05/19/2020-05-19-oauth2-0/c81m1m9e.bmp" alt></p>
+<h2 id="流程原理"><a href="#流程原理" class="headerlink" title="流程原理"></a>流程原理</h2><p>使用授权码模式完成OAuth2.0授权的过程需要以下四个步骤：</p>
+<ul>
+<li>client请求授权服务端，获取Authorization Code；</li>
+<li>client通过Authorization Code再次请求授权服务端，获取Access Token和Refresh Token；</li>
+<li>client通过Refresh Token刷新获取Access Token；</li>
+<li>client通过服务端返回的Access Token调取服务端接口。</li>
+</ul>
+<p><img src="/2020/05/19/2020-05-19-oauth2-0/auth.jpg" alt></p>
+<h2 id="数据库的表结构设计"><a href="#数据库的表结构设计" class="headerlink" title="数据库的表结构设计"></a>数据库的表结构设计</h2><h3 id="t-partner-interfaces"><a href="#t-partner-interfaces" class="headerlink" title="t_partner_interfaces"></a>t_partner_interfaces</h3><p>用于记录后台分配给用户的权限</p>
+<pre><code>CREATE TABLE `t_partner_interfaces` (
+  `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT,
+  `partner_no` varchar(20) NOT NULL DEFAULT &#39;&#39; COMMENT &#39;合作伙伴编号&#39;,
+  `interfaces` varchar(255) NOT NULL DEFAULT &#39;&#39; COMMENT &#39;接口标志（多个用，分隔）&#39;,
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT=&#39;合作伙伴接口表&#39;;</code></pre><h3 id="t-auth-info"><a href="#t-auth-info" class="headerlink" title="t_auth_info"></a>t_auth_info</h3><p>用于记录用户的clientId、clientSecret、redirectUri等</p>
+<pre><code>CREATE TABLE `t_auth_info` (
+  `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT,
+  `partner_no` varchar(20) NOT NULL DEFAULT &#39;&#39; COMMENT &#39;合作伙伴编号&#39;,
+  `client_id` varchar(64) NOT NULL DEFAULT &#39;&#39; COMMENT &#39;唯一的clientId&#39;,
+  `client_secret` varchar(64) NOT NULL DEFAULT &#39;&#39; COMMENT &#39;密钥&#39;,
+  `redirect_uri` varchar(255) NOT NULL DEFAULT &#39;&#39; COMMENT &#39;回调URI（多个用，分隔）&#39;,
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT=&#39;授权信息表&#39;;</code></pre><h3 id="t-auth-token"><a href="#t-auth-token" class="headerlink" title="t_auth_token"></a>t_auth_token</h3><p>用户记录授权完成后的授权信息</p>
+<pre><code>CREATE TABLE `t_auth_token` (
+  `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT,
+  `partner_no` varchar(20) NOT NULL DEFAULT &#39;&#39; COMMENT &#39;合作伙伴编号&#39;,
+  `access_token` varchar(128) NOT NULL DEFAULT &#39;&#39; COMMENT &#39;唯一的Access Token&#39;,
+  `refresh_token` varchar(128) NOT NULL DEFAULT &#39;&#39; COMMENT &#39;唯一的Refresh Token&#39;,
+  `access_expires_in` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT &#39;accessToken过期时间&#39;,
+  `refresh_expires_in` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT &#39;refreshToken过期时间&#39;,
+  `scope` varchar(255) NOT NULL DEFAULT &#39;&#39; COMMENT &#39;accessToken可访问范围&#39;,
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT=&#39;令牌表&#39;;</code></pre><h2 id="授权服务端主要接口的代码实现"><a href="#授权服务端主要接口的代码实现" class="headerlink" title="授权服务端主要接口的代码实现"></a>授权服务端主要接口的代码实现</h2><h3 id="获取code接口"><a href="#获取code接口" class="headerlink" title="获取code接口"></a>获取code接口</h3><pre><code>@ApiOperation( &quot;授权获取code&quot;)
+@GetMapping(&quot;/authorize&quot;)
+public ResultData authorize(HttpServletRequest request) {
+    try {
+        oAuthService.auth(request);
+    } catch (IllegalArgumentException | IllegalStateException e) {
+        return ResultData.fail(e.getMessage());
+    } catch (Exception e) {
+        LOGGER.error(&quot;Exception 请求授权接口异常&quot;, e);
+        return ResultData.fail(&quot;系统繁忙，请稍候重试&quot;);
+    }
+    return ResultData.succeed();
+}</code></pre><pre><code>public void auth(HttpServletRequest request) {
+    oAuthDomain.auth(request);
+}</code></pre><pre><code>@Component
+@Scope(DefaultListableBeanFactory.SCOPE_PROTOTYPE)
+public class OAuthDomain {
+    public void auth(HttpServletRequest request) {
+        // 客户端ID
+        String clientId = request.getParameter(&quot;client_id&quot;);
+        // 权限范围
+        String scope = request.getParameter(&quot;scope&quot;);
+        // 回调URL
+        String redirectUri = request.getParameter(&quot;redirect_uri&quot;);
+        // state，用于防止CSRF攻击（非必填）
+        String state = request.getParameter(&quot;state&quot;);
 
+        Assert.hasText(clientId, ErrorCodeEnum.INVALID_REQUEST.getErrorDescription());
+        Assert.hasText(scope, ErrorCodeEnum.INVALID_REQUEST.getErrorDescription());
+        Assert.hasText(redirectUri, ErrorCodeEnum.INVALID_REQUEST.getErrorDescription());
+
+        // 1 校验clientId
+        AuthInfoDO authInfoDO = authInfoDAO.getByClientId(clientId);
+        Assert.notNull(authInfoDO, ErrorCodeEnum.INVALID_CLIENT.getErrorDescription());
+
+        // 2 校验scope范围
+        String partnerNo = authInfoDO.getPartnerNo();
+        // 2.1 TODO 校验系统的scope范围
+        // 2.2 校验用户的scope范围
+        PartnerDO partnerDO = partnerDAO.getByPartnerNo(partnerNo);
+        Assert.state(PartnerStatusEnum.OPEN.getStatus().equals(partnerDO.getStatus()), ErrorCodeEnum.INVALID_SCOPE.getErrorDescription());
+        PartnerInterfacesDO partnerInterfacesDO = partnerInterfacesDAO.getByPartnerNo(partnerNo);
+        Assert.notNull(partnerInterfacesDO, ErrorCodeEnum.INVALID_SCOPE.getErrorDescription());
+        String interfaces = partnerInterfacesDO.getInterfaces();
+        List interfacesList = Arrays.asList(interfaces.split(&quot;,&quot;));
+        List scopeList = Arrays.asList(scope.split(&quot;,&quot;));
+        Assert.state(interfacesList.containsAll(scopeList), ErrorCodeEnum.INVALID_SCOPE.getErrorDescription());
+
+        // 3 校验redirectUri是否存在
+        List redirectUriList = Arrays.asList(authInfoDO.getRedirectUri().split(&quot;,&quot;));
+        Assert.state(redirectUriList.contains(redirectUri), ErrorCodeEnum.INVALID_REDIRECT_URI.getErrorDescription());
+
+        // 4 生成Authorization Code
+        String code = createAuthorizationCode(clientId, scope);
+        LOGGER.info(&quot;客户端ID：&quot; + clientId + &quot;生成的code：&quot; + code);
+
+        // 5 保存Authorization Code, scope到redis
+        redisTemplate.opsForValue().set(&quot;code:&quot; + partnerNo, code, ExpireEnum.AUTHORIZATION_CODE.getTime(), ExpireEnum.AUTHORIZATION_CODE.getTimeUnit());
+        redisTemplate.opsForValue().set(&quot;scope:&quot; + partnerNo, scope);
+
+        // 6 设置返回参数
+        String params = &quot;?code=&quot; + code;
+        params = StringUtils.isNotBlank(state) ? params.concat(&quot;&amp;state=&quot;).concat(state) : params;
+
+        String uri = redirectUri.concat(params);
+
+        // 7 开子线程，请求重定向地址
+        ObjectU.execute(() -&gt; {
+            request(uri);
+        });
+    }
+}</code></pre><h3 id="code获取Access-Token"><a href="#code获取Access-Token" class="headerlink" title="code获取Access Token"></a>code获取Access Token</h3><pre><code>@ApiOperation( &quot;code获取token&quot;)
+@GetMapping(value = &quot;/token&quot;)
+public ResultData&lt;Map&lt;String,Object&gt;&gt; token(HttpServletRequest request){
+    try {
+        return ResultData.succeed(oAuthService.token(request));
+    } catch (IllegalArgumentException | IllegalStateException e) {
+        return ResultData.fail(e.getMessage());
+    } catch (Exception e) {
+        LOGGER.error(&quot;Exception 请求授权接口异常&quot;, e);
+        return ResultData.fail(&quot;系统繁忙，请稍候重试&quot;);
+    }
+}</code></pre><pre><code>public Map&lt;String,Object&gt; token(HttpServletRequest request) {
+    // 1 返回token
+    Map&lt;String, Object&gt; result = oAuthDomain.token(request);
+    // 2 保存token相关信息
+    String clientId = request.getParameter(&quot;client_id&quot;);
+    AuthInfoDO authInfoDO = authInfoDAO.getByClientId(clientId);
+    AuthTokenDO authTokenDO = createAuthTokenDO(result, authInfoDO.getPartnerNo(), TokenEnum.ACCESS.getType());
+    AuthToken authToken = authTokenFactory.get(authTokenDO);
+    authToken.saveOrUpdate();
+    return result;
+}</code></pre><pre><code>public Map&lt;String,Object&gt; token(HttpServletRequest request) {
+    Map&lt;String,Object&gt; result = new HashMap&lt;&gt;(8);
+
+    // 授权方式
+    String grantType = request.getParameter(&quot;grant_type&quot;);
+    // 前面获取的Authorization Code
+    String code = request.getParameter(&quot;code&quot;);
+    // 客户端ID
+    String clientId = request.getParameter(&quot;client_id&quot;);
+    // 接入的客户端的密钥
+    String clientSecret = request.getParameter(&quot;client_secret&quot;);
+
+    Assert.hasText(grantType, ErrorCodeEnum.INVALID_REQUEST.getErrorDescription());
+    Assert.hasText(code, ErrorCodeEnum.INVALID_REQUEST.getErrorDescription());
+    Assert.hasText(clientId, ErrorCodeEnum.INVALID_REQUEST.getErrorDescription());
+    Assert.hasText(clientSecret, ErrorCodeEnum.INVALID_REQUEST.getErrorDescription());
+
+    // 1 校验授权方式
+    Assert.state(GrantTypeEnum.AUTHORIZATION_CODE.getType().equals(grantType), ErrorCodeEnum.UNSUPPORTED_GRANT_TYPE.getErrorDescription());
+
+    // 2 校验clientId
+    AuthInfoDO authInfoDO = authInfoDAO.getByClientId(clientId);
+    Assert.notNull(authInfoDO, ErrorCodeEnum.INVALID_CLIENT.getErrorDescription());
+
+    // 3 校验clientSecret
+    String localClientSecret = authInfoDO.getClientSecret();
+    Assert.state(clientSecret.equals(localClientSecret), ErrorCodeEnum.INVALID_CLIENT.getErrorDescription());
+
+    // 4 校验code
+    String partnerNo = authInfoDO.getPartnerNo();
+    String authCode = redisTemplate.opsForValue().get(&quot;code:&quot; + partnerNo);
+    Assert.hasText(authCode, ErrorCodeEnum.INVALID_GRANT.getErrorDescription());
+    Assert.state(code.equals(authCode), ErrorCodeEnum.INVALID_GRANT.getErrorDescription());
+
+    // 5 生成accessToken
+    String accessToken = createAccessToken(partnerNo, clientId);
+
+    // 6 生成refreshToken
+    String refreshToken = createRefreshToken(partnerNo, accessToken);
+
+    String scope = redisTemplate.opsForValue().get(&quot;scope:&quot; + partnerNo);
+    // 7 返回数据
+    result.put(&quot;access_token&quot;, accessToken);
+    result.put(&quot;refresh_token&quot;, refreshToken);
+    result.put(&quot;expires_in&quot;, ExpireEnum.ACCESS_TOKEN.getTime() * 3600);
+    result.put(&quot;scope&quot;, scope);
+    return result;
+}</code></pre><h3 id="refreshToken刷新获取accessToken"><a href="#refreshToken刷新获取accessToken" class="headerlink" title="refreshToken刷新获取accessToken"></a>refreshToken刷新获取accessToken</h3><pre><code>@ApiOperation( &quot;refreshToken获取accessToken&quot;)
+@GetMapping(value = &quot;/refreshToken&quot;)
+public ResultData&lt;Map&lt;String,Object&gt;&gt; refreshToken(HttpServletRequest request){
+    try {
+        return ResultData.succeed(oAuthService.refreshToken(request));
+    } catch (IllegalArgumentException | IllegalStateException e) {
+        return ResultData.fail(e.getMessage());
+    } catch (Exception e) {
+        LOGGER.error(&quot;Exception 请求授权接口异常&quot;, e);
+        return ResultData.fail(&quot;系统繁忙，请稍候重试&quot;);
+    }
+}</code></pre><pre><code>public Map&lt;String, Object&gt; refreshToken(HttpServletRequest request) {
+    // 1 返回token
+    Map&lt;String, Object&gt; result = oAuthDomain.refreshToken(request);
+    // 2 保存token相关信息
+    String refreshToken = request.getParameter(&quot;refresh_token&quot;);
+    AuthTokenDO localAuthTokenDO = authTokenDAO.getByRefreshToken(refreshToken);
+    AuthTokenDO authTokenDO = createAuthTokenDO(result, localAuthTokenDO.getPartnerNo(), TokenEnum.REFRESH.getType());
+    AuthToken authToken = authTokenFactory.get(authTokenDO);
+    authToken.saveOrUpdate();
+    return result;
+}</code></pre><pre><code>public Map&lt;String, Object&gt; refreshToken(HttpServletRequest request) {
+    Map&lt;String,Object&gt; result = new HashMap&lt;&gt;(8);
+
+    // 获取refreshToken
+    String refreshToken = request.getParameter(&quot;refresh_token&quot;);
+
+    // 1 校验refreshToken是否真实有效
+    Assert.hasText(refreshToken, ErrorCodeEnum.INVALID_REQUEST.getErrorDescription());
+    AuthTokenDO authTokenDO = authTokenDAO.getByRefreshToken(refreshToken);
+    Assert.notNull(authTokenDO, ErrorCodeEnum.INVALID_GRANT.getErrorDescription());
+
+    // 2 校验refreshToken是否过期
+    Timestamp refreshExpiresIn = authTokenDO.getRefreshExpiresIn();
+    Assert.state(LocalDateTime.now().isBefore(refreshExpiresIn.toLocalDateTime()), ErrorCodeEnum.EXPIRED_TOKEN.getErrorDescription());
+
+    // 3 生成新的Access Token
+    String partnerNo = authTokenDO.getPartnerNo();
+    AuthInfoDO authInfoDO = authInfoDAO.getByPartnerNo(partnerNo);
+    String newAccessToken = createAccessToken(partnerNo, authInfoDO.getClientId());
+
+    // 4 返回数据
+    result.put(&quot;access_token&quot;, newAccessToken);
+    result.put(&quot;refresh_token&quot;, refreshToken);
+    result.put(&quot;expires_in&quot;, ExpireEnum.ACCESS_TOKEN.getTime() * 3600);
+    result.put(&quot;scope&quot;, authTokenDO.getScope());
+    return result;
+}</code></pre><h3 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h3><pre><code>public enum ErrorCodeEnum {
+    INVALID_REQUEST(&quot;invalid_request&quot;,&quot;请求缺少某个必需参数，包含一个不支持的参数或参数值，或者格式不正确。&quot;),
+    INVALID_CLIENT(&quot;invalid_client&quot;,&quot;请求的client_id或client_secret参数无效。&quot;),
+    INVALID_GRANT(&quot;invalid_grant&quot;,&quot;请求的Authorization Code、Access Token、Refresh Token等信息是无效的。&quot;),
+    UNSUPPORTED_GRANT_TYPE(&quot;unsupported_grant_type&quot;,&quot;不支持的grant_type。&quot;),
+    INVALID_SCOPE(&quot;invalid_scope&quot;,&quot;请求的scope参数是无效的、未知的、格式不正确的，或所请求的权限范围超过了数据拥有者所授予的权限范围。&quot;),
+    EXPIRED_TOKEN(&quot;expired_token&quot;,&quot;请求的Access Token或Refresh Token已过期。&quot;),
+    REDIRECT_URI_MISMATCH(&quot;redirect_uri_mismatch&quot;,&quot;请求的redirect_uri所在的域名与开发者注册应用时所填写的域名不匹配。&quot;),
+    INVALID_REDIRECT_URI(&quot;invalid_redirect_uri&quot;,&quot;请求的回调URL不在白名单中。&quot;),
+    UNKNOWN_ERROR(&quot;unknown_error&quot;,&quot;程序发生未知异常，请联系管理员解决。&quot;);
+
+    /**
+     * 错误码
+     */
+    private String error;
+    /**
+     * 错误描述信息
+     */
+    private String errorDescription;
+
+    ErrorCodeEnum(String error, String errorDescription) {
+        this.error = error;
+        this.errorDescription = errorDescription;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public String getErrorDescription() {
+        return errorDescription;
+    }
+}</code></pre><pre><code>/**
+ * 过期时间相关枚举
+ * @author CFL
+ */
+public enum ExpireEnum {
+    // Authorization Code的有效期为10分钟
+    AUTHORIZATION_CODE(10L, TimeUnit.MINUTES),
+    // Access Token的有效期为12小时
+    ACCESS_TOKEN(12L, TimeUnit.HOURS),
+    // Refresh Token的有效期为24小时
+    REFRESH_TOKEN(24L,TimeUnit.HOURS)
+    ;
+
+    /**
+     * 过期时间
+     */
+    private Long time;
+    /**
+     * 时间单位
+     */
+    private TimeUnit timeUnit;
+
+    ExpireEnum(Long time, TimeUnit timeUnit) {
+        this.time = time;
+        this.timeUnit = timeUnit;
+    }
+
+    public Long getTime() {
+        return time;
+    }
+
+    public TimeUnit getTimeUnit() {
+        return timeUnit;
+    }
+}</code></pre><pre><code>/**
+ * 授权方式
+ */
+public enum GrantTypeEnum {
+    // 授权码模式
+    AUTHORIZATION_CODE(&quot;authorization_code&quot;);
+
+    private String type;
+
+    GrantTypeEnum(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
+    }
+}</code></pre><pre><code>public enum TokenEnum {
+    ACCESS((byte)0, &quot;accessToken&quot;),
+    REFRESH((byte)1, &quot;refreshToken&quot;);
+    private Byte type;
+    private String remark;
+
+    TokenEnum(Byte type, String remark) {
+        this.type = type;
+        this.remark = remark;
+    }
+
+    public Byte getType() {
+        return type;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+}</code></pre><h3 id="拦截器"><a href="#拦截器" class="headerlink" title="拦截器"></a>拦截器</h3><pre><code>@Component
+public class AuthAccessTokenInterceptor extends HandlerInterceptorAdapter {
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        String accessToken = request.getHeader(&quot;accessToken&quot;);
+        String requestURI = request.getRequestURI();
+
+        if (StringUtils.isNotBlank(accessToken)) {
+            AuthTokenDO authTokenDO = authTokenDAO.getByAccessToken(accessToken);
+            if (Objects.nonNull(authTokenDO)) {
+                String scope = authTokenDO.getScope();
+                if (StringUtils.isBlank(scope)) {
+                    return generateErrorResponse(response, ErrorCodeEnum.INVALID_SCOPE);
+                }
+                List&lt;String&gt; scopeList = Arrays.asList(scope.split(&quot;,&quot;));
+                String uri = requestURI.substring(requestURI.lastIndexOf(&quot;/&quot;) + 1);
+                if (!scopeList.contains(uri)) {
+                    return generateErrorResponse(response, ErrorCodeEnum.INVALID_SCOPE);
+                }
+                ApiPermissionDO apiPermissionDO = apiPermissionDAO.getByApiSource(uri);
+                if (Objects.isNull(apiPermissionDO) || apiPermissionDO.getStatus() == 0) {
+                    return generateErrorResponse(response, ErrorCodeEnum.INVALID_SCOPE);
+                }
+                PartnerDO partnerDO = partnerDAO.getByPartnerNo(authTokenDO.getPartnerNo());
+                if (Objects.isNull(partnerDO) || partnerDO.getStatus() == 1) {
+                    return generateErrorResponse(response, ErrorCodeEnum.INVALID_SCOPE);
+                }
+                LocalDateTime accessExpiresIn = authTokenDO.getAccessExpiresIn().toLocalDateTime();
+                request.setAttribute(&quot;partner_no&quot;, authTokenDO.getPartnerNo());
+                return LocalDateTime.now().isBefore(accessExpiresIn) || generateErrorResponse(response, ErrorCodeEnum.EXPIRED_TOKEN);
+            } else {
+                return generateErrorResponse(response, ErrorCodeEnum.INVALID_GRANT);
+            }
+        } else {
+            return generateErrorResponse(response, ErrorCodeEnum.INVALID_REQUEST);
+        }
+    }
+
+    private boolean generateErrorResponse(HttpServletResponse response, ErrorCodeEnum errorCodeEnum) throws Exception {
+        response.setCharacterEncoding(&quot;UTF-8&quot;);
+        response.setHeader(&quot;Content-type&quot;, &quot;application/json;charset=UTF-8&quot;);
+        Map&lt;String,String&gt; result = new HashMap&lt;&gt;(2);
+        result.put(&quot;statusCode&quot;, errorCodeEnum.getError());
+        result.put(&quot;message&quot;,errorCodeEnum.getErrorDescription());
+
+        response.getWriter().write(JSON.toJSON(result).toString());
+        return false;
+    }
+}</code></pre><pre><code>public class AuthUtil {
+    public static String getPartnerNo() {
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (Objects.isNull(servletRequestAttributes)){
+            return null;
+        }
+        HttpServletRequest request = servletRequestAttributes.getRequest();
+        String partnerNo = (String) request.getAttribute(&quot;partner_no&quot;);
+        return partnerNo;
+    }
+}</code></pre><pre><code>@Configuration
+public class InterceptorConfig implements WebMvcConfigurer {
+    @Autowired
+    private AuthAccessTokenInterceptor authAccessTokenInterceptor;
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(authAccessTokenInterceptor)
+                .addPathPatterns(&quot;/api/**&quot;);
+    }
+}</code></pre>
             </div>
             <hr>
 

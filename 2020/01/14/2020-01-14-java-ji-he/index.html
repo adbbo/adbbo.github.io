@@ -532,7 +532,7 @@
 <li>ConcurrentHashMap在JDK1.7时是按照分段锁Segment和HashEntry实现线程安全的。每个ConcurrentHashMap里面包含有一个Segment数组，Segment数组里面包含有HashEntry数组，hashEntry是一个链表结构的元素。当对某个 HashEntry 数组的数据进行修改时，必须首先获得对应的 Segment的锁。</li>
 <li>ConcurrentHashMap在JDK1.8时取消了Segment分段锁，采用Node数组和CAS和synchronized来保证线程安全。synchronized只锁定当前链表或红黑二叉树的首节点，这样只要hash不冲突，就不会产生并发，效率又提升N倍。</li>
 </ol>
-<h2 id="HashMap的put方法的具体流程"><a href="#HashMap的put方法的具体流程" class="headerlink" title="HashMap的put方法的具体流程"></a>HashMap的put方法的具体流程</h2><p><img src="/2020/01/14/2020-01-14-java-ji-he/0010.png" alt="putVal方法执行流程图"></p>
+<h2 id="13-HashMap的put方法的具体流程"><a href="#13-HashMap的put方法的具体流程" class="headerlink" title="13 HashMap的put方法的具体流程"></a>13 HashMap的put方法的具体流程</h2><p><img src="/2020/01/14/2020-01-14-java-ji-he/0010.png" alt="putVal方法执行流程图"></p>
 
             </div>
             <hr>
