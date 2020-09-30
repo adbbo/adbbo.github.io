@@ -4,8 +4,8 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="Linux超常用命令, Adbo~Blog">
-    <meta name="description" content="忘记了就来翻一翻吧">
+    <meta name="keywords" content="深入浅出ZooKeeper, Adbo~Blog">
+    <meta name="description" content="第三次总结ZK...">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Linux超常用命令 | Adbo</title>
+    <title>深入浅出ZooKeeper | Adbo</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -291,12 +291,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/cover/zk.bmp')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Linux超常用命令</h1>
+                    <h1 class="description center-align post-title">深入浅出ZooKeeper</h1>
                 </div>
             </div>
         </div>
@@ -413,8 +413,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Linux/">
-                                <span class="chip bg-color">Linux</span>
+                            <a href="/tags/ZooKeeper/">
+                                <span class="chip bg-color">ZooKeeper</span>
                             </a>
                         
                     </div>
@@ -425,8 +425,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/Work/" class="post-category">
-                                Work
+                            <a href="/categories/中间件/" class="post-category">
+                                中间件
                             </a>
                         
                     </div>
@@ -438,7 +438,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-09-29
+                    2020-09-30
                 </div>
                 
 
@@ -456,96 +456,124 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <blockquote>
-<p>入秋的第一篇总结博客biubiubiu~
-本篇主要记录和总结工作中常用的Linux命令<br>一个月没总结博客，心态有点崩o(╥﹏╥)o</p>
+<p>第三次总结…<br>感觉之前总结的不够全面，ZK也确实是我最弱的中间件，乏了，乏了…<br>书写百遍，其义自见，哈哈哈</p>
 </blockquote>
-<h2 id="系统信息"><a href="#系统信息" class="headerlink" title="系统信息"></a>系统信息</h2><ul>
-<li>查看IP</li>
+<h2 id="ZooKeeper-简介"><a href="#ZooKeeper-简介" class="headerlink" title="ZooKeeper 简介"></a>ZooKeeper 简介</h2><h3 id="ZooKeeper-是什么"><a href="#ZooKeeper-是什么" class="headerlink" title="ZooKeeper 是什么"></a>ZooKeeper 是什么</h3><p>简单的说，zookeeper=文件系统+通知机制。</p>
+<p>ZooKeeper 是 Apache 的顶级项目。ZooKeeper 为分布式应用提供了高效且可靠的分布式协调服务，提供了诸如统一命名服务、配置管理和分布式锁等分布式的基础服务。在解决分布式数据一致性方面，ZooKeeper 并没有直接采用 Paxos 算法，而是采用了名为 ZAB 的一致性协议。</p>
+<p>ZooKeeper 主要用来解决分布式集群中应用系统的一致性问题，它能提供基于类似于文件系统的目录节点树方式的数据存储。但是 ZooKeeper 并不是用来专门存储数据的，它的作用主要是用来维护和监控存储数据的状态变化。通过监控这些数据状态的变化，从而可以达到基于数据的集群管理。</p>
+<p>很多大名鼎鼎的框架都基于 ZooKeeper 来实现分布式高可用，如：Dubbo、Kafka 等。</p>
+<p><img src="/2020/09/30/2020-09-30-shen-ru-qian-chu-zookeeper/hjevsx78.bmp" alt></p>
+<h3 id="ZooKeeper-的特性"><a href="#ZooKeeper-的特性" class="headerlink" title="ZooKeeper 的特性"></a>ZooKeeper 的特性</h3><ul>
+<li><p>顺序一致性</p>
+<p>  所有客户端看到的服务端数据模型都是一致的；从一个客户端发起的事务请求，最终都会严格按照其发起顺序被应用到 ZooKeeper 中。具体的实现可见：原子广播</p>
+</li>
+<li><p>原子性</p>
+<p>  所有事务请求的处理结果在整个集群中所有机器上的应用情况是一致的，即整个集群要么都成功应用了某个事务，要么都没有应用。 实现方式可见：事务</p>
+</li>
+<li><p>单一视图</p>
+<p>  无论客户端连接的是哪个 Zookeeper 服务器，其看到的服务端数据模型都是一致的。</p>
+</li>
+<li><p>高性能</p>
+<p>  ZooKeeper 将数据全量存储在内存中，所以其性能很高。需要注意的是：由于 ZooKeeper 的所有更新和删除都是基于事务的，因此 ZooKeeper 在读多写少的应用场景中有性能表现较好，如果写操作频繁，性能会大大下滑。</p>
+</li>
+<li><p>高可用</p>
+<p>  ZooKeeper 的高可用是基于副本机制实现的，此外 ZooKeeper 支持故障恢复，可见：选举 Leader</p>
+</li>
 </ul>
-<pre><code>ifconfig</code></pre><ul>
-<li>显示机器的处理器架构</li>
-</ul>
-<pre><code>arch</code></pre><ul>
-<li>显示正在使用的内核版本</li>
-</ul>
-<pre><code>uname -r</code></pre><ul>
-<li>显示系统日期</li>
-</ul>
-<pre><code>date</code></pre><ul>
-<li>查看日历</li>
-</ul>
-<pre><code>cal</code></pre><p>如果想查看任一年的日历</p>
-<pre><code>cal 2020</code></pre><ul>
-<li>清屏</li>
-</ul>
-<pre><code>clear</code></pre><h2 id="文件和目录"><a href="#文件和目录" class="headerlink" title="文件和目录"></a>文件和目录</h2><ul>
-<li>创建一个文件</li>
-</ul>
-<pre><code>touch Test.java</code></pre><ul>
-<li>编辑文件</li>
-</ul>
-<pre><code>vi Test.java</code></pre><p>按i进行编辑，如果编辑完毕，则按键盘左上角的ESC键退出编辑模式，如果想保存并退出，输入:wq</p>
+<h2 id="ZooKeeper-核心概念"><a href="#ZooKeeper-核心概念" class="headerlink" title="ZooKeeper 核心概念"></a>ZooKeeper 核心概念</h2><h3 id="ACL"><a href="#ACL" class="headerlink" title="ACL"></a>ACL</h3><p><strong>ZooKeeper 采用 ACL（Access Control Lists）策略来进行权限控制。</strong></p>
+<p>每个 znode 创建时都会带有一个 ACL 列表，用于决定谁可以对它执行何种操作。</p>
+<p>ACL 依赖于 ZooKeeper 的客户端认证机制。ZooKeeper 提供了以下几种认证方式：</p>
 <ul>
-<li>查看文件</li>
+<li>digest：用户名和密码 来识别客户端</li>
+<li>sasl：通过 kerberos 来识别客户端</li>
+<li>ip：通过 IP 来识别客户端</li>
 </ul>
-<pre><code>cat Test.java</code></pre><p>如果查看的文件行数过多呢？</p>
-<pre><code>less Test.java</code></pre><p>如果less Test.java 还想搜索关键词呢？</p>
-<p>输入 /guanjianci 即可</p>
-<p>按q退出</p>
+<p>ZooKeeper 定义了如下五种权限：</p>
 <ul>
-<li>查看日志</li>
+<li>CREATE：允许创建子节点</li>
+<li>READ：允许从节点获取数据并列出其子节点</li>
+<li>WRITE：允许为节点设置数据</li>
+<li>DELETE：允许删除子节点</li>
+<li>ADMIN：允许为节点设置权限</li>
 </ul>
-<pre><code>tail -fn800 xxx.log</code></pre><p>指定查看800行log</p>
-<p>如果想搜索日志中的关键词呢？</p>
-<pre><code>grep &#39;guanjianci&#39; xxx.log</code></pre><ul>
-<li>打开目录</li>
-</ul>
-<pre><code>cd mulu/</code></pre><ul>
-<li>返回上一级目录</li>
-</ul>
-<pre><code>cd ..</code></pre><p>如果返回上两级目录呢？</p>
-<pre><code>cd ../..</code></pre><ul>
-<li>返回主目录</li>
-</ul>
-<pre><code>cd ~</code></pre><ul>
-<li>返回上次所在的目录 </li>
-</ul>
-<pre><code>cd -</code></pre><ul>
-<li>显示目录路径</li>
-</ul>
-<pre><code>pwd</code></pre><ul>
-<li>查看目录中的文件 </li>
-</ul>
-<pre><code>ls</code></pre><p>如果想显示文件和目录的详情呢？</p>
-<pre><code>ls -l</code></pre><ul>
-<li>创建一个新目录</li>
-</ul>
-<pre><code>mkdir test</code></pre><p>如果想创建多层目录呢？</p>
-<pre><code>mkdir -p test1/test2</code></pre><ul>
-<li>删除文件</li>
-</ul>
-<pre><code>rm -f testFile</code></pre><ul>
-<li>删除目录</li>
-</ul>
-<pre><code>rmdir testDir</code></pre><p>如果想删除的目录里面包含有文件呢？</p>
-<pre><code>rm -rf testDir</code></pre><blockquote>
-<p>千万别执行 <strong>rm -rf /</strong> 会删了整个Linux根目录下的所有文件<br>如果误删了，别慌，提前跑路吧</p>
-</blockquote>
-<p><img src="/2020/09/29/2020-09-29-linux-chao-chang-yong-ming-ling/c81m1m9e.bmp" alt></p>
+<h3 id="数据模型"><a href="#数据模型" class="headerlink" title="数据模型"></a>数据模型</h3><p><strong>ZooKeeper 的数据模型是一个树形结构的文件系统。</strong></p>
+<p>树中的节点被称为 znode，其中根节点为 /，每个节点上都会保存自己的数据和节点信息。</p>
+<p>znode 可以用于存储数据，并且有一个与之相关联的 ACL 列表。ZooKeeper 的设计目标是实现协调服务，而不是真的作为一个文件存储，因此 znode 存储数据的大小被限制在 1MB 以内。</p>
+<p><img src="/2020/09/30/2020-09-30-shen-ru-qian-chu-zookeeper/ff387091cfa24afa8849ac175aa483b9~tplv-k3u1fbpfcp-zoom-1.image.png" alt></p>
+<p><strong>ZooKeeper 的数据具有原子性</strong>。其读写操作都是要么全部成功，要么全部失败。</p>
+<p>znode 通过路径被引用。<strong>znode 节点路径必须是绝对路径</strong>。</p>
+<p>znode 有两种类型：</p>
 <ul>
-<li>copy一个文件</li>
+<li>临时的（ EPHEMERAL ）：户端会话结束时，ZooKeeper 就会删除临时的 znode。</li>
+<li>持久的（PERSISTENT ）：除非客户端主动执行删除操作，否则 ZooKeeper 不会删除持久的 znode。</li>
 </ul>
-<pre><code>cp file1 toFile2</code></pre><p>如果想copy整个目录呢？</p>
-<pre><code>cp -a testDir1/ testDir2</code></pre><p>testDir2为当前路径新的目标目录</p>
-<h2 id="压缩与解压"><a href="#压缩与解压" class="headerlink" title="压缩与解压"></a>压缩与解压</h2><ul>
-<li>压缩一个tar.gz文件</li>
+<h3 id="节点信息"><a href="#节点信息" class="headerlink" title="节点信息"></a>节点信息</h3><p>znode 上有一个顺序标志（ SEQUENTIAL ）。如果在创建 znode 时，设置了顺序标志（ SEQUENTIAL ），那么 ZooKeeper 会使用计数器为 znode 添加一个单调递增的数值，即 zxid。ZooKeeper 正是利用 zxid 实现了严格的顺序访问控制能力。</p>
+<p>每个 znode 节点在存储数据的同时，都会维护一个叫做 Stat 的数据结构，里面存储了关于该节点的全部状态信息。如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left">状态属性</th>
+<th align="right">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">czxid</td>
+<td align="right">数据节点创建时的事务 ID</td>
+</tr>
+<tr>
+<td align="left">ctime</td>
+<td align="right">数据节点创建时的时间</td>
+</tr>
+<tr>
+<td align="left">mzxid</td>
+<td align="right">数据节点最后一次更新时的事务 ID</td>
+</tr>
+<tr>
+<td align="left">mtime</td>
+<td align="right">数据节点最后一次更新时的时间</td>
+</tr>
+<tr>
+<td align="left">pzxid</td>
+<td align="right">数据节点的子节点最后一次被修改时的事务 ID</td>
+</tr>
+<tr>
+<td align="left">cversion</td>
+<td align="right">子节点的更改次数</td>
+</tr>
+<tr>
+<td align="left">version</td>
+<td align="right">节点数据的更改次数</td>
+</tr>
+<tr>
+<td align="left">aversion</td>
+<td align="right">节点的 ACL 的更改次数</td>
+</tr>
+<tr>
+<td align="left">ephemeralOwner</td>
+<td align="right">如果节点是临时节点，则表示创建该节点的会话的 SessionID；如果节点是持久节点，则该属性值为 0</td>
+</tr>
+<tr>
+<td align="left">dataLength</td>
+<td align="right">数据内容的长度</td>
+</tr>
+<tr>
+<td align="left">numChildren</td>
+<td align="right">数据节点当前的子节点个数</td>
+</tr>
+</tbody></table>
+<h3 id="集群角色"><a href="#集群角色" class="headerlink" title="集群角色"></a>集群角色</h3><p>Zookeeper 集群是一个基于主从复制的高可用集群，每个服务器承担如下三种角色中的一种</p>
+<ul>
+<li><p>Leader</p>
+<p>  它负责发起并维护与各 Follwer 及 Observer 间的心跳。所有的写操作必须要通过 Leader 完成再由 Leader 将写操作广播给其它服务器。一个 Zookeeper 集群同一时间只会有一个实际工作的 Leader。</p>
+</li>
+<li><p>Follower</p>
+<p>  它会响应 Leader 的心跳。Follower 可直接处理并返回客户端的读请求，同时会将写请求转发给 Leader 处理，并且负责在 Leader 处理写请求时对请求进行投票。一个 Zookeeper 集群可能同时存在多个 Follower。</p>
+</li>
+<li><p>Observer</p>
+<p>  角色与 Follower 类似，但是无投票权。</p>
+</li>
 </ul>
-<pre><code>tar -zcvf name.tar.gz testDir1/</code></pre><p>嗷嗷，如果想把两个文件夹的内容压缩到一个压缩包呢？</p>
-<pre><code>tar -zcvf name.tar.gz testDir1/ testDir2/</code></pre><ul>
-<li>解压一个tar.gz文件</li>
-</ul>
-<pre><code>tar -zxvf name.tar.gz</code></pre><p>如果想把解压的文件放到一个目录里面呢？</p>
-<pre><code>tar -zxvf name.tar.gz ./testDir</code></pre>
+<h2 id="ZooKeeper-工作原理"><a href="#ZooKeeper-工作原理" class="headerlink" title="ZooKeeper 工作原理"></a>ZooKeeper 工作原理</h2><h3 id="读操作"><a href="#读操作" class="headerlink" title="读操作"></a>读操作</h3>
             </div>
             <hr>
 
@@ -570,7 +598,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://adbo.gitee.io/2020/09/29/2020-09-29-linux-chao-chang-yong-ming-ling/">http://adbo.gitee.io/2020/09/29/2020-09-29-linux-chao-chang-yong-ming-ling/</a>
+                    <a href="http://adbo.gitee.io/2020/09/30/2020-09-30-shen-ru-qian-chu-zookeeper/">http://adbo.gitee.io/2020/09/30/2020-09-30-shen-ru-qian-chu-zookeeper/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -608,8 +636,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/Linux/">
-                                    <span class="chip bg-color">Linux</span>
+                                <a href="/tags/ZooKeeper/">
+                                    <span class="chip bg-color">ZooKeeper</span>
                                 </a>
                             
                         </div>
@@ -780,7 +808,7 @@
         repo: 'gitalk',
         owner: 'FlynnCN',
         admin: "FlynnCN",
-        id: '2020-09-29T23-45-46',
+        id: '2020-09-30T23-45-46',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -803,7 +831,8 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2020/09/30/2020-09-30-shen-ru-qian-chu-zookeeper/">
                     <div class="card-image">
@@ -820,9 +849,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-09-30
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-09-30
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -835,6 +864,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -853,24 +883,24 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/08/17/2020-08-17-dubbo-yin-shi-can-shu/">
+                <a href="/2020/09/29/2020-09-29-linux-chao-chang-yong-ming-ling/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="Dubbo隐式参数">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="Linux超常用命令">
                         
-                        <span class="card-title">Dubbo隐式参数</span>
+                        <span class="card-title">Linux超常用命令</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Dubbo隐式参数使用
+                            忘记了就来翻一翻吧
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-08-17
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-09-29
                             </span>
                         <span class="publish-author">
                             
@@ -887,8 +917,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Dubbo/">
-                        <span class="chip bg-color">Dubbo</span>
+                    <a href="/tags/Linux/">
+                        <span class="chip bg-color">Linux</span>
                     </a>
                     
                 </div>

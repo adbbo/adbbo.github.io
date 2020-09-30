@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>深入浅出ZooKeeper</title>
+      <link href="/2020/09/30/2020-09-30-shen-ru-qian-chu-zookeeper/"/>
+      <url>/2020/09/30/2020-09-30-shen-ru-qian-chu-zookeeper/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>第三次总结…<br>感觉之前总结的不够全面，ZK也确实是我最弱的中间件，乏了，乏了…<br>书写百遍，其义自见，哈哈哈</p></blockquote><h2 id="ZooKeeper-简介"><a href="#ZooKeeper-简介" class="headerlink" title="ZooKeeper 简介"></a>ZooKeeper 简介</h2><h3 id="ZooKeeper-是什么"><a href="#ZooKeeper-是什么" class="headerlink" title="ZooKeeper 是什么"></a>ZooKeeper 是什么</h3><p>简单的说，zookeeper=文件系统+通知机制。</p><p>ZooKeeper 是 Apache 的顶级项目。ZooKeeper 为分布式应用提供了高效且可靠的分布式协调服务，提供了诸如统一命名服务、配置管理和分布式锁等分布式的基础服务。在解决分布式数据一致性方面，ZooKeeper 并没有直接采用 Paxos 算法，而是采用了名为 ZAB 的一致性协议。</p><p>ZooKeeper 主要用来解决分布式集群中应用系统的一致性问题，它能提供基于类似于文件系统的目录节点树方式的数据存储。但是 ZooKeeper 并不是用来专门存储数据的，它的作用主要是用来维护和监控存储数据的状态变化。通过监控这些数据状态的变化，从而可以达到基于数据的集群管理。</p><p>很多大名鼎鼎的框架都基于 ZooKeeper 来实现分布式高可用，如：Dubbo、Kafka 等。</p><p><img src="/2020/09/30/2020-09-30-shen-ru-qian-chu-zookeeper/hjevsx78.bmp" alt></p><h3 id="ZooKeeper-的特性"><a href="#ZooKeeper-的特性" class="headerlink" title="ZooKeeper 的特性"></a>ZooKeeper 的特性</h3><ul><li><p>顺序一致性</p><p>  所有客户端看到的服务端数据模型都是一致的；从一个客户端发起的事务请求，最终都会严格按照其发起顺序被应用到 ZooKeeper 中。具体的实现可见：原子广播</p></li><li><p>原子性</p><p>  所有事务请求的处理结果在整个集群中所有机器上的应用情况是一致的，即整个集群要么都成功应用了某个事务，要么都没有应用。 实现方式可见：事务</p></li><li><p>单一视图</p><p>  无论客户端连接的是哪个 Zookeeper 服务器，其看到的服务端数据模型都是一致的。</p></li><li><p>高性能</p><p>  ZooKeeper 将数据全量存储在内存中，所以其性能很高。需要注意的是：由于 ZooKeeper 的所有更新和删除都是基于事务的，因此 ZooKeeper 在读多写少的应用场景中有性能表现较好，如果写操作频繁，性能会大大下滑。</p></li><li><p>高可用</p><p>  ZooKeeper 的高可用是基于副本机制实现的，此外 ZooKeeper 支持故障恢复，可见：选举 Leader</p></li></ul><h2 id="ZooKeeper-核心概念"><a href="#ZooKeeper-核心概念" class="headerlink" title="ZooKeeper 核心概念"></a>ZooKeeper 核心概念</h2><h3 id="ACL"><a href="#ACL" class="headerlink" title="ACL"></a>ACL</h3><p><strong>ZooKeeper 采用 ACL（Access Control Lists）策略来进行权限控制。</strong></p><p>每个 znode 创建时都会带有一个 ACL 列表，用于决定谁可以对它执行何种操作。</p><p>ACL 依赖于 ZooKeeper 的客户端认证机制。ZooKeeper 提供了以下几种认证方式：</p><ul><li>digest：用户名和密码 来识别客户端</li><li>sasl：通过 kerberos 来识别客户端</li><li>ip：通过 IP 来识别客户端</li></ul><p>ZooKeeper 定义了如下五种权限：</p><ul><li>CREATE：允许创建子节点</li><li>READ：允许从节点获取数据并列出其子节点</li><li>WRITE：允许为节点设置数据</li><li>DELETE：允许删除子节点</li><li>ADMIN：允许为节点设置权限</li></ul><h3 id="数据模型"><a href="#数据模型" class="headerlink" title="数据模型"></a>数据模型</h3><p><strong>ZooKeeper 的数据模型是一个树形结构的文件系统。</strong></p><p>树中的节点被称为 znode，其中根节点为 /，每个节点上都会保存自己的数据和节点信息。</p><p>znode 可以用于存储数据，并且有一个与之相关联的 ACL 列表。ZooKeeper 的设计目标是实现协调服务，而不是真的作为一个文件存储，因此 znode 存储数据的大小被限制在 1MB 以内。</p><p><img src="/2020/09/30/2020-09-30-shen-ru-qian-chu-zookeeper/ff387091cfa24afa8849ac175aa483b9~tplv-k3u1fbpfcp-zoom-1.image.png" alt></p><p><strong>ZooKeeper 的数据具有原子性</strong>。其读写操作都是要么全部成功，要么全部失败。</p><p>znode 通过路径被引用。<strong>znode 节点路径必须是绝对路径</strong>。</p><p>znode 有两种类型：</p><ul><li>临时的（ EPHEMERAL ）：户端会话结束时，ZooKeeper 就会删除临时的 znode。</li><li>持久的（PERSISTENT ）：除非客户端主动执行删除操作，否则 ZooKeeper 不会删除持久的 znode。</li></ul><h3 id="节点信息"><a href="#节点信息" class="headerlink" title="节点信息"></a>节点信息</h3><p>znode 上有一个顺序标志（ SEQUENTIAL ）。如果在创建 znode 时，设置了顺序标志（ SEQUENTIAL ），那么 ZooKeeper 会使用计数器为 znode 添加一个单调递增的数值，即 zxid。ZooKeeper 正是利用 zxid 实现了严格的顺序访问控制能力。</p><p>每个 znode 节点在存储数据的同时，都会维护一个叫做 Stat 的数据结构，里面存储了关于该节点的全部状态信息。如下：</p><table><thead><tr><th align="left">状态属性</th><th align="right">说明</th></tr></thead><tbody><tr><td align="left">czxid</td><td align="right">数据节点创建时的事务 ID</td></tr><tr><td align="left">ctime</td><td align="right">数据节点创建时的时间</td></tr><tr><td align="left">mzxid</td><td align="right">数据节点最后一次更新时的事务 ID</td></tr><tr><td align="left">mtime</td><td align="right">数据节点最后一次更新时的时间</td></tr><tr><td align="left">pzxid</td><td align="right">数据节点的子节点最后一次被修改时的事务 ID</td></tr><tr><td align="left">cversion</td><td align="right">子节点的更改次数</td></tr><tr><td align="left">version</td><td align="right">节点数据的更改次数</td></tr><tr><td align="left">aversion</td><td align="right">节点的 ACL 的更改次数</td></tr><tr><td align="left">ephemeralOwner</td><td align="right">如果节点是临时节点，则表示创建该节点的会话的 SessionID；如果节点是持久节点，则该属性值为 0</td></tr><tr><td align="left">dataLength</td><td align="right">数据内容的长度</td></tr><tr><td align="left">numChildren</td><td align="right">数据节点当前的子节点个数</td></tr></tbody></table><h3 id="集群角色"><a href="#集群角色" class="headerlink" title="集群角色"></a>集群角色</h3><p>Zookeeper 集群是一个基于主从复制的高可用集群，每个服务器承担如下三种角色中的一种</p><ul><li><p>Leader</p><p>  它负责发起并维护与各 Follwer 及 Observer 间的心跳。所有的写操作必须要通过 Leader 完成再由 Leader 将写操作广播给其它服务器。一个 Zookeeper 集群同一时间只会有一个实际工作的 Leader。</p></li><li><p>Follower</p><p>  它会响应 Leader 的心跳。Follower 可直接处理并返回客户端的读请求，同时会将写请求转发给 Leader 处理，并且负责在 Leader 处理写请求时对请求进行投票。一个 Zookeeper 集群可能同时存在多个 Follower。</p></li><li><p>Observer</p><p>  角色与 Follower 类似，但是无投票权。</p></li></ul><h2 id="ZooKeeper-工作原理"><a href="#ZooKeeper-工作原理" class="headerlink" title="ZooKeeper 工作原理"></a>ZooKeeper 工作原理</h2><h3 id="读操作"><a href="#读操作" class="headerlink" title="读操作"></a>读操作</h3>]]></content>
+      
+      
+      <categories>
+          
+          <category> 中间件 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> ZooKeeper </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Linux超常用命令</title>
       <link href="/2020/09/29/2020-09-29-linux-chao-chang-yong-ming-ling/"/>
       <url>/2020/09/29/2020-09-29-linux-chao-chang-yong-ming-ling/</url>
