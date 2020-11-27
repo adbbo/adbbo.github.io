@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://adbo.gitee.io/"/>
-  <updated>2020-09-30T06:06:47.914Z</updated>
+  <updated>2020-11-27T05:24:57.198Z</updated>
   <id>http://adbo.gitee.io/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hystrix</title>
+    <link href="http://adbo.gitee.io/2020/10/23/2020-10-23-hystrix/"/>
+    <id>http://adbo.gitee.io/2020/10/23/2020-10-23-hystrix/</id>
+    <published>2020-10-23T14:35:56.000Z</published>
+    <updated>2020-11-27T05:24:57.198Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;Hystrix介绍&quot;&gt;&lt;a href=&quot;#Hystrix介绍&quot; class=&quot;headerlink&quot; title=&quot;Hystrix介绍&quot;&gt;&lt;/a&gt;Hystrix介绍&lt;/h2&gt;&lt;h3 id=&quot;Hystrix-是什么&quot;&gt;&lt;a href=&quot;#Hystrix-是什么&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="中间件" scheme="http://adbo.gitee.io/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
+    
+    
+      <category term="Hystrix" scheme="http://adbo.gitee.io/tags/Hystrix/"/>
+    
+  </entry>
   
   <entry>
     <title>深入浅出ZooKeeper</title>
@@ -512,10 +538,10 @@ private BatchFactory batchFactory;
   
   <entry>
     <title>MySQL</title>
-    <link href="http://adbo.gitee.io/2020/06/03/2020-06-03-mysql-03/"/>
-    <id>http://adbo.gitee.io/2020/06/03/2020-06-03-mysql-03/</id>
-    <published>2020-06-03T15:45:46.000Z</published>
-    <updated>2020-07-18T06:13:37.600Z</updated>
+    <link href="http://adbo.gitee.io/2020/06/04/2020-06-04-mysql-04/"/>
+    <id>http://adbo.gitee.io/2020/06/04/2020-06-04-mysql-04/</id>
+    <published>2020-06-04T15:45:46.000Z</published>
+    <updated>2020-11-27T08:49:54.739Z</updated>
     
     <summary type="html">
     
@@ -523,39 +549,7 @@ private BatchFactory batchFactory;
       
         
         
-          &lt;blockquote&gt;
-&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;来源《MySQL实战45课》&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;隔离性与隔离级别&quot;&gt;&lt;a
-        
-      
-    
-    </summary>
-    
-      <category term="SQL" scheme="http://adbo.gitee.io/categories/SQL/"/>
-    
-    
-      <category term="MySQL" scheme="http://adbo.gitee.io/tags/MySQL/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MySQL</title>
-    <link href="http://adbo.gitee.io/2020/06/02/2020-06-02-mysql-02/"/>
-    <id>http://adbo.gitee.io/2020/06/02/2020-06-02-mysql-02/</id>
-    <published>2020-06-02T15:45:46.000Z</published>
-    <updated>2020-07-18T06:13:37.584Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;来源《MySQL实战45课》&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;前序&quot;&gt;&lt;a
+          &lt;h2 id=&quot;索引的常见模型&quot;&gt;&lt;a href=&quot;#索引的常见模型&quot; class=&quot;headerlink&quot;
         
       
     
