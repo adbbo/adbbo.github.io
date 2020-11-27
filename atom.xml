@@ -541,7 +541,7 @@ private BatchFactory batchFactory;
     <link href="http://adbo.gitee.io/2020/06/04/2020-06-04-mysql-04/"/>
     <id>http://adbo.gitee.io/2020/06/04/2020-06-04-mysql-04/</id>
     <published>2020-06-04T15:45:46.000Z</published>
-    <updated>2020-11-27T08:49:54.739Z</updated>
+    <updated>2020-11-27T08:56:27.421Z</updated>
     
     <summary type="html">
     
@@ -549,7 +549,10 @@ private BatchFactory batchFactory;
       
         
         
-          &lt;h2 id=&quot;索引的常见模型&quot;&gt;&lt;a href=&quot;#索引的常见模型&quot; class=&quot;headerlink&quot;
+          &lt;blockquote&gt;
+&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;来源《MySQL实战45课》&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;索引的常见模型&quot;&gt;&lt;a
         
       
     
