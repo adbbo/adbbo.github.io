@@ -455,10 +455,7 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <blockquote>
-<p>当你再次迷茫或难过时，静下心来，思考一下：什么才是最重要的？<br>其实重要美好的东西一直围绕着你! Smile ^_^</p>
-</blockquote>
-<h2 id="AQS"><a href="#AQS" class="headerlink" title="AQS"></a>AQS</h2><h3 id="AQS实现原理："><a href="#AQS实现原理：" class="headerlink" title="AQS实现原理："></a>AQS实现原理：</h3><ul>
+                <h2 id="AQS"><a href="#AQS" class="headerlink" title="AQS"></a>AQS</h2><h3 id="AQS实现原理："><a href="#AQS实现原理：" class="headerlink" title="AQS实现原理："></a>AQS实现原理：</h3><ul>
 <li>AQS中 维护了一个volatile int state（代表共享资源）和一个FIFO双向等待CLH队列（多线程争用资源被阻塞时会进入此队列）。</li>
 <li>另外state的操作都是通过CAS来保证其并发修改的安全性。</li>
 <li>这里volatile能够保证多线程下的可见性，当state=1则代表当前对象锁已经被占有，其他线程来加锁时则会失败，加锁失败的线程会被放入一个FIFO的等待队列中，比列会被UNSAFE.park()操作挂起，等待其他获取锁的线程释放锁才能够被唤醒。</li>
@@ -923,6 +920,88 @@
 <li>NIO (Non-blocking/New I/O): NIO 是一种同步非阻塞的 I/O 模型.</li>
 <li>AIO (Asynchronous I/O): AIO 是异步非阻塞的 IO 模型。异步 IO 是基于事件和回调机制实现的，也就是应用操作之后会直接返回，不会堵塞在那里，当后台处理完成，操作系统会通知相应的线程进行后续的操作。</li>
 </ul>
+<hr>
+<h2 id="Redis主从架构-高并发"><a href="#Redis主从架构-高并发" class="headerlink" title="Redis主从架构(高并发)"></a>Redis主从架构(高并发)</h2><ol>
+<li>单机的 Redis，能够承载的 QPS 大概就在上万到几万不等。对于缓存来说，一般都是用来支撑读高并发的。因此架构做成主从(master-slave)架构，一主多从，主负责写，并且将数据复制到其它的 slave 节点，从节点负责读。所有的读请求全部走从节点。这样也可以很轻松实现水平扩容，支撑读高并发。</li>
+</ol>
+<p><img src="/2020/08/01/2020-08-01-zhong-ji-yi-zhan/redis-master-slave.png" alt></p>
+<ol start="2">
+<li>Redis 主从复制的核心原理</li>
+</ol>
+<p>当启动一个 slave node 的时候，它会发送一个 PSYNC 命令给 master node。</p>
+<p>如果这是 slave node 初次连接到 master node，那么会触发一次 full resynchronization 全量复制。此时 master 会启动一个后台线程，开始生成一份 RDB 快照文件，同时还会将从客户端 client 新收到的所有写命令缓存在内存中。 RDB 文件生成完毕后， master 会将这个 RDB 发送给 slave，slave 会先写入本地磁盘，然后再从本地磁盘加载到内存中，接着 master 会将内存中缓存的写命令发送到 slave，slave 也会同步这些数据。slave node 如果跟 master node 有网络故障，断开了连接，会自动重连，连接之后 master node 仅会复制给 slave 部分缺少的数据。</p>
+<p><img src="/2020/08/01/2020-08-01-zhong-ji-yi-zhan/redis-master-slave-replication.png" alt></p>
+<ol start="3">
+<li>过期 key 处理</li>
+</ol>
+<p>slave 不会过期 key，只会等待 master 过期 key。如果 master 过期了一个 key，或者通过 LRU 淘汰了一个 key，那么会模拟一条 del 命令发送给 slave。</p>
+<ol start="4">
+<li>heartbeat</li>
+</ol>
+<p>主从节点互相都会发送 heartbeat 信息。</p>
+<p>master 默认每隔 10秒 发送一次 heartbeat，slave node 每隔 1秒 发送一个 heartbeat。</p>
+<ol start="5">
+<li>异步复制</li>
+</ol>
+<p>master 每次接收到写命令之后，先在内部写入数据，然后异步发送给 slave node。</p>
+<hr>
+<h2 id="Redis哨兵集群（高可用）"><a href="#Redis哨兵集群（高可用）" class="headerlink" title="Redis哨兵集群（高可用）"></a>Redis哨兵集群（高可用）</h2><h3 id="哨兵的介绍"><a href="#哨兵的介绍" class="headerlink" title="哨兵的介绍"></a>哨兵的介绍</h3><p>sentinel，中文名是哨兵。哨兵是 Redis 集群架构中非常重要的一个组件，主要有以下功能：</p>
+<ul>
+<li>集群监控：负责监控 Redis master 和 slave 进程是否正常工作。</li>
+<li>消息通知：如果某个 Redis 实例有故障，那么哨兵负责发送消息作为报警通知给管理员。</li>
+<li>故障转移：如果 master node 挂掉了，会自动转移到 slave node 上。</li>
+<li>配置中心：如果故障转移发生了，通知 client 客户端新的 master 地址。</li>
+</ul>
+<p>哨兵用于实现 Redis 集群的高可用，本身也是分布式的，作为一个哨兵集群去运行，互相协同工作。</p>
+<ul>
+<li>故障转移时，判断一个 master node 是否宕机了，需要大部分的哨兵都同意才行，涉及到了分布式选举的问题。</li>
+<li>即使部分哨兵节点挂掉了，哨兵集群还是能正常工作的，因为如果一个作为高可用机制重要组成部分的故障转移系统本身是单点的，那就很坑爹了。</li>
+</ul>
+<h3 id="Redis-哨兵主备切换的数据丢失问题"><a href="#Redis-哨兵主备切换的数据丢失问题" class="headerlink" title="Redis 哨兵主备切换的数据丢失问题"></a>Redis 哨兵主备切换的数据丢失问题</h3><ol>
+<li>异步复制导致的数据丢失</li>
+</ol>
+<p>因为 master-&gt;slave 的复制是异步的，所以可能有部分数据还没复制到 slave，master 就宕机了，此时这部分数据就丢失了。</p>
+<p><img src="/2020/08/01/2020-08-01-zhong-ji-yi-zhan/async-replication-data-lose-case.png" alt></p>
+<ol start="2">
+<li>脑裂导致的数据丢失</li>
+</ol>
+<p>脑裂，也就是说，某个 master 所在机器突然脱离了正常的网络，跟其他 slave 机器不能连接，但是实际上 master 还运行着。此时哨兵可能就会认为 master 宕机了，然后开启选举，将其他 slave 切换成了 master。这个时候，集群里就会有两个 master ，也就是所谓的脑裂。</p>
+<p>此时虽然某个 slave 被切换成了 master，但是可能 client 还没来得及切换到新的 master，还继续向旧 master 写数据。因此旧 master 再次恢复的时候，会被作为一个 slave 挂到新的 master 上去，自己的数据会清空，重新从新的 master 复制数据。而新的 master 并没有后来 client 写入的数据，因此，这部分数据也就丢失了。</p>
+<p><img src="/2020/08/01/2020-08-01-zhong-ji-yi-zhan/redis-cluster-split-brain.png" alt></p>
+<ol start="3">
+<li>数据丢失问题的解决方案:</li>
+</ol>
+<p>进行如下配置：</p>
+<pre><code>min-slaves-to-write 1
+min-slaves-max-lag 10</code></pre><p>表示，要求至少有 1 个 slave，数据复制和同步的延迟不能超过 10 秒。</p>
+<p>如果说一旦所有的 slave，数据复制和同步的延迟都超过了 10 秒钟，那么这个时候，master 就不会再接收任何请求了。</p>
+<ul>
+<li><p>减少异步复制数据的丢失</p>
+<p>  有了 min-slaves-max-lag 这个配置，就可以确保说，一旦 slave 复制数据和 ack 延时太长，就认为可能 master 宕机后损失的数据太多了，那么就拒绝写请求，这样可以把 master 宕机时由于部分数据未同步到 slave 导致的数据丢失降低的可控范围内。</p>
+</li>
+<li><p>减少脑裂的数据丢失</p>
+<p>  如果一个 master 出现了脑裂，跟其他 slave 丢了连接，那么上面两个配置可以确保说，如果不能继续给指定数量的 slave 发送数据，而且 slave 超过 10 秒没有给自己 ack 消息，那么就直接拒绝客户端的写请求。因此在脑裂场景下，最多就丢失 10 秒的数据。</p>
+</li>
+</ul>
+<h3 id="sdown-和-odown-转换机制"><a href="#sdown-和-odown-转换机制" class="headerlink" title="sdown 和 odown 转换机制"></a>sdown 和 odown 转换机制</h3><ul>
+<li>sdown 是主观宕机，就一个哨兵如果自己觉得一个 master 宕机了，那么就是主观宕机</li>
+<li>odown 是客观宕机，如果 quorum 数量的哨兵都觉得一个 master 宕机了，那么就是客观宕机</li>
+</ul>
+<h3 id="slave-gt-master-选举算法"><a href="#slave-gt-master-选举算法" class="headerlink" title="slave-&gt;master 选举算法"></a>slave-&gt;master 选举算法</h3><p>如果一个 master 被认为 odown 了，而且 majority 数量的哨兵都允许主备切换，那么某个哨兵就会执行主备切换操作，此时首先要选举一个 slave 来，会考虑 slave 的一些信息：</p>
+<ul>
+<li>跟 master 断开连接的时长</li>
+<li>slave 优先级</li>
+<li>复制 offset</li>
+<li>run id</li>
+</ul>
+<p>如果一个 slave 跟 master 断开连接的时间已经超过了 down-after-milliseconds 的 10 倍，外加 master 宕机的时长，那么 slave 就被认为不适合选举为 master。</p>
+<p>接下来会对 slave 进行排序：</p>
+<ul>
+<li>按照 slave 优先级进行排序，slave priority 越低，优先级就越高。</li>
+<li>如果 slave priority 相同，那么看 replica offset，哪个 slave 复制了越多的数据，offset 越靠后，优先级就越高。</li>
+<li>如果上面两个条件都相同，那么选择一个 run id 比较小的那个 slave。</li>
+</ul>
+<hr>
 
             </div>
             <hr>
