@@ -438,7 +438,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-10-23
+                    2021-01-23
                 </div>
                 
 
@@ -469,7 +469,7 @@
 <p>举个栗子。</p>
 <p>有这样一个分布式系统，服务 A 依赖于服务 B，服务 B 依赖于服务 C/D/E。在这样一个成熟的系统内，比如说最多可能只有 100 个线程资源。正常情况下，40 个线程并发调用服务 C，各 30 个线程并发调用 D/E。</p>
 <p>调用服务 C，只需要 20ms，现在因为服务 C 故障了，比如延迟，或者挂了，此时线程会 hang 住 2s 左右。40 个线程全部被卡住，由于请求不断涌入，其它的线程也用来调用服务 C，同样也会被卡住。这样导致服务 B 的线程资源被耗尽，无法接收新的请求，甚至可能因为大量线程不断的运转，导致自己宕机。这种影响势必会蔓延至服务 A，导致服务 A 也跟着挂掉。</p>
-<p><img src="/2020/10/23/2020-10-23-hystrix/service-invoke-road.png" alt></p>
+<p><img src="/2021/01/23/2021-01-23-hystrix/service-invoke-road.png" alt></p>
 <p>Hystrix 可以对其进行资源隔离，比如限制服务 B 只有 40 个线程调用服务 C。当此 40 个线程被 hang 住时，其它 60 个线程依然能正常调用工作。从而确保整个系统不会被拖垮。</p>
 <h3 id="Hystrix-更加细节的设计原则"><a href="#Hystrix-更加细节的设计原则" class="headerlink" title="Hystrix 更加细节的设计原则"></a>Hystrix 更加细节的设计原则</h3><ul>
 <li>阻止任何一个依赖服务耗尽所有的资源，比如 tomcat 中的所有线程资源。</li>
@@ -490,10 +490,10 @@
 </ul>
 <p>默认情况下，Hystrix 使用线程池模式。</p>
 <h3 id="信号量机制"><a href="#信号量机制" class="headerlink" title="信号量机制"></a>信号量机制</h3><p>信号量的资源隔离只是起到一个开关的作用，比如，服务 A 的信号量大小为 10，那么就是说它同时只允许有 10 个 tomcat 线程来访问服务 A，其它的请求都会被拒绝，从而达到资源隔离和限流保护的作用。</p>
-<p><img src="/2020/10/23/2020-10-23-hystrix/hystrix-semphore.png" alt></p>
+<p><img src="/2021/01/23/2021-01-23-hystrix/hystrix-semphore.png" alt></p>
 <h3 id="线程池与信号量区别"><a href="#线程池与信号量区别" class="headerlink" title="线程池与信号量区别"></a>线程池与信号量区别</h3><p>线程池隔离技术，并不是说去控制类似 tomcat 这种 web 容器的线程。更加严格的意义上来说，Hystrix 的线程池隔离技术，控制的是 tomcat 线程的执行。Hystrix 线程池满后，会确保说，tomcat 的线程不会因为依赖服务的接口调用延迟或故障而被 hang 住，tomcat 其它的线程不会卡死，可以快速返回，然后支撑其它的事情。</p>
 <p>线程池隔离技术，是用 Hystrix 自己的线程去执行调用；而信号量隔离技术，是直接让 tomcat 线程去调用依赖服务。信号量隔离，只是一道关卡，信号量有多少，就允许多少个 tomcat 线程通过它，然后去执行。</p>
-<p><img src="/2020/10/23/2020-10-23-hystrix/hystrix-semphore-thread-pool.png" alt></p>
+<p><img src="/2021/01/23/2021-01-23-hystrix/hystrix-semphore-thread-pool.png" alt></p>
 <p>适用场景：</p>
 <ul>
 <li>线程池技术，适合绝大多数场景，比如说我们对依赖服务的网络请求的调用和访问、需要对调用的 timeout 进行控制（捕捉 timeout 超时异常）。</li>
@@ -538,7 +538,7 @@ public CommandHelloWorld(String name) {
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://adbo.gitee.io/2020/10/23/2020-10-23-hystrix/">http://adbo.gitee.io/2020/10/23/2020-10-23-hystrix/</a>
+                    <a href="http://adbo.gitee.io/2021/01/23/2021-01-23-hystrix/">http://adbo.gitee.io/2021/01/23/2021-01-23-hystrix/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -748,7 +748,7 @@ public CommandHelloWorld(String name) {
         repo: 'gitalk',
         owner: 'FlynnCN',
         admin: "FlynnCN",
-        id: '2020-10-23T22-35-56',
+        id: '2021-01-23T22-35-56',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -771,73 +771,27 @@ public CommandHelloWorld(String name) {
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2021/01/01/2021-01-01-mysql-09/">
+                <a href="/2021/01/23/2021-01-23-hystrix/">
                     <div class="card-image">
                         
-                        <img src="/medias/cover/MySQL.jpg" class="responsive-img" alt="普通索引和唯一索引">
                         
-                        <span class="card-title">普通索引和唯一索引</span>
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="Hystrix">
+                        
+                        <span class="card-title">Hystrix</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            普通索引和唯一索引，应该怎么选择？
-                        
-                    </div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-01-01
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/SQL/" class="post-category">
-                                    SQL
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/MySQL/">
-                        <span class="chip bg-color">MySQL</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2020/09/30/2020-09-30-shen-ru-qian-chu-zookeeper/">
-                    <div class="card-image">
-                        
-                        <img src="/medias/cover/zk.bmp" class="responsive-img" alt="深入浅出ZooKeeper">
-                        
-                        <span class="card-title">深入浅出ZooKeeper</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            超万字总结...
+                            用 Hystrix 构建高可用服务架构
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-09-30
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-23
                             </span>
                         <span class="publish-author">
                             
@@ -851,11 +805,61 @@ public CommandHelloWorld(String name) {
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/ZooKeeper/">
-                        <span class="chip bg-color">ZooKeeper</span>
+                    <a href="/tags/Hystrix/">
+                        <span class="chip bg-color">Hystrix</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/01/17/2021-01-17-dubbo-yin-shi-can-shu/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="Dubbo隐式参数">
+                        
+                        <span class="card-title">Dubbo隐式参数</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Dubbo隐式参数使用
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-17
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Work/" class="post-category">
+                                    Work
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Dubbo/">
+                        <span class="chip bg-color">Dubbo</span>
                     </a>
                     
                 </div>
