@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://adbo.gitee.io/"/>
-  <updated>2021-02-20T05:38:38.027Z</updated>
+  <updated>2021-02-20T07:46:53.952Z</updated>
   <id>http://adbo.gitee.io/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>添加索引</title>
+    <link href="http://adbo.gitee.io/2021/02/21/2021-02-21-mysql-11/"/>
+    <id>http://adbo.gitee.io/2021/02/21/2021-02-21-mysql-11/</id>
+    <published>2021-02-21T14:43:52.000Z</published>
+    <updated>2021-02-20T07:46:53.952Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;来源《MySQL实战45课》&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;前缀索引长度&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="SQL" scheme="http://adbo.gitee.io/categories/SQL/"/>
+    
+    
+      <category term="MySQL" scheme="http://adbo.gitee.io/tags/MySQL/"/>
+    
+  </entry>
   
   <entry>
     <title>选错索引</title>
@@ -532,33 +561,6 @@ private BatchFactory batchFactory;
     </summary>
     
       <category term="中间件" scheme="http://adbo.gitee.io/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
-    
-    
-      <category term="Redis" scheme="http://adbo.gitee.io/tags/Redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Redis</title>
-    <link href="http://adbo.gitee.io/2020/07/19/2020-07-19-xiao-li-fei-dao-redis/"/>
-    <id>http://adbo.gitee.io/2020/07/19/2020-07-19-xiao-li-fei-dao-redis/</id>
-    <published>2020-07-19T08:31:46.000Z</published>
-    <updated>2020-08-01T03:19:16.260Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;面试题&quot;&gt;&lt;a href=&quot;#面试题&quot; class=&quot;headerlink&quot; title=&quot;面试题&quot;&gt;&lt;/a&gt;面试题&lt;/h2&gt;&lt;p&gt;项目中缓存是如何使用的？为什么要用缓存？缓存使用不当会造成什么后果？&lt;/p&gt;
-&lt;h3 id=&quot;面试官心理分析&quot;&gt;&lt;a
-        
-      
-    
-    </summary>
-    
-      <category term="小李飞刀" scheme="http://adbo.gitee.io/categories/%E5%B0%8F%E6%9D%8E%E9%A3%9E%E5%88%80/"/>
     
     
       <category term="Redis" scheme="http://adbo.gitee.io/tags/Redis/"/>
