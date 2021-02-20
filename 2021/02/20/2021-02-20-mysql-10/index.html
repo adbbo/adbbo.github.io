@@ -4,8 +4,8 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="普通索引和唯一索引, Adbo~Blog">
-    <meta name="description" content="普通索引和唯一索引，应该怎么选择？">
+    <meta name="keywords" content="选错索引, Adbo~Blog">
+    <meta name="description" content="MySQL为什么有时候会选错索引？">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>普通索引和唯一索引 | Adbo</title>
+    <title>选错索引 | Adbo</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -296,7 +296,7 @@
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">普通索引和唯一索引</h1>
+                    <h1 class="description center-align post-title">选错索引</h1>
                 </div>
             </div>
         </div>
@@ -438,7 +438,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-01-01
+                    2021-02-20
                 </div>
                 
 
@@ -458,65 +458,45 @@
                 <blockquote>
 <p>本文章仅用于本人学习笔记记录<br>来源《MySQL实战45课》<br>微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）</p>
 </blockquote>
-<p>在不同的业务场景下，应该选择普通索引，还是唯一索引？</p>
-<p>假设你在维护一个市民系统，每个人都有一个唯一的身份证号，而且业务代码已经保证了不会写入两个重复的身份证号。如果市民系统需要按照身份证号查姓名，就会执行类似这样的 SQL 语句：</p>
-<pre><code>select name from CUser where id_card = &#39;xxxxxxxyyyyyyzzzzz&#39;;</code></pre><p>所以，你一定会考虑在 id_card 字段上建索引。</p>
-<p>由于身份证号字段比较大，我不建议你把身份证号当做主键，那么现在你有两个选择，要么给 id_card 字段创建唯一索引，要么创建一个普通索引。如果业务代码已经保证了不会写入重复的身份证号，那么这两个选择逻辑上都是正确的。</p>
-<p><img src="/2021/01/01/2021-01-01-mysql-09/1ed9536031d6698570ea175a7b7f9a46.png" alt="InnoDB 的索引组织结构"></p>
-<p>接下来，我们就从这两种索引对查询语句和更新语句的性能影响来进行分析。</p>
-<h2 id="查询过程"><a href="#查询过程" class="headerlink" title="查询过程"></a>查询过程</h2><p>假设，执行查询的语句是 select id from T where k=5。这个查询语句在索引树上查找的过程，先是通过 B+ 树从树根开始，按层搜索到叶子节点，也就是图中右下角的这个数据页，然后可以认为数据页内部通过二分法来定位记录。</p>
+<h2 id="优化器的逻辑"><a href="#优化器的逻辑" class="headerlink" title="优化器的逻辑"></a>优化器的逻辑</h2><p>选择索引是优化器的工作。</p>
+<p>而优化器选择索引的目的，是找到一个最优的执行方案，并用最小的代价去执行语句。在数据库里面，扫描行数是影响执行代价的因素之一。扫描的行数越少，意味着访问磁盘数据的次数越少，消耗的 CPU 资源越少。</p>
+<p>当然，扫描行数并不是唯一的判断标准，优化器还会结合是否使用临时表、是否排序等因素进行综合判断。</p>
+<p>那么，问题就是：扫描行数是怎么判断的？</p>
+<p>MySQL 在真正开始执行语句之前，并不能精确地知道满足这个条件的记录有多少条，而只能根据统计信息来估算记录数。</p>
+<p>这个统计信息就是索引的“区分度”。显然，一个索引上不同的值越多，这个索引的区分度就越好。而一个索引上不同的值的个数，我们称之为“基数”（cardinality）。也就是说，这个基数越大，索引的区分度越好。</p>
+<p>我们可以使用 show index from t方法，看到每一个索引的基数。</p>
+<p>那么，MySQL 是怎样得到索引的基数的呢？ MySQL 采样统计的方法。</p>
+<p>为什么要采样统计呢？因为把整张表取出来一行行统计，虽然可以得到精确的结果，但是代价太高了，所以只能选择“采样统计”。</p>
+<p>采样统计的时候，InnoDB 默认会选择 N 个数据页，统计这些页面上的不同值，得到一个平均值，然后乘以这个索引的页面数，就得到了这个索引的基数。</p>
+<p>而数据表是会持续更新的，索引统计信息也不会固定不变。所以，当变更的数据行数超过 1/M 的时候，会自动触发重新做一次索引统计。</p>
+<p>在 MySQL 中，有两种存储索引统计的方式，可以通过设置参数 innodb_stats_persistent 的值来选择：</p>
 <ul>
-<li>对于普通索引来说，查找到满足条件的第一个记录 (5,500) 后，需要查找下一个记录，直到碰到第一个不满足 k=5 条件的记录。</li>
-<li>对于唯一索引来说，由于索引定义了唯一性，查找到第一个满足条件的记录后，就会停止继续检索。</li>
+<li>设置为 on 的时候，表示统计信息会持久化存储。这时，默认的 N 是 20，M 是 10。</li>
+<li>设置为 off 的时候，表示统计信息只存储在内存中。这时，默认的 N 是 8，M 是 16。</li>
 </ul>
-<p>那么，这个不同带来的性能差距会有多少呢？答案是，微乎其微。</p>
-<p><strong>InnoDB 的数据是按数据页为单位来读写的。也就是说，当需要读一条记录的时候，并不是将这个记录本身从磁盘读出来，而是以页为单位，将其整体读入内存。在 InnoDB 中，每个数据页的大小默认是 16KB。</strong></p>
-<p>因为引擎是按页读写的，所以说，当找到 k=5 的记录的时候，它所在的数据页就都在内存里了。那么，对于普通索引来说，要多做的那一次“查找和判断下一条记录”的操作，就只需要一次指针寻找和一次计算。</p>
-<p>当然，如果 k=5 这个记录刚好是这个数据页的最后一个记录，那么要取下一个记录，必须读取下一个数据页，这个操作会稍微复杂一些。</p>
-<p>但是，我们之前计算过，对于整型字段，一个数据页可以放近千个 key，因此出现这种情况的概率会很低。所以，我们计算平均性能差异时，仍可以认为这个操作成本对于现在的 CPU 来说可以忽略不计。</p>
-<h2 id="更新过程"><a href="#更新过程" class="headerlink" title="更新过程"></a>更新过程</h2><p>为了说明普通索引和唯一索引对更新语句性能的影响这个问题，我需要先跟你介绍一下 <strong>change buffer</strong>。</p>
-<p>当需要更新一个数据页时，如果数据页在内存中就直接更新，而如果这个数据页还没有在内存中的话，在不影响数据一致性的前提下，InnoDB 会将这些更新操作缓存在 change buffer 中，这样就不需要从磁盘中读入这个数据页了。在下次查询需要访问这个数据页的时候，将数据页读入内存，然后执行 change buffer 中与这个页有关的操作。通过这种方式就能保证这个数据逻辑的正确性。</p>
-<p>需要说明的是，虽然名字叫作 change buffer，实际上它是可以持久化的数据。也就是说，change buffer 在内存中有拷贝，也会被写入到磁盘上。</p>
-<p>将 change buffer 中的操作应用到原数据页，得到最新结果的过程称为 merge。除了访问这个数据页会触发 merge 外，系统有后台线程会定期 merge。在数据库正常关闭（shutdown）的过程中，也会执行 merge 操作。</p>
-<p>显然，如果能够将更新操作先记录在 change buffer，减少读磁盘，语句的执行速度会得到明显的提升。而且，数据读入内存是需要占用 buffer pool 的，所以这种方式还能够避免占用内存，提高内存利用率。</p>
-<p>那么，什么条件下可以使用 change buffer 呢？</p>
-<p>对于唯一索引来说，所有的更新操作都要先判断这个操作是否违反唯一性约束。比如，要插入 (4,400) 这个记录，就要先判断现在表中是否已经存在 k=4 的记录，而这必须要将数据页读入内存才能判断。如果都已经读入到内存了，那直接更新内存会更快，就没必要使用 change buffer 了。</p>
-<p>因此，<strong>唯一索引的更新就不能使用 change buffer，实际上也只有普通索引可以使用</strong>。</p>
-<p>change buffer 用的是 buffer pool 里的内存，因此不能无限增大。change buffer 的大小，可以通过参数 innodb_change_buffer_max_size 来动态设置。这个参数设置为 50 的时候，表示 change buffer 的大小最多只能占用 buffer pool 的 50%。</p>
-<p>现在，你已经理解了 change buffer 的机制，那么我们再一起来看看如果要在这张表中插入一个新记录 (4,400) 的话，InnoDB 的处理流程是怎样的。</p>
-<p>第一种情况是，这个记录要更新的目标页在内存中。这时，InnoDB 的处理流程如下：</p>
-<ul>
-<li>对于唯一索引来说，找到 3 和 5 之间的位置，判断到没有冲突，插入这个值，语句执行结束；</li>
-<li>对于普通索引来说，找到 3 和 5 之间的位置，插入这个值，语句执行结束。</li>
-</ul>
-<p>这样看来，普通索引和唯一索引对更新语句性能影响的差别，只是一个判断，只会耗费微小的 CPU 时间。</p>
-<p>但，这不是我们关注的重点。</p>
-<p>第二种情况是，这个记录要更新的目标页不在内存中。这时，InnoDB 的处理流程如下：</p>
-<ul>
-<li><p>对于唯一索引来说，需要将数据页读入内存，判断到没有冲突，插入这个值，语句执行结束；</p>
-</li>
-<li><p>对于普通索引来说，则是将更新记录在 change buffer，语句执行就结束了。</p>
-</li>
-</ul>
-<p>将数据从磁盘读入内存涉及随机 IO 的访问，是数据库里面成本最高的操作之一。change buffer 因为减少了随机磁盘访问，所以对更新性能的提升是会很明显的。</p>
-<h2 id="change-buffer-的使用场景"><a href="#change-buffer-的使用场景" class="headerlink" title="change buffer 的使用场景"></a>change buffer 的使用场景</h2><p>通过上面的分析，你已经清楚了使用 change buffer 对更新过程的加速作用，也清楚了 change buffer 只限于用在普通索引的场景下，而不适用于唯一索引。那么，现在有一个问题就是：普通索引的所有场景，使用 change buffer 都可以起到加速作用吗？</p>
-<p>因为 merge 的时候是真正进行数据更新的时刻，而 change buffer 的主要目的就是将记录的变更动作缓存下来，所以在一个数据页做 merge 之前，change buffer 记录的变更越多（也就是这个页面上要更新的次数越多），收益就越大。</p>
-<p>因此，对于写多读少的业务来说，页面在写完以后马上被访问到的概率比较小，此时 change buffer 的使用效果最好。这种业务模型常见的就是账单类、日志类的系统。</p>
-<p>反过来，假设一个业务的更新模式是写入之后马上会做查询，那么即使满足了条件，将更新先记录在 change buffer，但之后由于马上要访问这个数据页，会立即触发 merge 过程。这样随机访问 IO 的次数不会减少，反而增加了 change buffer 的维护代价。所以，对于这种业务模式来说，change buffer 反而起到了副作用。</p>
-<h2 id="索引选择和实践"><a href="#索引选择和实践" class="headerlink" title="索引选择和实践"></a>索引选择和实践</h2><p>回到我们文章开头的问题，普通索引和唯一索引应该怎么选择。其实，这两类索引在查询能力上是没差别的，主要考虑的是对更新性能的影响。所以，我建议你尽量选择普通索引。</p>
-<p>如果所有的更新后面，都马上伴随着对这个记录的查询，那么你应该关闭 change buffer。而在其他情况下，change buffer 都能提升更新性能。</p>
-<p>在实际使用中，你会发现，普通索引和 change buffer 的配合使用，对于数据量大的表的更新优化还是很明显的。</p>
-<p>特别地，在使用机械硬盘时，change buffer 这个机制的收效是非常显著的。所以，当你有一个类似“历史数据”的库，并且出于成本考虑用的是机械硬盘时，那你应该特别关注这些表里的索引，尽量使用普通索引，然后把 change buffer 尽量开大，以确保这个“历史数据”表的数据写入速度。</p>
+<p>由于是采样统计，所以不管 N 是 20 还是 8，这个基数都是很容易不准的。</p>
+<p>虽然不够精确，但大体上还是差不多的，选错索引一定还有别的原因。</p>
+<p>其实索引统计只是一个输入，对于一个具体的语句来说，优化器还要判断，执行这个语句本身要扫描多少行。</p>
+<p>优化器会估算使用普通索引需要把回表的代价算进去。</p>
+<p>所以在实践中，如果你发现 explain 的结果预估的 rows 值跟实际情况差距比较大，可以采用analyze table t 命令，可以用来重新统计索引信息，来处理。</p>
+<h2 id="索引选择异常和处理"><a href="#索引选择异常和处理" class="headerlink" title="索引选择异常和处理"></a>索引选择异常和处理</h2><p>一种方法是，采用 force index （select * from t force index(a) where ….）强行选择一个索引。MySQL 会根据词法解析的结果分析出可能可以使用的索引作为候选项，然后在候选列表中依次判断每个索引需要扫描多少行。如果 force index 指定的索引在候选索引列表中，就直接选择这个索引，不再评估其他索引的执行代价。</p>
+<p>不过很多程序员不喜欢使用 force index，一来这么写不优美，二来如果索引改了名字，这个语句也得改，显得很麻烦。而且如果以后迁移到别的数据库的话，这个语法还可能会不兼容。</p>
+<p>但其实使用 force index 最主要的问题还是变更的及时性。因为选错索引的情况还是比较少出现的，所以开发的时候通常不会先写上 force index。而是等到线上出现问题的时候，你才会再去修改 SQL 语句、加上 force index。但是修改之后还要测试和发布，对于生产系统来说，这个过程不够敏捷。</p>
+<p>第二种方法就是，我们可以考虑修改语句，引导 MySQL 使用我们期望的索引。</p>
+<p>比如，显然把“order by b limit 1” 改成 “order by b,a limit 1” ，语义的逻辑是相同的。</p>
+<p>之前优化器选择使用索引 b，是因为它认为使用索引 b 可以避免排序（b 本身是索引，已经是有序的了，如果选择索引 b 的话，不需要再做排序，只需要遍历），所以即使扫描行数多，也判定为代价更小。</p>
+<p>现在 order by b,a 这种写法，要求按照 b,a 排序，就意味着使用这两个索引都需要排序。因此，扫描行数成了影响决策的主要条件，于是此时优化器选了只需要扫描更少行的索引 a。</p>
+<p>第三种方法是，在有些场景下，我们可以新建一个更合适的索引，来提供给优化器做选择，或删掉误用的索引。</p>
 <h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ol>
-<li><p>选择普通索引还是唯一索引？</p>
-<ul>
-<li>对于查询过程来说：<br>a、普通索引，查到满足条件的第一个记录后，继续查找下一个记录，直到第一个不满足条件的记录<br>b、唯一索引，由于索引唯一性，查到第一个满足条件的记录后，停止检索<br>但是，两者的性能差距微乎其微。因为InnoDB根据数据页来读写的。</li>
-<li>对于更新过程来说：<br>概念：change buffer<br>当需要更新一个数据页，如果数据页在内存中就直接更新，如果不在内存中，在不影响数据一致性的前提下，InnoDB会将这些更新操作缓存在change buffer中。下次查询需要访问这个数据页的时候，将数据页读入内存，然后执行change buffer中的与这个页有关的操作。<br>change buffer是可以持久化的数据。在内存中有拷贝，也会被写入到磁盘上。<br>merge:将change buffer中的操作应用到原数据页上，得到最新结果的过程，访问这个数据页会触发merge，系统有后台线程定期merge，在数据库正常关闭的过程中，也会执行merge。<br>唯一索引的更新不能使用change buffer。对于唯一索引来说，需要将数据页读入内存，判断到没有冲突，插入这个值，更新直接修改内存。<br>change buffer用的是buffer pool里的内存，change buffer的大小，可以通过参数innodb_change_buffer_max_size来动态设置。这个参数设置为50的时候，表示change buffer的大小最多只能占用buffer pool的50%。<br>将数据从磁盘读入内存涉及随机IO的访问，是数据库里面成本最高的操作之一。<br>change buffer 因为减少了随机磁盘访问，所以对更新性能的提升很明显。</li>
-</ul>
+<li><p>优化器选择索引的目的，是找到一个最优的执行方案，并用最小的代价去执行语句。在数据库里面，扫描行数是影响执行代价的因素之一。扫描的行数越少，意味着访问磁盘数据的次数越少，消耗的 CPU 资源越少。</p>
 </li>
-<li><p>change buffer使用场景<br> 在一个数据页做merge之前，change buffer记录的变更越多，收益就越大。<br> 对于写多读少的业务来说，页面在写完以后马上被访问到的概率比较小，此时change buffer的使用效果最好。这种业务模型常见的就是账单类、日志类的系统。<br> 反过来，假设一个业务的更新模式是写入之后马上会做查询，那么即使满足了条件，将更新先记录在change buffer,但之后由于马上要访问这个数据页，会立即触发merge过程。这样随机访问IO的次数不会减少，反而增加了change buffer的维护代价。所以，对于这种业务模式来说，change buffer反而起到了副作用。</p>
+<li><p>MySQL 在真正开始执行语句之前，并不能精确地知道满足这个条件的记录有多少条，而只能根据统计信息来估算记录数。MySQL 采样统计的方法。</p>
 </li>
-<li><p>索引的选择和实践<br> 尽可能使用普通索引。<br> redo log主要节省的是随机写磁盘的IO消耗(转成顺序写)，而change buffer主要节省的则是随机读磁盘的IO消耗。</p>
+<li><p>采样统计的时候，InnoDB 默认会选择 N 个数据页，统计这些页面上的不同值，得到一个平均值，然后乘以这个索引的页面数，就得到了这个索引的基数。</p>
+</li>
+<li><p>对于由于索引统计信息不准确导致的问题，你可以用 analyze table t来解决。</p>
+</li>
+<li><p>而对于其他优化器误判的情况，你可以在应用端用 force index  （select * from t force index(a) where ….）来强行指定索引，也可以通过修改语句来引导优化器，还可以通过增加或者删除索引来绕过这个问题。</p>
 </li>
 </ol>
 
@@ -544,7 +524,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://adbo.gitee.io/2021/01/01/2021-01-01-mysql-09/">http://adbo.gitee.io/2021/01/01/2021-01-01-mysql-09/</a>
+                    <a href="http://adbo.gitee.io/2021/02/20/2021-02-20-mysql-10/">http://adbo.gitee.io/2021/02/20/2021-02-20-mysql-10/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -754,7 +734,7 @@
         repo: 'gitalk',
         owner: 'FlynnCN',
         admin: "FlynnCN",
-        id: '2021-01-01T22-43-52',
+        id: '2021-02-20T22-43-52',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -777,44 +757,45 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2021/01/17/2021-01-17-dubbo-yin-shi-can-shu/">
+                <a href="/2021/02/20/2021-02-20-mysql-10/">
                     <div class="card-image">
                         
+                        <img src="/medias/cover/MySQL.jpg" class="responsive-img" alt="选错索引">
                         
-                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="Dubbo隐式参数">
-                        
-                        <span class="card-title">Dubbo隐式参数</span>
+                        <span class="card-title">选错索引</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Dubbo隐式参数使用
+                            MySQL为什么有时候会选错索引？
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-01-17
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-02-20
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Work/" class="post-category">
-                                    Work
+                            <a href="/categories/SQL/" class="post-category">
+                                    SQL
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Dubbo/">
-                        <span class="chip bg-color">Dubbo</span>
+                    <a href="/tags/MySQL/">
+                        <span class="chip bg-color">MySQL</span>
                     </a>
                     
                 </div>
@@ -828,23 +809,24 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/09/30/2020-09-30-shen-ru-qian-chu-zookeeper/">
+                <a href="/2021/01/23/2021-01-23-hystrix/">
                     <div class="card-image">
                         
-                        <img src="/medias/cover/zk.bmp" class="responsive-img" alt="深入浅出ZooKeeper">
                         
-                        <span class="card-title">深入浅出ZooKeeper</span>
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="Hystrix">
+                        
+                        <span class="card-title">Hystrix</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            超万字总结...
+                            用 Hystrix 构建高可用服务架构
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-09-30
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-23
                             </span>
                         <span class="publish-author">
                             
@@ -861,8 +843,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/ZooKeeper/">
-                        <span class="chip bg-color">ZooKeeper</span>
+                    <a href="/tags/Hystrix/">
+                        <span class="chip bg-color">Hystrix</span>
                     </a>
                     
                 </div>
