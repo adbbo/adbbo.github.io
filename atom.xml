@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://adbo.gitee.io/"/>
-  <updated>2021-02-21T14:55:54.276Z</updated>
+  <updated>2021-02-21T15:35:06.695Z</updated>
   <id>http://adbo.gitee.io/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>count(*)最快</title>
+    <link href="http://adbo.gitee.io/2021/02/27/2021-02-27-mysql-14/"/>
+    <id>http://adbo.gitee.io/2021/02/27/2021-02-27-mysql-14/</id>
+    <published>2021-02-27T14:43:52.000Z</published>
+    <updated>2021-02-21T15:35:06.695Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;来源《MySQL实战45课》&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2
+        
+      
+    
+    </summary>
+    
+      <category term="SQL" scheme="http://adbo.gitee.io/categories/SQL/"/>
+    
+    
+      <category term="MySQL" scheme="http://adbo.gitee.io/tags/MySQL/"/>
+    
+  </entry>
   
   <entry>
     <title>删数据但表文件大小不变</title>
@@ -544,32 +573,6 @@ private BatchFactory batchFactory;
     
     
       <category term="Dubbo" scheme="http://adbo.gitee.io/tags/Dubbo/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>布隆过滤器</title>
-    <link href="http://adbo.gitee.io/2020/07/22/2020-07-22-bu-long-guo-lu-qi/"/>
-    <id>http://adbo.gitee.io/2020/07/22/2020-07-22-bu-long-guo-lu-qi/</id>
-    <published>2020-07-22T12:25:37.000Z</published>
-    <updated>2020-08-01T03:19:16.271Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;1-什么是布隆过滤器？&quot;&gt;&lt;a href=&quot;#1-什么是布隆过滤器？&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="中间件" scheme="http://adbo.gitee.io/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
-    
-    
-      <category term="布隆过滤器" scheme="http://adbo.gitee.io/tags/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/"/>
     
   </entry>
   
