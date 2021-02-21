@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://adbo.gitee.io/"/>
-  <updated>2021-02-20T07:46:53.952Z</updated>
+  <updated>2021-02-21T12:20:32.352Z</updated>
   <id>http://adbo.gitee.io/</id>
   
   <author>
@@ -17,11 +17,40 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>添加索引</title>
+    <title>查询性能不稳定</title>
+    <link href="http://adbo.gitee.io/2021/02/23/2021-02-23-mysql-12/"/>
+    <id>http://adbo.gitee.io/2021/02/23/2021-02-23-mysql-12/</id>
+    <published>2021-02-23T14:43:52.000Z</published>
+    <updated>2021-02-21T12:20:32.352Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;来源《MySQL实战45课》&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2
+        
+      
+    
+    </summary>
+    
+      <category term="SQL" scheme="http://adbo.gitee.io/categories/SQL/"/>
+    
+    
+      <category term="MySQL" scheme="http://adbo.gitee.io/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>合适建立索引</title>
     <link href="http://adbo.gitee.io/2021/02/21/2021-02-21-mysql-11/"/>
     <id>http://adbo.gitee.io/2021/02/21/2021-02-21-mysql-11/</id>
     <published>2021-02-21T14:43:52.000Z</published>
-    <updated>2021-02-20T07:46:53.952Z</updated>
+    <updated>2021-02-20T07:51:48.715Z</updated>
     
     <summary type="html">
     
@@ -529,32 +558,6 @@ private BatchFactory batchFactory;
         
         
           &lt;h2 id=&quot;哨兵的介绍&quot;&gt;&lt;a href=&quot;#哨兵的介绍&quot; class=&quot;headerlink&quot; title=&quot;哨兵的介绍&quot;&gt;&lt;/a&gt;哨兵的介绍&lt;/h2&gt;&lt;p&gt;sentinel，中文名是哨兵。哨兵是 Redis
-        
-      
-    
-    </summary>
-    
-      <category term="中间件" scheme="http://adbo.gitee.io/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
-    
-    
-      <category term="Redis" scheme="http://adbo.gitee.io/tags/Redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Redis主从架构</title>
-    <link href="http://adbo.gitee.io/2020/07/20/2020-07-20-redis-zhu-cong-jia-gou/"/>
-    <id>http://adbo.gitee.io/2020/07/20/2020-07-20-redis-zhu-cong-jia-gou/</id>
-    <published>2020-07-20T10:55:19.000Z</published>
-    <updated>2020-07-19T11:23:11.383Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;单机的 Redis，能够承载的 QPS 大概就在上万到几万不等。对于缓存来说，一般都是用来支撑读高并发的。因此架构做成主从(master-slave)架构，一主多从，主负责写，并且将数据复制到其它的 slave
         
       
     
