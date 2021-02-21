@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://adbo.gitee.io/"/>
-  <updated>2021-02-21T12:20:32.352Z</updated>
+  <updated>2021-02-21T14:55:54.276Z</updated>
   <id>http://adbo.gitee.io/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>删数据但表文件大小不变</title>
+    <link href="http://adbo.gitee.io/2021/02/25/2021-02-25-mysql-13/"/>
+    <id>http://adbo.gitee.io/2021/02/25/2021-02-25-mysql-13/</id>
+    <published>2021-02-25T14:43:52.000Z</published>
+    <updated>2021-02-21T14:55:54.276Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;来源《MySQL实战45课》&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;这里，我们还是针对 MySQL
+        
+      
+    
+    </summary>
+    
+      <category term="SQL" scheme="http://adbo.gitee.io/categories/SQL/"/>
+    
+    
+      <category term="MySQL" scheme="http://adbo.gitee.io/tags/MySQL/"/>
+    
+  </entry>
   
   <entry>
     <title>查询性能不稳定</title>
@@ -541,32 +570,6 @@ private BatchFactory batchFactory;
     
     
       <category term="布隆过滤器" scheme="http://adbo.gitee.io/tags/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Redis哨兵集群实现高可用</title>
-    <link href="http://adbo.gitee.io/2020/07/21/2020-07-21-redis-shao-bing/"/>
-    <id>http://adbo.gitee.io/2020/07/21/2020-07-21-redis-shao-bing/</id>
-    <published>2020-07-21T10:55:19.000Z</published>
-    <updated>2020-07-19T13:41:36.828Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;哨兵的介绍&quot;&gt;&lt;a href=&quot;#哨兵的介绍&quot; class=&quot;headerlink&quot; title=&quot;哨兵的介绍&quot;&gt;&lt;/a&gt;哨兵的介绍&lt;/h2&gt;&lt;p&gt;sentinel，中文名是哨兵。哨兵是 Redis
-        
-      
-    
-    </summary>
-    
-      <category term="中间件" scheme="http://adbo.gitee.io/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
-    
-    
-      <category term="Redis" scheme="http://adbo.gitee.io/tags/Redis/"/>
     
   </entry>
   
