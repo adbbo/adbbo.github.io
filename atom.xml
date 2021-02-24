@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://adbo.gitee.io/"/>
-  <updated>2021-02-23T14:14:11.914Z</updated>
+  <updated>2021-02-24T15:05:06.144Z</updated>
   <id>http://adbo.gitee.io/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>显示随机消息</title>
+    <link href="http://adbo.gitee.io/2021/03/03/2021-03-03-mysql-17/"/>
+    <id>http://adbo.gitee.io/2021/03/03/2021-03-03-mysql-17/</id>
+    <published>2021-03-03T14:43:52.000Z</published>
+    <updated>2021-02-24T15:05:06.144Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;来源《MySQL实战45课》&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;直接就是从一个单词表中随机选出三个单
+        
+      
+    
+    </summary>
+    
+      <category term="SQL" scheme="http://adbo.gitee.io/categories/SQL/"/>
+    
+    
+      <category term="MySQL" scheme="http://adbo.gitee.io/tags/MySQL/"/>
+    
+  </entry>
   
   <entry>
     <title>“order by”排序</title>
@@ -551,32 +580,6 @@ private BatchFactory batchFactory;
     
     
       <category term="海量数据处理" scheme="http://adbo.gitee.io/tags/%E6%B5%B7%E9%87%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Spring Cloud</title>
-    <link href="http://adbo.gitee.io/2020/07/25/2020-07-25-springcloud/"/>
-    <id>http://adbo.gitee.io/2020/07/25/2020-07-25-springcloud/</id>
-    <published>2020-07-25T15:45:46.000Z</published>
-    <updated>2020-08-01T03:19:16.287Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;一、业务场景介绍&quot;&gt;&lt;a href=&quot;#一、业务场景介绍&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="Spring" scheme="http://adbo.gitee.io/categories/Spring/"/>
-    
-    
-      <category term="SpringCloud" scheme="http://adbo.gitee.io/tags/SpringCloud/"/>
     
   </entry>
   
