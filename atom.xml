@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://adbo.gitee.io/"/>
-  <updated>2021-03-01T14:02:28.183Z</updated>
+  <updated>2021-03-01T14:06:05.973Z</updated>
   <id>http://adbo.gitee.io/</id>
   
   <author>
@@ -17,11 +17,40 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>查一行数据很慢</title>
+    <link href="http://adbo.gitee.io/2021/03/05/2021-03-07-mysql-19/"/>
+    <id>http://adbo.gitee.io/2021/03/05/2021-03-07-mysql-19/</id>
+    <published>2021-03-05T14:43:52.000Z</published>
+    <updated>2021-03-01T14:06:05.973Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;来源《MySQL实战45课》&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
+&lt;/blockquote&gt;
+
+        
+      
+    
+    </summary>
+    
+      <category term="SQL" scheme="http://adbo.gitee.io/categories/SQL/"/>
+    
+    
+      <category term="MySQL" scheme="http://adbo.gitee.io/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
     <title>性能差异</title>
     <link href="http://adbo.gitee.io/2021/03/05/2021-03-05-mysql-18/"/>
     <id>http://adbo.gitee.io/2021/03/05/2021-03-05-mysql-18/</id>
     <published>2021-03-05T14:43:52.000Z</published>
-    <updated>2021-03-01T14:02:28.183Z</updated>
+    <updated>2021-03-01T14:08:15.161Z</updated>
     
     <summary type="html">
     
@@ -557,32 +586,6 @@ private BatchFactory batchFactory;
     
     
       <category term="TCP&amp;UDP" scheme="http://adbo.gitee.io/tags/TCP-UDP/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>分库分表&amp;读写分离</title>
-    <link href="http://adbo.gitee.io/2020/07/27/2020-07-27-xiao-li-fei-dao-fen-ku-fen-biao-du-xie-fen-chi/"/>
-    <id>http://adbo.gitee.io/2020/07/27/2020-07-27-xiao-li-fei-dao-fen-ku-fen-biao-du-xie-fen-chi/</id>
-    <published>2020-07-27T03:50:54.000Z</published>
-    <updated>2020-08-01T03:19:16.302Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;面试题&quot;&gt;&lt;a href=&quot;#面试题&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="小李飞刀" scheme="http://adbo.gitee.io/categories/%E5%B0%8F%E6%9D%8E%E9%A3%9E%E5%88%80/"/>
-    
-    
-      <category term="MySQL" scheme="http://adbo.gitee.io/tags/MySQL/"/>
     
   </entry>
   
