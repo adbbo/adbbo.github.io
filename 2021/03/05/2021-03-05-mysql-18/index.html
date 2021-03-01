@@ -4,8 +4,8 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="显示随机消息, Adbo~Blog">
-    <meta name="description" content="如何正确地显示随机消息？">
+    <meta name="keywords" content="性能差异, Adbo~Blog">
+    <meta name="description" content="为什么这些SQL语句逻辑相同，性能却差异巨大？">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>显示随机消息 | Adbo</title>
+    <title>性能差异 | Adbo</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -296,7 +296,7 @@
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">显示随机消息</h1>
+                    <h1 class="description center-align post-title">性能差异</h1>
                 </div>
             </div>
         </div>
@@ -438,7 +438,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-03-03
+                    2021-03-05
                 </div>
                 
 
@@ -458,144 +458,141 @@
                 <blockquote>
 <p>本文章仅用于本人学习笔记记录<br>来源《MySQL实战45课》<br>微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）</p>
 </blockquote>
-<p>直接就是从一个单词表中随机选出三个单词。这个表的建表语句和初始数据的命令如下：</p>
-<pre><code>mysql&gt; CREATE TABLE `words` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `word` varchar(64) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
-
-delimiter ;;
-create procedure idata()
-begin
-  declare i int;
-  set i=0;
-  while i&lt;10000 do
-    insert into words(word) values(concat(char(97+(i div 1000)), char(97+(i % 1000 div 100)), char(97+(i % 100 div 10)), char(97+(i % 10))));
-    set i=i+1;
-  end while;
-end;;
-delimiter ;
-
-call idata();</code></pre><h2 id="内存临时表"><a href="#内存临时表" class="headerlink" title="内存临时表"></a>内存临时表</h2><p>首先，你会想到用 order by rand() 来实现这个逻辑。</p>
-<pre><code>mysql&gt; select word from words order by rand() limit 3;</code></pre><p>这个语句的意思很直白，随机排序取前 3 个。虽然这个 SQL 语句写法很简单，但执行流程却有点复杂的。</p>
-<p>我们先用 explain 命令来看看这个语句的执行情况。</p>
-<p><img src="/2021/03/03/2021-03-03-mysql-17/59a4fb0165b7ce1184e41f2d061ce350.png" alt></p>
-<p>Extra 字段显示 Using temporary，表示的是需要使用临时表；Using filesort，表示的是需要执行排序操作。</p>
-<p>因此这个 Extra 的意思就是，需要临时表，并且需要在临时表上排序。</p>
-<p>对于 InnoDB 表来说，相对于rowid排序来说，执行全字段排序会减少磁盘访问，因此会被优先选择。</p>
-<p>对于内存表，回表过程只是简单地根据数据行的位置，直接访问内存得到数据，根本不会导致多访问磁盘。优化器没有了这一层顾虑，那么它会优先考虑的，就是用于排序的行越小越好了，所以，MySQL 这时就会选择 rowid 排序。</p>
-<p>这条语句的执行流程是这样的：</p>
+<h2 id="条件字段函数操作"><a href="#条件字段函数操作" class="headerlink" title="条件字段函数操作"></a>条件字段函数操作</h2><p>假设你现在维护了一个交易系统，其中交易记录表 tradelog 包含交易流水号（tradeid）、交易员 id（operator）、交易时间（t_modified）等字段。为了便于描述，我们先忽略其他字段。这个表的建表语句如下：</p>
+<pre><code>mysql&gt; CREATE TABLE `tradelog` (
+  `id` int(11) NOT NULL,
+  `tradeid` varchar(32) DEFAULT NULL,
+  `operator` int(11) DEFAULT NULL,
+  `t_modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `tradeid` (`tradeid`),
+  KEY `t_modified` (`t_modified`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;</code></pre><p>假设，现在已经记录了从 2016 年初到 2018 年底的所有数据，运营部门有一个需求是，要统计发生在所有年份中 7 月份的交易记录总数。这个逻辑看上去并不复杂，你的 SQL 语句可能会这么写：</p>
+<pre><code>mysql&gt; select count(*) from tradelog where month(t_modified)=7;</code></pre><p>由于 t_modified 字段上有索引，于是你就很放心地在生产库中执行了这条语句，但却发现执行了特别久，才返回了结果。</p>
+<p>如果你问 DBA 同事为什么会出现这样的情况，他大概会告诉你：如果对字段做了函数计算，就用不上索引了，这是 MySQL 的规定。</p>
+<p>现在你已经学过了 InnoDB 的索引结构了，可以再追问一句为什么？为什么条件是 where t_modified=’2018-7-1’的时候可以用上索引，而改成 where month(t_modified)=7 的时候就不行了？</p>
+<p>下面是这个 t_modified 索引的示意图。方框上面的数字就是 month() 函数对应的值。</p>
+<p><img src="/2021/03/05/2021-03-05-mysql-18/3e30d9a5e67f711f5af2e2599e800286.png" alt="t_modified 索引示意图"></p>
+<p>如果你的 SQL 语句条件用的是 where t_modified=’2018-7-1’的话，引擎就会按照上面绿色箭头的路线，快速定位到 t_modified=’2018-7-1’需要的结果。</p>
+<p>实际上，B+ 树提供的这个快速定位能力，来源于同一层兄弟节点的有序性。</p>
+<p>但是，如果计算 month() 函数的话，你会看到传入 7 的时候，在树的第一层就不知道该怎么办了。</p>
+<p>也就是说，对索引字段做函数操作，可能会破坏索引值的有序性，因此优化器就决定放弃走树搜索功能。</p>
+<p>需要注意的是，优化器并不是要放弃使用这个索引。</p>
+<p>在这个例子里，放弃了树搜索功能，优化器可以选择遍历主键索引，也可以选择遍历索引 t_modified，优化器对比索引大小后发现，索引 t_modified 更小，遍历这个索引比遍历主键索引来得更快。因此最终还是会选择索引 t_modified。</p>
+<p>接下来，我们使用 explain 命令，查看一下这条 SQL 语句的执行结果。</p>
+<p><img src="/2021/03/05/2021-03-05-mysql-18/27c2f5ff3549b18ba37a28f4919f3655.png" alt></p>
+<p>key=”t_modified”表示的是，使用了 t_modified 这个索引；我在测试表数据中插入了 10 万行数据，rows=100335，说明这条语句扫描了整个索引的所有值；Extra 字段的 Using index，表示的是使用了覆盖索引。</p>
+<p>也就是说，由于在 t_modified 字段加了 month() 函数操作，导致了全索引扫描。为了能够用上索引的快速定位能力，我们就要把 SQL 语句改成基于字段本身的范围查询。按照下面这个写法，优化器就能按照我们预期的，用上 t_modified 索引的快速定位能力了。</p>
+<pre><code>mysql&gt; select count(*) from tradelog where
+    -&gt; (t_modified &gt;= &#39;2016-7-1&#39; and t_modified&lt;&#39;2016-8-1&#39;) or
+    -&gt; (t_modified &gt;= &#39;2017-7-1&#39; and t_modified&lt;&#39;2017-8-1&#39;) or 
+    -&gt; (t_modified &gt;= &#39;2018-7-1&#39; and t_modified&lt;&#39;2018-8-1&#39;);</code></pre><p>当然，如果你的系统上线时间更早，或者后面又插入了之后年份的数据的话，你就需要再把其他年份补齐。</p>
+<p>到这里我给你说明了，由于加了 month() 函数操作，MySQL 无法再使用索引快速定位功能，而只能使用全索引扫描。</p>
+<p>不过优化器在个问题上确实有“偷懒”行为，即使是对于不改变有序性的函数，也不会考虑使用索引。比如，对于 select * from tradelog where id + 1 = 10000 这个 SQL 语句，这个加 1 操作并不会改变有序性，但是 MySQL 优化器还是不能用 id 索引快速定位到 9999 这一行。所以，需要你在写 SQL 语句的时候，手动改写成 where id = 10000 -1 才可以。</p>
+<h2 id="隐式类型转换"><a href="#隐式类型转换" class="headerlink" title="隐式类型转换"></a>隐式类型转换</h2><p>接下来我再跟你说一说，另一个经常让程序员掉坑里的例子。</p>
+<p>我们一起看一下这条 SQL 语句：</p>
+<pre><code>mysql&gt; select * from tradelog where tradeid=110717;</code></pre><p>交易编号 tradeid 这个字段上，本来就有索引，但是 explain 的结果却显示，这条语句需要走全表扫描。你可能也发现了，tradeid 的字段类型是 varchar(32)，而输入的参数却是整型，所以需要做类型转换。</p>
+<p>那么，现在这里就有两个问题：</p>
 <ol>
-<li><p>创建一个临时表。这个临时表使用的是 memory 引擎，表里有两个字段，第一个字段是 double 类型，为了后面描述方便，记为字段 R，第二个字段是 varchar(64) 类型，记为字段 W。并且，这个表没有建索引。</p>
-</li>
-<li><p>从 words 表中，按主键顺序取出所有的 word 值。对于每一个 word 值，调用 rand() 函数生成一个大于 0 小于 1 的随机小数，并把这个随机小数和 word 分别存入临时表的 R 和 W 字段中，到此，扫描行数是 10000。</p>
-</li>
-<li><p>现在临时表有 10000 行数据了，接下来你要在这个没有索引的内存临时表上，按照字段 R 排序。</p>
-</li>
-<li><p>初始化 sort_buffer。sort_buffer 中有两个字段，一个是 double 类型，另一个是整型。</p>
-</li>
-<li><p>从内存临时表中一行一行地取出 R 值和位置信息（我后面会和你解释这里为什么是“位置信息”），分别存入 sort_buffer 中的两个字段里。这个过程要对内存临时表做全表扫描，此时扫描行数增加 10000，变成了 20000。</p>
-</li>
-<li><p>在 sort_buffer 中根据 R 的值进行排序。注意，这个过程没有涉及到表操作，所以不会增加扫描行数。</p>
-</li>
-<li><p>排序完成后，取出前三个结果的位置信息，依次到内存临时表中取出 word 值，返回给客户端。这个过程中，访问了表的三行数据，总扫描行数变成了 20003。</p>
-</li>
+<li>数据类型转换的规则是什么？</li>
+<li>为什么有数据类型转换，就需要走全索引扫描？</li>
 </ol>
-<p>接下来，我们通过慢查询日志（slow log）来验证一下我们分析得到的扫描行数是否正确。</p>
-<pre><code># Query_time: 0.900376  Lock_time: 0.000347 Rows_sent: 3 Rows_examined: 20003
-SET timestamp=1541402277;
-select word from words order by rand() limit 3;</code></pre><p>其中，Rows_examined：20003 就表示这个语句执行过程中扫描了 20003 行，也就验证了我们分析得出的结论。</p>
-<p>现在，我来把完整的排序执行流程图画出来。</p>
-<p><img src="/2021/03/03/2021-03-03-mysql-17/2abe849faa7dcad0189b61238b849ffc.png" alt></p>
-<p>图中的 pos 就是位置信息，你可能会觉得奇怪，这里的“位置信息”是个什么概念？在上一篇文章中，我们对 InnoDB 表排序的时候，明明用的还是 ID 字段。</p>
-<p>这时候，我们就要回到一个基本概念：MySQL 的表是用什么方法来定位“一行数据”的。</p>
-<p>其实不是的。如果你创建的表没有主键，或者把一个表的主键删掉了，那么 InnoDB 会自己生成一个长度为 6 字节的 rowid 来作为主键。</p>
-<p>这也就是排序模式里面，rowid 名字的来历。实际上它表示的是：每个引擎用来唯一标识数据行的信息。</p>
+<p>先来看第一个问题，你可能会说，数据库里面类型这么多，这种数据类型转换规则更多，我记不住，应该怎么办呢？</p>
+<p>这里有一个简单的方法，看 select “10” &gt; 9 的结果：</p>
+<ol>
+<li>如果规则是“将字符串转成数字”，那么就是做数字比较，结果应该是 1；</li>
+<li>如果规则是“将数字转成字符串”，那么就是做字符串比较，结果应该是 0。</li>
+</ol>
+<p><img src="/2021/03/05/2021-03-05-mysql-18/2b67fc38f1651e2622fe21d49950b214.png" alt></p>
+<p>从图中可知，select “10” &gt; 9 返回的是 1，所以你就能确认 MySQL 里的转换规则了：在 MySQL 中，字符串和数字做比较的话，是将字符串转换成数字。</p>
+<p>这时，你再看这个全表扫描的语句：</p>
+<pre><code>mysql&gt; select * from tradelog where tradeid=110717;</code></pre><p>就知道对于优化器来说，这个语句相当于：</p>
+<pre><code>mysql&gt; select * from tradelog where  CAST(tradid AS signed int) = 110717;</code></pre><p>也就是说，这条语句触发了我们上面说到的规则：对索引字段做函数操作，优化器会放弃走树搜索功能。</p>
+<p>现在，我留给你一个小问题，id 的类型是 int，如果执行下面这个语句，是否会导致全表扫描呢？</p>
+<pre><code>select * from tradelog where id=&quot;83126&quot;;</code></pre><p>答案是不会。因为将字符串转成数字，“83126”转为83126.</p>
+<h2 id="隐式字符编码转换"><a href="#隐式字符编码转换" class="headerlink" title="隐式字符编码转换"></a>隐式字符编码转换</h2><p>假设系统里还有另外一个表 trade_detail，用于记录交易的操作细节。为了便于量化分析和复现，我往交易日志表 tradelog 和交易详情表 trade_detail 这两个表里插入一些数据。</p>
+<pre><code>mysql&gt; CREATE TABLE `trade_detail` (
+  `id` int(11) NOT NULL,
+  `tradeid` varchar(32) DEFAULT NULL,
+  `trade_step` int(11) DEFAULT NULL, /*操作步骤*/
+  `step_info` varchar(32) DEFAULT NULL, /*步骤信息*/
+  PRIMARY KEY (`id`),
+  KEY `tradeid` (`tradeid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+insert into tradelog values(1, &#39;aaaaaaaa&#39;, 1000, now());
+insert into tradelog values(2, &#39;aaaaaaab&#39;, 1000, now());
+insert into tradelog values(3, &#39;aaaaaaac&#39;, 1000, now());
+
+insert into trade_detail values(1, &#39;aaaaaaaa&#39;, 1, &#39;add&#39;);
+insert into trade_detail values(2, &#39;aaaaaaaa&#39;, 2, &#39;update&#39;);
+insert into trade_detail values(3, &#39;aaaaaaaa&#39;, 3, &#39;commit&#39;);
+insert into trade_detail values(4, &#39;aaaaaaab&#39;, 1, &#39;add&#39;);
+insert into trade_detail values(5, &#39;aaaaaaab&#39;, 2, &#39;update&#39;);
+insert into trade_detail values(6, &#39;aaaaaaab&#39;, 3, &#39;update again&#39;);
+insert into trade_detail values(7, &#39;aaaaaaab&#39;, 4, &#39;commit&#39;);
+insert into trade_detail values(8, &#39;aaaaaaac&#39;, 1, &#39;add&#39;);
+insert into trade_detail values(9, &#39;aaaaaaac&#39;, 2, &#39;update&#39;);
+insert into trade_detail values(10, &#39;aaaaaaac&#39;, 3, &#39;update again&#39;);
+insert into trade_detail values(11, &#39;aaaaaaac&#39;, 4, &#39;commit&#39;);</code></pre><p>这时候，如果要查询 id=2 的交易的所有操作步骤信息，SQL 语句可以这么写：</p>
+<pre><code>mysql&gt; select d.* from tradelog l, trade_detail d where d.tradeid=l.tradeid and l.id=2; /*语句Q1*/</code></pre><p>我们一起来看下这个结果：</p>
+<ol>
+<li>第一行显示优化器会先在交易记录表 tradelog 上查到 id=2 的行，这个步骤用上了主键索引，rows=1 表示只扫描一行；</li>
+<li>第二行 key=NULL，表示没有用上交易详情表 trade_detail 上的 tradeid 索引，进行了全表扫描。</li>
+</ol>
+<p>在这个执行计划里，是从 tradelog 表中取 tradeid 字段，再去 trade_detail 表里查询匹配字段。因此，我们把 tradelog 称为驱动表，把 trade_detail 称为被驱动表，把 tradeid 称为关联字段。</p>
+<p>接下来，我们看下这个 explain 结果表示的执行流程：</p>
+<p><img src="/2021/03/05/2021-03-05-mysql-18/8289c184c8529acea0269a7460dc62a9.png" alt></p>
 <ul>
-<li>对于有主键的 InnoDB 表来说，这个 rowid 就是主键 ID；</li>
-<li>对于没有主键的 InnoDB 表来说，这个 rowid 就是由系统生成的；</li>
-<li>MEMORY 引擎不是索引组织表。在这个例子里面，你可以认为它就是一个数组。因此，这个 rowid 其实就是数组的下标。</li>
+<li>第 1 步，是根据 id 在 tradelog 表里找到 L2 这一行；</li>
+<li>第 2 步，是从 L2 中取出 tradeid 字段的值；</li>
+<li>第 3 步，是根据 tradeid 值到 trade_detail 表中查找条件匹配的行。explain 的结果里面第二行的 key=NULL 表示的就是，这个过程是通过遍历主键索引的方式，一个一个地判断 tradeid 的值是否匹配。</li>
 </ul>
-<p>order by rand() 使用了内存临时表，内存临时表排序的时候使用了 rowid 排序方法。</p>
-<h2 id="磁盘临时表"><a href="#磁盘临时表" class="headerlink" title="磁盘临时表"></a>磁盘临时表</h2><p>那么，是不是所有的临时表都是内存表呢？</p>
-<p>其实不是的。tmp_table_size 这个配置限制了内存临时表的大小，默认值是 16M。如果临时表大小超过了 tmp_table_size，那么内存临时表就会转成磁盘临时表。</p>
-<p>磁盘临时表使用的引擎默认是 InnoDB，是由参数 internal_tmp_disk_storage_engine 控制的。</p>
-<p>当使用磁盘临时表的时候，对应的就是一个没有显式索引的 InnoDB 表的排序过程。</p>
-<p>为了复现这个过程，我把 tmp_table_size 设置成 1024，把 sort_buffer_size 设置成 32768, 把 max_length_for_sort_data 设置成 16。</p>
-<pre><code>set tmp_table_size=1024;
-set sort_buffer_size=32768;
-set max_length_for_sort_data=16;
-/* 打开 optimizer_trace，只对本线程有效 */
-SET optimizer_trace=&#39;enabled=on&#39;; 
-
-/* 执行语句 */
-select word from words order by rand() limit 3;
-
-/* 查看 OPTIMIZER_TRACE 输出 */
-SELECT * FROM `information_schema`.`OPTIMIZER_TRACE`\G</code></pre><p><img src="/2021/03/03/2021-03-03-mysql-17/78d2db9a4fdba81feadccf6e878b4aab.png" alt></p>
-<p>因为将 max_length_for_sort_data 设置成 16，小于 word 字段的长度定义，所以我们看到 sort_mode 里面显示的是 rowid 排序，这个是符合预期的，参与排序的是随机值 R 字段和 rowid 字段组成的行。</p>
-<p>这时候你可能心算了一下，发现不对。R 字段存放的随机值就 8 个字节，rowid 是 6 个字节（至于为什么是 6 字节，就留给你课后思考吧），数据总行数是 10000，这样算出来就有 140000 字节，超过了 sort_buffer_size 定义的 32768 字节了。但是，number_of_tmp_files 的值居然是 0，难道不需要用临时文件吗？</p>
-<p>这个 SQL 语句的排序确实没有用到临时文件，采用是 MySQL 5.6 版本引入的一个新的排序算法，即：优先队列排序算法。接下来，我们就看看为什么没有使用临时文件的算法，也就是归并排序算法，而是采用了优先队列排序算法。</p>
-<p>其实，我们现在的 SQL 语句，只需要取 R 值最小的 3 个 rowid。但是，如果使用归并排序算法的话，虽然最终也能得到前 3 个值，但是这个算法结束后，已经将 10000 行数据都排好序了。</p>
-<p>也就是说，后面的 9997 行也是有序的了。但，我们的查询并不需要这些数据是有序的。所以，想一下就明白了，这浪费了非常多的计算量。</p>
-<p>而优先队列算法，就可以精确地只得到三个最小值，执行流程如下：</p>
+<p>进行到这里，你会发现第 3 步不符合我们的预期。因为表 trade_detail 里 tradeid 字段上是有索引的，我们本来是希望通过使用 tradeid 索引能够快速定位到等值的行。但，这里并没有。</p>
+<p>如果你去问 DBA 同学，他们可能会告诉你，因为这两个表的字符集不同，一个是 utf8，一个是 utf8mb4，所以做表连接查询的时候用不上关联字段的索引。这个回答，也是通常你搜索这个问题时会得到的答案。</p>
+<p>但是你应该再追问一下，为什么字符集不同就用不上索引呢？</p>
+<p>我们说问题是出在执行步骤的第 3 步，如果单独把这一步改成 SQL 语句的话，那就是：</p>
+<pre><code>mysql&gt; select * from trade_detail where tradeid=$L2.tradeid.value; </code></pre><p>其中，$L2.tradeid.value 的字符集是 utf8mb4。</p>
+<p>参照前面的两个例子，你肯定就想到了，字符集 utf8mb4 是 utf8 的超集，所以当这两个类型的字符串在做比较的时候，MySQL 内部的操作是，先把 utf8 字符串转成 utf8mb4 字符集，再做比较。</p>
+<blockquote>
+<p>这个设定很好理解，utf8mb4 是 utf8 的超集。类似地，在程序设计语言里面，做自动类型转换的时候，为了避免数据在转换过程中由于截断导致数据错误，也都是“按数据长度增加的方向”进行转换的。</p>
+</blockquote>
+<p>因此， 在执行上面这个语句的时候，需要将被驱动数据表里的字段一个个地转换成 utf8mb4，再跟 L2 做比较。</p>
+<p>也就是说，实际上这个语句等同于下面这个写法：</p>
+<pre><code>select * from trade_detail  where CONVERT(traideid USING utf8mb4)=$L2.tradeid.value; </code></pre><p>CONVERT() 函数，在这里的意思是把输入的字符串转成 utf8mb4 字符集。</p>
+<p>这就再次触发了我们上面说到的原则：对索引字段做函数操作，优化器会放弃走树搜索功能。</p>
+<p>到这里，你终于明确了，字符集不同只是条件之一，连接过程中要求在被驱动表的索引字段上加函数操作，是直接导致对被驱动表做全表扫描的原因。</p>
+<p>作为对比验证，我给你提另外一个需求，“查找 trade_detail 表里 id=4 的操作，对应的操作者是谁”，再来看下这个语句和它的执行计划。</p>
+<pre><code>mysql&gt;select l.operator from tradelog l , trade_detail d where d.tradeid=l.tradeid and d.id=4;</code></pre><p><img src="/2021/03/05/2021-03-05-mysql-18/92cb498ceb3557e41700fae53ce9bd11.png" alt></p>
+<p>这个语句里 trade_detail 表成了驱动表，但是 explain 结果的第二行显示，这次的查询操作用上了被驱动表 tradelog 里的索引 (tradeid)，扫描行数是 1。</p>
+<p>这也是两个 tradeid 字段的 join 操作，为什么这次能用上被驱动表的 tradeid 索引呢？我们来分析一下。</p>
+<p>假设驱动表 trade_detail 里 id=4 的行记为 R4，那么在连接的时候，被驱动表 tradelog 上执行的就是类似这样的 SQL 语句：</p>
+<pre><code>select operator from tradelog  where traideid =$R4.tradeid.value; </code></pre><p>这时候 $R4.tradeid.value 的字符集是 utf8, 按照字符集转换规则，要转成 utf8mb4，所以这个过程就被改写成：</p>
+<pre><code>select operator from tradelog  where traideid =CONVERT($R4.tradeid.value USING utf8mb4); </code></pre><p>你看，这里的 CONVERT 函数是加在输入参数上的，这样就可以用上被驱动表的 traideid 索引。</p>
+<p>理解了原理以后，就可以用来指导操作了。如果要优化语句</p>
+<pre><code>select d.* from tradelog l, trade_detail d where d.tradeid=l.tradeid and l.id=2;</code></pre><p>的执行过程，有两种做法：</p>
+<ul>
+<li><p>比较常见的优化方法是，把 trade_detail 表上的 tradeid 字段的字符集也改成 utf8mb4，这样就没有字符集转换的问题了。</p>
+<pre><code>  alter table trade_detail modify tradeid varchar(32) CHARACTER SET utf8mb4 default null;</code></pre></li>
+<li><p>如果能够修改字段的字符集的话，是最好不过了。但如果数据量比较大， 或者业务上暂时不能做这个 DDL 的话，那就只能采用修改 SQL 语句的方法了。</p>
+<pre><code>  mysql&gt; select d.* from tradelog l , trade_detail d where d.tradeid=CONVERT(l.tradeid USING utf8) and l.id=2; </code></pre><p>  这里，我主动把 l.tradeid 转成 utf8，就避免了被驱动表上的字符编码转换，从 explain 结果可以看到，这次索引走对了。</p>
+</li>
+</ul>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>字段发生了转换,导致本该使用索引而没有用到索引</p>
 <ol>
-<li>对于这 10000 个准备排序的 (R,rowid)，先取前三行，构造成一个堆；</li>
-<li>取下一个行 (R’,rowid’)，跟当前堆里面最大的 R 比较，如果 R’小于 R，把这个 (R,rowid) 从堆中去掉，换成 (R’,rowid’)；</li>
-<li>重复第 2 步，直到第 10000 个 (R’,rowid’) 完成比较。</li>
+<li><p>条件字段函数操作</p>
+<p> 对索引字段做函数操作，MySQL 无法再使用索引快速定位功能，而只能使用全索引扫描（不使用索引）。</p>
+</li>
+<li><p>隐式类型转换</p>
+<p> 隐在 MySQL 中，字符串和数字做比较的话，是将字符串转换成数字。</p>
+<p> select * from tradelog where tradeid=110717;<br> 将tradeid从String转换为int，对索引做了函数操作，不走索引；</p>
+</li>
 </ol>
-<p><img src="/2021/03/03/2021-03-03-mysql-17/e9c29cb20bf9668deba8981e444f6897.png" alt></p>
-<p>通过优先队列排序找到最小的三个 R 值的行的过程。整个排序过程中，为了最快地拿到当前堆的最大值，总是保持最大值在堆顶，因此这是一个最大堆。</p>
-<p>OPTIMIZER_TRACE 结果中，filesort_priority_queue_optimization 这个部分的 chosen=true，就表示使用了优先队列排序算法，这个过程不需要临时文件，因此对应的 number_of_tmp_files 是 0。</p>
-<p>这个流程结束后，我们构造的堆里面，就是这个 10000 行里面 R 值最小的三行。然后，依次把它们的 rowid 取出来，去临时表里面拿到 word 字段，这个过程就跟上一篇文章的 rowid 排序的过程一样了。</p>
-<pre><code>select city,name,age from t where city=&#39;杭州&#39; order by name limit 1000  ;</code></pre><p>你可能会问，这里也用到了 limit，为什么没用优先队列排序算法呢？原因是，这条 SQL 语句是 limit 1000，如果使用优先队列算法的话，需要维护的堆的大小就是 1000 行的 (name,rowid)，超过了我设置的 sort_buffer_size 大小，所以只能使用归并排序算法。</p>
-<p>总之，不论是使用哪种类型的临时表，order by rand() 这种写法都会让计算过程非常复杂，需要大量的扫描行数，因此排序过程的资源消耗也会很大。</p>
-<h2 id="随机排序方法"><a href="#随机排序方法" class="headerlink" title="随机排序方法"></a>随机排序方法</h2><p>我们先把问题简化一下，如果只随机选择 1 个 word 值，可以怎么做呢？思路上是这样的：</p>
-<ol>
-<li>取得这个表的主键 id 的最大值 M 和最小值 N;</li>
-<li>用随机函数生成一个最大值到最小值之间的数 X = (M-N)*rand() + N;</li>
-<li>取不小于 X 的第一个 ID 的行。</li>
-</ol>
-<pre><code>mysql&gt; select max(id),min(id) into @M,@N from t ;
-set @X= floor((@M-@N+1)*rand() + @N);
-select * from t where id &gt;= @X limit 1;</code></pre><p>这个方法效率很高，因为取 max(id) 和 min(id) 都是不需要扫描索引的，而第三步的 select 也可以用索引快速定位，可以认为就只扫描了 3 行。但实际上，这个算法本身并不严格满足题目的随机要求，因为 ID 中间可能有空洞，因此选择不同行的概率不一样，不是真正的随机。</p>
-<p>比如你有 4 个 id，分别是 1、2、4、5，如果按照上面的方法，那么取到 id=4 的这一行的概率是取得其他行概率的两倍。</p>
-<p>如果这四行的 id 分别是 1、2、40000、40001 呢？这个算法基本就能当 bug 来看待了。</p>
-<p>所以，为了得到严格随机的结果，你可以用下面这个流程:</p>
-<ol>
-<li>取得整个表的行数，并记为 C。</li>
-<li>取得 Y = floor(C * rand())。 floor 函数在这里的作用，就是取整数部分。</li>
-<li>再用 limit Y,1 取得一行。</li>
-</ol>
-<p>我们把这个算法，称为随机算法 2。下面这段代码，就是上面流程的执行语句的序列。</p>
-<pre><code>mysql&gt; select count(*) into @C from t;
-set @Y = floor(@C * rand());
-set @sql = concat(&quot;select * from t limit &quot;, @Y, &quot;,1&quot;);
-prepare stmt from @sql;
-execute stmt;
-DEALLOCATE prepare stmt;</code></pre><p>由于 limit 后面的参数不能直接跟变量，所以我在上面的代码中使用了 prepare+execute 的方法。你也可以把拼接 SQL 语句的方法写在应用程序中，会更简单些。</p>
-<p>这个随机算法 2，解决了算法 1 里面明显的概率不均匀问题。</p>
-<p>MySQL 处理 limit Y,1 的做法就是按顺序一个一个地读出来，丢掉前 Y 个，然后把下一个记录作为返回结果，因此这一步需要扫描 Y+1 行。再加上，第一步扫描的 C 行，总共需要扫描 C+Y+1 行，执行代价比随机算法 1 的代价要高。</p>
-<p>当然，随机算法 2 跟直接 order by rand() 比起来，执行代价还是小很多的。</p>
-<p>现在，我们再看看，如果我们按照随机算法 2 的思路，要随机取 3 个 word 值呢？你可以这么做：</p>
-<ol>
-<li>取得整个表的行数，记为 C；</li>
-<li>根据相同的随机方法得到 Y1、Y2、Y3；</li>
-<li>再执行三个 limit Y, 1 语句得到三行数据。</li>
-</ol>
-<p>我们把这个算法，称作随机算法 3。下面这段代码，就是上面流程的执行语句的序列。</p>
-<pre><code>mysql&gt; select count(*) into @C from t;
-set @Y1 = floor(@C * rand());
-set @Y2 = floor(@C * rand());
-set @Y3 = floor(@C * rand());
-select * from t limit @Y1，1； //在应用代码里面取Y1、Y2、Y3值，拼出SQL后执行
-select * from t limit @Y2，1；
-select * from t limit @Y3，1；</code></pre><h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ol>
-<li>创建的表没有主键，或者把一个表的主键删掉了，那么 InnoDB 会自己生成一个长度为 6 字节的 rowid 来作为主键。这也就是排序模式里面，rowid 名字的来历。实际上它表示的是：每个引擎用来唯一标识数据行的信息。</li>
-<li>对于有主键的 InnoDB 表来说，这个 rowid 就是主键 ID；</li>
-<li>对于没有主键的 InnoDB 表来说，这个 rowid 就是由系统生成的；</li>
-<li>order by rand() 使用了内存临时表，内存临时表排序的时候使用了 rowid 排序方法。</li>
+<pre><code>select * from tradelog where id=&quot;83126&quot;;
+将『83126』String转int，没涉及到索引函数操作，还是走索引</code></pre><ol start="3">
+<li><p>隐式字符编码转换</p>
+<p> 如果驱动表的字符集比被驱动表得字符集小，关联列就能用到索引,如果更大,需要发生隐式编码转换,则不能用到索引,latin&lt;gbk&lt;utf8&lt;utf8mb4</p>
+</li>
 </ol>
 
             </div>
@@ -622,7 +619,7 @@ select * from t limit @Y3，1；</code></pre><h2 id="小结"><a href="#小结" c
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://adbo.gitee.io/2021/03/03/2021-03-03-mysql-17/">http://adbo.gitee.io/2021/03/03/2021-03-03-mysql-17/</a>
+                    <a href="http://adbo.gitee.io/2021/03/05/2021-03-05-mysql-18/">http://adbo.gitee.io/2021/03/05/2021-03-05-mysql-18/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -832,7 +829,7 @@ select * from t limit @Y3，1；</code></pre><h2 id="小结"><a href="#小结" c
         repo: 'gitalk',
         owner: 'FlynnCN',
         admin: "FlynnCN",
-        id: '2021-03-03T22-43-52',
+        id: '2021-03-05T22-43-52',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -855,7 +852,8 @@ select * from t limit @Y3，1；</code></pre><h2 id="小结"><a href="#小结" c
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2021/03/05/2021-03-05-mysql-18/">
                     <div class="card-image">
@@ -872,9 +870,9 @@ select * from t limit @Y3，1；</code></pre><h2 id="小结"><a href="#小结" c
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-03-05
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-03-05
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -887,6 +885,7 @@ select * from t limit @Y3，1；</code></pre><h2 id="小结"><a href="#小结" c
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -905,23 +904,23 @@ select * from t limit @Y3，1；</code></pre><h2 id="小结"><a href="#小结" c
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/03/01/2021-03-01-mysql-16/">
+                <a href="/2021/03/03/2021-03-03-mysql-17/">
                     <div class="card-image">
                         
-                        <img src="/medias/cover/MySQL.jpg" class="responsive-img" alt="“order by”排序">
+                        <img src="/medias/cover/MySQL.jpg" class="responsive-img" alt="显示随机消息">
                         
-                        <span class="card-title">“order by”排序</span>
+                        <span class="card-title">显示随机消息</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            “order by”是怎么工作的？
+                            如何正确地显示随机消息？
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-03-01
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-03-03
                             </span>
                         <span class="publish-author">
                             
