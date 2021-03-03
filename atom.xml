@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://adbo.gitee.io/"/>
-  <updated>2021-03-02T13:39:03.689Z</updated>
+  <updated>2021-03-03T13:20:01.881Z</updated>
   <id>http://adbo.gitee.io/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>幻读</title>
+    <link href="http://adbo.gitee.io/2021/03/09/2021-03-09-mysql-20/"/>
+    <id>http://adbo.gitee.io/2021/03/09/2021-03-09-mysql-20/</id>
+    <published>2021-03-09T14:43:52.000Z</published>
+    <updated>2021-03-03T13:20:01.881Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;来源《MySQL实战45课》&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;为了便于说明问题，建表和初始化语句如
+        
+      
+    
+    </summary>
+    
+      <category term="SQL" scheme="http://adbo.gitee.io/categories/SQL/"/>
+    
+    
+      <category term="MySQL" scheme="http://adbo.gitee.io/tags/MySQL/"/>
+    
+  </entry>
   
   <entry>
     <title>查一行数据很慢</title>
@@ -559,33 +588,6 @@ private BatchFactory batchFactory;
     
     
       <category term="smile" scheme="http://adbo.gitee.io/tags/smile/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>TCP&amp;UDP</title>
-    <link href="http://adbo.gitee.io/2020/07/28/2020-07-28-tcp-udp/"/>
-    <id>http://adbo.gitee.io/2020/07/28/2020-07-28-tcp-udp/</id>
-    <published>2020-07-28T15:45:46.000Z</published>
-    <updated>2020-08-01T03:19:16.302Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;TCP-三次握手&quot;&gt;&lt;a href=&quot;#TCP-三次握手&quot; class=&quot;headerlink&quot; title=&quot;* TCP 三次握手&quot;&gt;&lt;/a&gt;* TCP 三次握手&lt;/h2&gt;&lt;p&gt;为了准确无误地把数据送达目标处，TCP协议采用了三次握手策略。&lt;/p&gt;
-&lt;h3
-        
-      
-    
-    </summary>
-    
-      <category term="计算机网络" scheme="http://adbo.gitee.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
-    
-    
-      <category term="TCP&amp;UDP" scheme="http://adbo.gitee.io/tags/TCP-UDP/"/>
     
   </entry>
   
