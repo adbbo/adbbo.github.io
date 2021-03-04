@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://adbo.gitee.io/"/>
-  <updated>2021-03-04T10:04:55.289Z</updated>
+  <updated>2021-03-04T15:48:30.765Z</updated>
   <id>http://adbo.gitee.io/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>提高性能</title>
+    <link href="http://adbo.gitee.io/2021/03/13/2021-03-13-mysql-22/"/>
+    <id>http://adbo.gitee.io/2021/03/13/2021-03-13-mysql-22/</id>
+    <published>2021-03-13T14:43:52.000Z</published>
+    <updated>2021-03-04T15:48:30.765Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;来源《MySQL实战45课》&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;业务高峰期，生产环境的 MySQL
+        
+      
+    
+    </summary>
+    
+      <category term="SQL" scheme="http://adbo.gitee.io/categories/SQL/"/>
+    
+    
+      <category term="MySQL" scheme="http://adbo.gitee.io/tags/MySQL/"/>
+    
+  </entry>
   
   <entry>
     <title>锁</title>
@@ -559,38 +588,6 @@ import
     
     
       <category term="Redis" scheme="http://adbo.gitee.io/tags/Redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>工厂 + 策略模式</title>
-    <link href="http://adbo.gitee.io/2020/08/12/2020-08-12-ce-lue-mo-shi/"/>
-    <id>http://adbo.gitee.io/2020/08/12/2020-08-12-ce-lue-mo-shi/</id>
-    <published>2020-08-12T15:45:46.000Z</published>
-    <updated>2020-08-15T07:49:14.597Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;工作中常用的工厂 + 策略模式，避免写过多冗余的if&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;pre&gt;&lt;code&gt;@Autowired
-private BatchFactory batchFactory;
-
-// 工厂 +
-        
-      
-    
-    </summary>
-    
-      <category term="Work" scheme="http://adbo.gitee.io/categories/Work/"/>
-    
-    
-      <category term="设计模式" scheme="http://adbo.gitee.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
     
   </entry>
   
