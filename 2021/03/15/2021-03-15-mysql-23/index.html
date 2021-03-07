@@ -563,7 +563,7 @@
 <p>图中的 write，指的就是指把日志写入到文件系统的 page cache，并没有把数据持久化到磁盘，所以速度比较快。</p>
 <p>图中的 fsync，才是将数据持久化到磁盘的操作。一般情况下，我们认为 fsync 才占磁盘的 IOPS。</p>
 <p>事务提交的时候，执行器把 binlog cache 里的完整事务写入到 binlog 中，并清空 binlog cache。</p>
-<p>![](<img src="/2021/03/15/2021-03-15-mysql-23/9ed86644d5f39efb0efec595abb92e3e.png" alt="binlog 写盘状态">)</p>
+<p><img src="/2021/03/15/2021-03-15-mysql-23/9ed86644d5f39efb0efec595abb92e3e.png" alt="binlog 写盘状态"></p>
 <p>存在 redo log buffer 中，物理上是在 MySQL 进程内存中，就是图中的红色部分；</p>
 <p>写到磁盘 (write)，但是没有持久化（fsync)，物理上是在文件系统的 page cache 里面，也就是图中的黄色部分；</p>
 <p>持久化到磁盘，对应的是 hard disk，也就是图中的绿色部分。</p>
