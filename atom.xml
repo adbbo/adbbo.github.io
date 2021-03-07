@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://adbo.gitee.io/"/>
-  <updated>2021-03-04T15:48:30.765Z</updated>
+  <updated>2021-03-07T09:08:22.976Z</updated>
   <id>http://adbo.gitee.io/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>保证数据不丢</title>
+    <link href="http://adbo.gitee.io/2021/03/15/2021-03-15-mysql-23/"/>
+    <id>http://adbo.gitee.io/2021/03/15/2021-03-15-mysql-23/</id>
+    <published>2021-03-15T14:43:52.000Z</published>
+    <updated>2021-03-07T09:08:22.976Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;来源《MySQL实战45课》&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2
+        
+      
+    
+    </summary>
+    
+      <category term="SQL" scheme="http://adbo.gitee.io/categories/SQL/"/>
+    
+    
+      <category term="MySQL" scheme="http://adbo.gitee.io/tags/MySQL/"/>
+    
+  </entry>
   
   <entry>
     <title>提高性能</title>
@@ -558,36 +587,6 @@ import
     
     
       <category term="MySQL" scheme="http://adbo.gitee.io/tags/MySQL/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Redis计数</title>
-    <link href="http://adbo.gitee.io/2020/08/13/2020-08-13-redis-ji-shu/"/>
-    <id>http://adbo.gitee.io/2020/08/13/2020-08-13-redis-ji-shu/</id>
-    <published>2020-08-13T15:45:46.000Z</published>
-    <updated>2020-08-15T07:49:14.598Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;本篇主要记录和总结工作中用到Redis实现计数统计的一种实现方式&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Redis实现计数统计的方式有很多，这里主要简单总结ZSet的一种实现方式。&lt;/p&gt;
-&lt;h2 id=&quot;计数&quot;&gt;&lt;a href=&quot;#计数&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="Work" scheme="http://adbo.gitee.io/categories/Work/"/>
-    
-    
-      <category term="Redis" scheme="http://adbo.gitee.io/tags/Redis/"/>
     
   </entry>
   
