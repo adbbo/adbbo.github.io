@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://adbo.gitee.io/"/>
-  <updated>2021-03-07T09:11:05.928Z</updated>
+  <updated>2021-03-07T14:34:46.499Z</updated>
   <id>http://adbo.gitee.io/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>主备一致</title>
+    <link href="http://adbo.gitee.io/2021/03/17/2021-03-17-mysql-24/"/>
+    <id>http://adbo.gitee.io/2021/03/17/2021-03-17-mysql-24/</id>
+    <published>2021-03-17T14:43:52.000Z</published>
+    <updated>2021-03-07T14:34:46.499Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;来源《MySQL实战45课》&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2
+        
+      
+    
+    </summary>
+    
+      <category term="SQL" scheme="http://adbo.gitee.io/categories/SQL/"/>
+    
+    
+      <category term="MySQL" scheme="http://adbo.gitee.io/tags/MySQL/"/>
+    
+  </entry>
   
   <entry>
     <title>保证数据不丢</title>
@@ -561,32 +590,6 @@ import
     
     
       <category term="Linux" scheme="http://adbo.gitee.io/tags/Linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MySQL的EXPLAIN参数</title>
-    <link href="http://adbo.gitee.io/2020/08/14/2020-08-14-explain-can-shu-jie-xi/"/>
-    <id>http://adbo.gitee.io/2020/08/14/2020-08-14-explain-can-shu-jie-xi/</id>
-    <published>2020-08-14T15:45:46.000Z</published>
-    <updated>2021-01-26T12:08:43.285Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;EXPLAIN如何用&quot;&gt;&lt;a href=&quot;#EXPLAIN如何用&quot; class=&quot;headerlink&quot; title=&quot;EXPLAIN如何用&quot;&gt;&lt;/a&gt;EXPLAIN如何用&lt;/h2&gt;&lt;p&gt;explain +
-        
-      
-    
-    </summary>
-    
-      <category term="SQL" scheme="http://adbo.gitee.io/categories/SQL/"/>
-    
-    
-      <category term="MySQL" scheme="http://adbo.gitee.io/tags/MySQL/"/>
     
   </entry>
   
