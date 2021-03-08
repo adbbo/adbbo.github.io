@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://adbo.gitee.io/"/>
-  <updated>2021-03-08T07:11:27.589Z</updated>
+  <updated>2021-03-08T15:34:05.960Z</updated>
   <id>http://adbo.gitee.io/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>备库延迟</title>
+    <link href="http://adbo.gitee.io/2021/03/21/2021-03-21-mysql-26/"/>
+    <id>http://adbo.gitee.io/2021/03/21/2021-03-21-mysql-26/</id>
+    <published>2021-03-21T14:43:52.000Z</published>
+    <updated>2021-03-08T15:34:05.960Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;来源《MySQL实战45课》&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;不论是偶发性的查询压力，还是备份，对
+        
+      
+    
+    </summary>
+    
+      <category term="SQL" scheme="http://adbo.gitee.io/categories/SQL/"/>
+    
+    
+      <category term="MySQL" scheme="http://adbo.gitee.io/tags/MySQL/"/>
+    
+  </entry>
   
   <entry>
     <title>高可用</title>
@@ -560,35 +589,6 @@ import
     
     
       <category term="MySQL" scheme="http://adbo.gitee.io/tags/MySQL/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>深入浅出ZooKeeper</title>
-    <link href="http://adbo.gitee.io/2020/09/30/2020-09-30-shen-ru-qian-chu-zookeeper/"/>
-    <id>http://adbo.gitee.io/2020/09/30/2020-09-30-shen-ru-qian-chu-zookeeper/</id>
-    <published>2020-09-29T16:45:46.000Z</published>
-    <updated>2020-09-30T06:06:47.914Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;第三次总结…&lt;br&gt;感觉之前总结的不够全面，乏了，乏了…&lt;br&gt;书写百遍，其义自见，哈哈哈&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;ZooKeeper-简介&quot;&gt;&lt;a href=&quot;#ZooKeeper-简介&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="中间件" scheme="http://adbo.gitee.io/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
-    
-    
-      <category term="ZooKeeper" scheme="http://adbo.gitee.io/tags/ZooKeeper/"/>
     
   </entry>
   
