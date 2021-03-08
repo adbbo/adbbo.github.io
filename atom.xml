@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://adbo.gitee.io/"/>
-  <updated>2021-03-07T14:34:46.499Z</updated>
+  <updated>2021-03-08T07:01:22.456Z</updated>
   <id>http://adbo.gitee.io/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>高可用</title>
+    <link href="http://adbo.gitee.io/2021/03/19/2021-03-19-mysql-25/"/>
+    <id>http://adbo.gitee.io/2021/03/19/2021-03-19-mysql-25/</id>
+    <published>2021-03-19T14:43:52.000Z</published>
+    <updated>2021-03-08T07:01:22.456Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;来源《MySQL实战45课》&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;在一个主备关系中，每个备库接收主库的
+        
+      
+    
+    </summary>
+    
+      <category term="SQL" scheme="http://adbo.gitee.io/categories/SQL/"/>
+    
+    
+      <category term="MySQL" scheme="http://adbo.gitee.io/tags/MySQL/"/>
+    
+  </entry>
   
   <entry>
     <title>主备一致</title>
@@ -560,36 +589,6 @@ import
     
     
       <category term="ZooKeeper" scheme="http://adbo.gitee.io/tags/ZooKeeper/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Linux超常用命令</title>
-    <link href="http://adbo.gitee.io/2020/09/29/2020-09-29-linux-chao-chang-yong-ming-ling/"/>
-    <id>http://adbo.gitee.io/2020/09/29/2020-09-29-linux-chao-chang-yong-ming-ling/</id>
-    <published>2020-09-29T15:45:46.000Z</published>
-    <updated>2020-09-29T09:09:53.976Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;入秋的第一篇总结博客biubiubiu~
-本篇主要记录和总结工作中常用的Linux命令&lt;br&gt;一个月没总结博客，心态有点崩o(╥﹏╥)o&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;系统信息&quot;&gt;&lt;a href=&quot;#系统信息&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="Work" scheme="http://adbo.gitee.io/categories/Work/"/>
-    
-    
-      <category term="Linux" scheme="http://adbo.gitee.io/tags/Linux/"/>
     
   </entry>
   
