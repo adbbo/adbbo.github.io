@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://adbo.gitee.io/"/>
-  <updated>2021-03-08T15:34:05.960Z</updated>
+  <updated>2021-03-10T14:50:00.697Z</updated>
   <id>http://adbo.gitee.io/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用join</title>
+    <link href="http://adbo.gitee.io/2021/03/23/2021-03-23-mysql-34/"/>
+    <id>http://adbo.gitee.io/2021/03/23/2021-03-23-mysql-34/</id>
+    <published>2021-03-23T14:43:52.000Z</published>
+    <updated>2021-03-10T14:50:00.697Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;来源《MySQL实战45课》&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;在实际生产中，关于 join
+        
+      
+    
+    </summary>
+    
+      <category term="SQL" scheme="http://adbo.gitee.io/categories/SQL/"/>
+    
+    
+      <category term="MySQL" scheme="http://adbo.gitee.io/tags/MySQL/"/>
+    
+  </entry>
   
   <entry>
     <title>备库延迟</title>
@@ -560,35 +589,6 @@ import
     
     
       <category term="Dubbo" scheme="http://adbo.gitee.io/tags/Dubbo/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>普通索引和唯一索引</title>
-    <link href="http://adbo.gitee.io/2021/01/01/2021-01-01-mysql-09/"/>
-    <id>http://adbo.gitee.io/2021/01/01/2021-01-01-mysql-09/</id>
-    <published>2021-01-01T14:43:52.000Z</published>
-    <updated>2021-02-20T03:08:33.694Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;来源《MySQL实战45课》&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;在不同的业务场景下，应该选择普通索引
-        
-      
-    
-    </summary>
-    
-      <category term="SQL" scheme="http://adbo.gitee.io/categories/SQL/"/>
-    
-    
-      <category term="MySQL" scheme="http://adbo.gitee.io/tags/MySQL/"/>
     
   </entry>
   
