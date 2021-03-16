@@ -4,7 +4,7 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="抽象模式, Adbo~Blog">
+    <meta name="keywords" content="建造者模式, Adbo~Blog">
     <meta name="description" content="重学 Java 设计模式">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>抽象模式 | Adbo</title>
+    <title>建造者模式 | Adbo</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -291,12 +291,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/cover/itstack-demo-design-2-01.png')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/cover/itstack-demo-design-3-01.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">抽象模式</h1>
+                    <h1 class="description center-align post-title">建造者模式</h1>
                 </div>
             </div>
         </div>
@@ -438,7 +438,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-04-02
+                    2021-04-03
                 </div>
                 
 
@@ -458,247 +458,443 @@
                 <blockquote>
 <p>本文章仅用于本人学习笔记记录<br>微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）</p>
 </blockquote>
-<h2 id="抽象工厂模式介绍"><a href="#抽象工厂模式介绍" class="headerlink" title="抽象工厂模式介绍"></a>抽象工厂模式介绍</h2><p>抽象工厂模式与工厂方法模式虽然主要意图都是为了解决，接口选择问题。但在实现上，抽象工厂是一个中心工厂，创建其他工厂的模式。</p>
-<p>可能在平常的业务开发中很少关注这样的设计模式或者类似的代码结构，但是这种场景确一直在我们身边，例如：</p>
-<ul>
-<li><p>不同系统内的回车换行 </p>
-<p>  Unix系统里，每行结尾只有 <strong>&lt;换行&gt;</strong>，即 <code>\n</code>；
-  Windows系统里面，每行结尾是 <strong>&lt;换行&gt;&lt;回车&gt;</strong>，即 <code>\n\r</code>；
-  Mac系统里，每行结尾是 <strong>&lt;回车&gt;</strong></p>
-</li>
-<li><p>IDEA 开发工具的差异展示(Win\Mac)</p>
-<p>  <img src="/2021/04/02/2021-04-02-design-chou-xiang/itstack-demo-design-2-02.png" alt></p>
-</li>
-</ul>
-<p>我们的业务开发中时常也会遇到类似的问题，需要兼容做处理。</p>
-<h2 id="案例场景模拟"><a href="#案例场景模拟" class="headerlink" title="案例场景模拟"></a>案例场景模拟</h2><p><img src="/2021/04/02/2021-04-02-design-chou-xiang/itstack-demo-design-2-03.png" alt></p>
-<p>预估QPS较低、系统压力较小、并发访问不大、近一年没有大动作等等，在考虑时间投入成本的前提前，并不会投入特别多的人力去构建非常完善的系统。就像对 Redis 的使用，往往可能只要是单机的就可以满足现状。</p>
-<p>但随着业务超过预期的快速发展，系统的负载能力也要随着跟上。原有的单机 Redis 已经满足不了系统需求。这时候就需要更换为更为健壮的Redis集群服务，虽然需要修改但是不能影响目前系统的运行，还要平滑过渡过去。</p>
-<p>随着这次的升级，可以预见的问题会有:</p>
-<ul>
-<li>很多服务用到了Redis需要一起升级到集群。</li>
-<li>需要兼容集群A和集群B，便于后续的灾备。</li>
-<li>两套集群提供的接口和方法各有差异，需要做适配。</li>
-<li>不能影响到目前正常运行的系统。</li>
-</ul>
-<h3 id="场景模拟工程"><a href="#场景模拟工程" class="headerlink" title="场景模拟工程"></a>场景模拟工程</h3><pre><code>itstack-demo-design-2-00
+<h2 id="建造者模式介绍"><a href="#建造者模式介绍" class="headerlink" title="建造者模式介绍"></a>建造者模式介绍</h2><p>建造者模式所完成的内容就是通过将多个简单对象通过一步步的组装构建出一个复杂对象的过程。</p>
+<p>例如你玩王者荣耀的时的初始化界面；有三条路、有树木、有野怪、有守卫塔等等，甚至依赖于你的网络情况会控制清晰度。而当你换一个场景进行其他不同模式的选择时，同样会建设道路、树木、野怪等等，但是他们的摆放和大小都有不同。这里就可以用到建造者模式来初始化游戏元素。</p>
+<p>而这样的根据相同的物料，不同的组装所产生出的具体的内容，就是建造者模式的最终意图，也就是；将一个复杂的构建与其表示相分离，使得同样的构建过程可以创建不同的表示。</p>
+<h2 id="案例场景模拟"><a href="#案例场景模拟" class="headerlink" title="案例场景模拟"></a>案例场景模拟</h2><p><img src="/2021/04/03/2021-04-03-design-jian-zao-zhe/itstack-demo-design-3-02.png" alt></p>
+<p>这里我们模拟装修公司对于设计出一些套餐装修服务的场景。</p>
+<p>很多装修公司都会给出自家的套餐服务，一般有；欧式豪华、轻奢田园、现代简约等等，而这些套餐的后面是不同的商品的组合。例如；一级&amp;二级吊顶、多乐士涂料、圣象地板、马可波罗地砖等等，按照不同的套餐的价格选取不同的品牌组合，最终再按照装修面积给出一个整体的报价。</p>
+<p>这里我们就模拟装修公司想推出一些套餐装修服务，按照不同的价格设定品牌选择组合，以达到使用建造者模式的过程。</p>
+<h3 id="场景模拟工程"><a href="#场景模拟工程" class="headerlink" title="场景模拟工程"></a>场景模拟工程</h3><pre><code>itstack-demo-design-3-00
 └── src
     └── main
         └── java
             └── org.itstack.demo.design
-                ├── matter
-                │   ├── EGM.java
-                │   └── IIR.java
-                └── RedisUtils.java</code></pre><h3 id="场景简述"><a href="#场景简述" class="headerlink" title="场景简述"></a>场景简述</h3><h4 id="模拟单机服务-RedisUtils"><a href="#模拟单机服务-RedisUtils" class="headerlink" title="模拟单机服务 RedisUtils"></a>模拟单机服务 RedisUtils</h4><p><img src="/2021/04/02/2021-04-02-design-chou-xiang/itstack-demo-design-2-04.png" alt></p>
-<ul>
-<li>模拟Redis功能，也就是假定目前所有的系统都在使用的服务</li>
-<li>类和方法名次都固定写死到各个业务系统中，改动略微麻烦</li>
-</ul>
-<h4 id="模拟集群-EGM"><a href="#模拟集群-EGM" class="headerlink" title="模拟集群 EGM"></a>模拟集群 EGM</h4><p><img src="/2021/04/02/2021-04-02-design-chou-xiang/itstack-demo-design-2-05.png" alt></p>
-<p>模拟一个集群服务，但是方法名与各业务系统中使用的方法名不同。有点像你mac，我用win。做一样的事，但有不同的操作。</p>
-<h4 id="模拟集群-IIR"><a href="#模拟集群-IIR" class="headerlink" title="模拟集群 IIR"></a>模拟集群 IIR</h4><p><img src="/2021/04/02/2021-04-02-design-chou-xiang/itstack-demo-design-2-06.png" alt></p>
-<p>这是另外一套集群服务，有时候在企业开发中就很有可能出现两套服务，这里我们也是为了做模拟案例，所以添加两套实现同样功能的不同服务，来学习抽象工厂模式。</p>
-<p>综上可以看到，我们目前的系统中已经在大量的使用redis服务，但是因为系统不能满足业务的快速发展，因此需要迁移到集群服务中。而这时有两套集群服务需要兼容使用，又要满足所有的业务系统改造的同时不影响线上使用。</p>
-<h3 id="单集群代码使用"><a href="#单集群代码使用" class="headerlink" title="单集群代码使用"></a>单集群代码使用</h3><p>以下是案例模拟中原有的单集群Redis使用方式，后续会通过对这里的代码进行改造。</p>
-<p><img src="/2021/04/02/2021-04-02-design-chou-xiang/itstack-demo-design-2-07.png" alt></p>
-<h4 id="定义使用接口"><a href="#定义使用接口" class="headerlink" title="定义使用接口"></a>定义使用接口</h4><pre><code>public interface CacheService {
+                ├── ceilling
+                │   ├── LevelOneCeiling.java
+                │   └── LevelTwoCeiling.java
+                ├── coat
+                │   ├── DuluxCoat.java
+                │   └── LiBangCoat.java
+                │   └── LevelTwoCeiling.java
+                ├── floor
+                │   ├── DerFloor.java
+                │   └── ShengXiangFloor.java
+                ├── tile
+                │   ├── DongPengTile.java
+                │   └── MarcoPoloTile.java
+                └── Matter.java</code></pre><p>在模拟工程中提供了装修中所需要的物料；ceilling(吊顶)、coat(涂料)、floor(地板)、tile(地砖)，这么四项内容。（实际的装修物料要比这个多的多）</p>
+<h3 id="场景简述"><a href="#场景简述" class="headerlink" title="场景简述"></a>场景简述</h3><h4 id="物料接口"><a href="#物料接口" class="headerlink" title="物料接口"></a>物料接口</h4><pre><code>public interface Matter {
 
-    String get(final String key);
+    String scene();      // 场景；地板、地砖、涂料、吊顶
 
-    void set(String key, String value);
+    String brand();      // 品牌
 
-    void set(String key, String value, long timeout, TimeUnit timeUnit);
+    String model();      // 型号
 
-    void del(String key);
+    BigDecimal price();  // 价格
 
-}</code></pre><h4 id="实现调用代码"><a href="#实现调用代码" class="headerlink" title="实现调用代码"></a>实现调用代码</h4><pre><code>public class CacheServiceImpl implements CacheService {
+    String desc();       // 描述
 
-    private RedisUtils redisUtils = new RedisUtils();
+}</code></pre><p>物料接口提供了基本的信息，以保证所有的装修材料都可以按照统一标准进行获取。</p>
+<h4 id="吊顶-ceiling"><a href="#吊顶-ceiling" class="headerlink" title="吊顶(ceiling)"></a>吊顶(ceiling)</h4><pre><code>public class LevelOneCeiling implements Matter {
 
-    public String get(String key) {
-        return redisUtils.get(key);
+    public String scene() {
+        return &quot;吊顶&quot;;
     }
 
-    public void set(String key, String value) {
-        redisUtils.set(key, value);
+    public String brand() {
+        return &quot;装修公司自带&quot;;
     }
 
-    public void set(String key, String value, long timeout, TimeUnit timeUnit) {
-        redisUtils.set(key, value, timeout, timeUnit);
+    public String model() {
+        return &quot;一级顶&quot;;
     }
 
-    public void del(String key) {
-        redisUtils.del(key);
+    public BigDecimal price() {
+        return new BigDecimal(260);
     }
 
-}</code></pre><h2 id="用一坨坨代码实现"><a href="#用一坨坨代码实现" class="headerlink" title="用一坨坨代码实现"></a>用一坨坨代码实现</h2><blockquote>
-<p>讲道理没有ifelse解决不了的逻辑，不行就在加一行！哈哈</p>
-</blockquote>
-<p>此时的实现方式并不会修改类结构图，也就是与上面给出的类层级关系一致。通过在接口中添加类型字段区分当前使用的是哪个集群，来作为使用的判断。可以说目前的方式非常难用，其他使用方改动颇多，这里只是做为例子。</p>
-<h3 id="工程结构"><a href="#工程结构" class="headerlink" title="工程结构"></a>工程结构</h3><pre><code>itstack-demo-design-2-01
+    public String desc() {
+        return &quot;造型只做低一级，只有一个层次的吊顶，一般离顶120-150mm&quot;;
+    }
+
+}</code></pre><pre><code>public class LevelTwoCeiling  implements Matter {
+
+    public String scene() {
+        return &quot;吊顶&quot;;
+    }
+
+    public String brand() {
+        return &quot;装修公司自带&quot;;
+    }
+
+    public String model() {
+        return &quot;二级顶&quot;;
+    }
+
+    public BigDecimal price() {
+        return new BigDecimal(850);
+    }
+
+    public String desc() {
+        return &quot;两个层次的吊顶，二级吊顶高度一般就往下吊20cm，要是层高很高，也可增加每级的厚度&quot;;
+    }
+
+}</code></pre><h4 id="涂料-coat"><a href="#涂料-coat" class="headerlink" title="涂料(coat)"></a>涂料(coat)</h4><pre><code>public class DuluxCoat  implements Matter {
+
+    public String scene() {
+        return &quot;涂料&quot;;
+    }
+
+    public String brand() {
+        return &quot;多乐士(Dulux)&quot;;
+    }
+
+    public String model() {
+        return &quot;第二代&quot;;
+    }
+
+    public BigDecimal price() {
+        return new BigDecimal(719);
+    }
+
+    public String desc() {
+        return &quot;多乐士是阿克苏诺贝尔旗下的著名建筑装饰油漆品牌，产品畅销于全球100个国家，每年全球有5000万户家庭使用多乐士油漆。&quot;;
+    }
+
+}
+</code></pre><pre><code>public class LiBangCoat implements Matter {
+
+    public String scene() {
+        return &quot;涂料&quot;;
+    }
+
+    public String brand() {
+        return &quot;立邦&quot;;
+    }
+
+    public String model() {
+        return &quot;默认级别&quot;;
+    }
+
+    public BigDecimal price() {
+        return new BigDecimal(650);
+    }
+
+    public String desc() {
+        return &quot;立邦始终以开发绿色产品、注重高科技、高品质为目标，以技术力量不断推进科研和开发，满足消费者需求。&quot;;
+    }
+
+}
+</code></pre><h4 id="地板-floor"><a href="#地板-floor" class="headerlink" title="地板(floor)"></a>地板(floor)</h4><pre><code>public class DerFloor implements Matter {
+
+    public String scene() {
+        return &quot;地板&quot;;
+    }
+
+    public String brand() {
+        return &quot;德尔(Der)&quot;;
+    }
+
+    public String model() {
+        return &quot;A+&quot;;
+    }
+
+    public BigDecimal price() {
+        return new BigDecimal(119);
+    }
+
+    public String desc() {
+        return &quot;DER德尔集团是全球领先的专业木地板制造商，北京2008年奥运会家装和公装地板供应商&quot;;
+    }
+
+}
+</code></pre><pre><code>public class ShengXiangFloor implements Matter {
+
+    public String scene() {
+        return &quot;地板&quot;;
+    }
+
+    public String brand() {
+        return &quot;圣象&quot;;
+    }
+
+    public String model() {
+        return &quot;一级&quot;;
+    }
+
+    public BigDecimal price() {
+        return new BigDecimal(318);
+    }
+
+    public String desc() {
+        return &quot;圣象地板是中国地板行业著名品牌。圣象地板拥有中国驰名商标、中国名牌、国家免检、中国环境标志认证等多项荣誉。&quot;;
+    }
+
+}
+</code></pre><h4 id="地砖-tile"><a href="#地砖-tile" class="headerlink" title="地砖(tile)"></a>地砖(tile)</h4><pre><code>public class DongPengTile implements Matter {
+
+    public String scene() {
+        return &quot;地砖&quot;;
+    }
+
+    public String brand() {
+        return &quot;东鹏瓷砖&quot;;
+    }
+
+    public String model() {
+        return &quot;10001&quot;;
+    }
+
+    public BigDecimal price() {
+        return new BigDecimal(102);
+    }
+
+    public String desc() {
+        return &quot;东鹏瓷砖以品质铸就品牌，科技推动品牌，口碑传播品牌为宗旨，2014年品牌价值132.35亿元，位列建陶行业榜首。&quot;;
+    }
+
+}
+</code></pre><pre><code>public class MarcoPoloTile implements Matter {
+
+    public String scene() {
+        return &quot;地砖&quot;;
+    }
+
+    public String brand() {
+        return &quot;马可波罗(MARCO POLO)&quot;;
+    }
+
+    public String model() {
+        return &quot;缺省&quot;;
+    }
+
+    public BigDecimal price() {
+        return new BigDecimal(140);
+    }
+
+    public String desc() {
+        return &quot;“马可波罗”品牌诞生于1996年，作为国内最早品牌化的建陶品牌，以“文化陶瓷”占领市场，享有“仿古砖至尊”的美誉。&quot;;
+    }
+
+}
+</code></pre><p>以上就是本次装修公司所提供的装修配置单，接下我们会通过案例去使用不同的物料组合出不同的套餐服务。</p>
+<h2 id="用一坨坨代码实现"><a href="#用一坨坨代码实现" class="headerlink" title="用一坨坨代码实现"></a>用一坨坨代码实现</h2><h3 id="工程结构"><a href="#工程结构" class="headerlink" title="工程结构"></a>工程结构</h3><pre><code>itstack-demo-design-3-01
 └── src
     └── main
         └── java
             └── org.itstack.demo.design
-                ├── impl
-                │   └── CacheServiceImpl.java
-                └── CacheService.java</code></pre><p>此时的只有两个类，类结构非常简单。而我们需要的补充扩展功能也只是在 CacheServiceImpl 中实现。</p>
-<h3 id="ifelse实现需求"><a href="#ifelse实现需求" class="headerlink" title="ifelse实现需求"></a>ifelse实现需求</h3><pre><code>public class CacheServiceImpl implements CacheService {
+                └── DecorationPackageController.java
+</code></pre><p>一个类几千行的代码你是否见过，嚯？那今天就让你见识一下有这样潜质的类！</p>
+<h3 id="ifelse实现需求"><a href="#ifelse实现需求" class="headerlink" title="ifelse实现需求"></a>ifelse实现需求</h3><pre><code>public class DecorationPackageController {
 
-    private RedisUtils redisUtils = new RedisUtils();
+    public String getMatterList(BigDecimal area, Integer level) {
 
-    private EGM egm = new EGM();
+        List&lt;Matter&gt; list = new ArrayList&lt;Matter&gt;(); // 装修清单
+        BigDecimal price = BigDecimal.ZERO;          // 装修价格
 
-    private IIR iir = new IIR();
+        // 豪华欧式
+        if (1 == level) {
 
-    public String get(String key, int redisType) {
+            LevelTwoCeiling levelTwoCeiling = new LevelTwoCeiling(); // 吊顶，二级顶
+            DuluxCoat duluxCoat = new DuluxCoat();                   // 涂料，多乐士
+            ShengXiangFloor shengXiangFloor = new ShengXiangFloor(); // 地板，圣象
 
-        if (1 == redisType) {
-            return egm.gain(key);
+            list.add(levelTwoCeiling);
+            list.add(duluxCoat);
+            list.add(shengXiangFloor);
+
+            price = price.add(area.multiply(new BigDecimal(&quot;0.2&quot;)).multiply(levelTwoCeiling.price()));
+            price = price.add(area.multiply(new BigDecimal(&quot;1.4&quot;)).multiply(duluxCoat.price()));
+            price = price.add(area.multiply(shengXiangFloor.price()));
+
         }
 
-        if (2 == redisType) {
-            return iir.get(key);
+        // 轻奢田园
+        if (2 == level) {
+
+            LevelTwoCeiling levelTwoCeiling = new LevelTwoCeiling(); // 吊顶，二级顶
+            LiBangCoat liBangCoat = new LiBangCoat();                // 涂料，立邦
+            MarcoPoloTile marcoPoloTile = new MarcoPoloTile();       // 地砖，马可波罗
+
+            list.add(levelTwoCeiling);
+            list.add(liBangCoat);
+            list.add(marcoPoloTile);
+
+            price = price.add(area.multiply(new BigDecimal(&quot;0.2&quot;)).multiply(levelTwoCeiling.price()));
+            price = price.add(area.multiply(new BigDecimal(&quot;1.4&quot;)).multiply(liBangCoat.price()));
+            price = price.add(area.multiply(marcoPoloTile.price()));
+
         }
 
-        return redisUtils.get(key);
+        // 现代简约
+        if (3 == level) {
+
+            LevelOneCeiling levelOneCeiling = new LevelOneCeiling();  // 吊顶，二级顶
+            LiBangCoat liBangCoat = new LiBangCoat();                 // 涂料，立邦
+            DongPengTile dongPengTile = new DongPengTile();           // 地砖，东鹏
+
+            list.add(levelOneCeiling);
+            list.add(liBangCoat);
+            list.add(dongPengTile);
+
+            price = price.add(area.multiply(new BigDecimal(&quot;0.2&quot;)).multiply(levelOneCeiling.price()));
+            price = price.add(area.multiply(new BigDecimal(&quot;1.4&quot;)).multiply(liBangCoat.price()));
+            price = price.add(area.multiply(dongPengTile.price()));
+        }
+
+        StringBuilder detail = new StringBuilder(&quot;\r\n-------------------------------------------------------\r\n&quot; +
+                &quot;装修清单&quot; + &quot;\r\n&quot; +
+                &quot;套餐等级：&quot; + level + &quot;\r\n&quot; +
+                &quot;套餐价格：&quot; + price.setScale(2, BigDecimal.ROUND_HALF_UP) + &quot; 元\r\n&quot; +
+                &quot;房屋面积：&quot; + area.doubleValue() + &quot; 平米\r\n&quot; +
+                &quot;材料清单：\r\n&quot;);
+
+        for (Matter matter: list) {
+            detail.append(matter.scene()).append(&quot;：&quot;).append(matter.brand()).append(&quot;、&quot;).append(matter.model()).append(&quot;、平米价格：&quot;).append(matter.price()).append(&quot; 元。\n&quot;);
+        }
+
+        return detail.toString();
+
     }
 
-    public void set(String key, String value, int redisType) {
-
-        if (1 == redisType) {
-            egm.set(key, value);
-            return;
-        }
-
-        if (2 == redisType) {
-            iir.set(key, value);
-            return;
-        }
-
-        redisUtils.set(key, value);
-    }
-
-    //... 同类不做太多展示
-
-}</code></pre><p>这里的实现过程非常简单，主要根据类型判断是哪个Redis集群。</p>
-<p>虽然实现是简单了，但是对使用者来说就麻烦了，并且也很难应对后期的拓展和不停的维护。</p>
-<h2 id="抽象工厂模式重构代码"><a href="#抽象工厂模式重构代码" class="headerlink" title="抽象工厂模式重构代码"></a>抽象工厂模式重构代码</h2><p>这里的抽象工厂的创建和获取方式，会采用代理类的方式进行实现。所被代理的类就是目前的Redis操作方法类，让这个类在不需要任何修改下，就可以实现调用集群A和集群B的数据服务。</p>
-<p>并且这里还有一点非常重要，由于集群A和集群B在部分方法提供上是不同的，因此需要做一个接口适配，而这个适配类就相当于工厂中的工厂，用于创建把不同的服务抽象为统一的接口做相同的业务。</p>
-<h3 id="工程结构-1"><a href="#工程结构-1" class="headerlink" title="工程结构"></a>工程结构</h3><pre><code>itstack-demo-design-2-02
+}
+</code></pre><p>首先这段代码所要解决的问题就是接收入参；装修面积(area)、装修等级(level)，根据不同类型的装修等级选择不同的材料。</p>
+<p>其次在实现过程中可以看到每一段if块里，都包含着不通的材料(吊顶，二级顶、涂料，立邦、地砖，马可波罗)，最终生成装修清单和装修成本。</p>
+<p>最后提供获取装修详细信息的方法，返回给调用方，用于知道装修清单。</p>
+<h2 id="建造者模式重构代码"><a href="#建造者模式重构代码" class="headerlink" title="建造者模式重构代码"></a>建造者模式重构代码</h2><p>建造者模式主要解决的问题是在软件系统中，有时候面临着”一个复杂对象”的创建工作，其通常由各个部分的子对象用一定的过程构成；由于需求的变化，这个复杂对象的各个部分经常面临着重大的变化，但是将它们组合在一起的过程却相对稳定。</p>
+<p>这里我们会把构建的过程交给创建者类，而创建者通过使用我们的构建工具包，去构建出不同的装修套餐。</p>
+<h3 id="工程结构-1"><a href="#工程结构-1" class="headerlink" title="工程结构"></a>工程结构</h3><pre><code>itstack-demo-design-3-02
 └── src
     ├── main
     │   └── java
     │       └── org.itstack.demo.design
-    │           ├── factory    
-    │           │   ├── impl
-    │           │   │   ├── EGMCacheAdapter.java 
-    │           │   │   └── IIRCacheAdapter.java
-    │           │   ├── ICacheAdapter.java
-    │           │   ├── JDKInvocationHandler.java
-    │           │   └── JDKProxy.java
-    │           ├── impl
-    │           │   └── CacheServiceImpl.java    
-    │           └── CacheService.java 
+    │           ├── Builder.java    
+    │           ├── DecorationPackageMenu.java
+    │           └── IMenu.java 
     └── test
          └── java
              └── org.itstack.demo.design.test
-                 └── ApiTest.java</code></pre><h3 id="抽象工厂模型结构"><a href="#抽象工厂模型结构" class="headerlink" title="抽象工厂模型结构"></a>抽象工厂模型结构</h3><p><img src="/2021/04/02/2021-04-02-design-chou-xiang/itstack-demo-design-2-08.png" alt></p>
+                 └── ApiTest.java
+</code></pre><p><img src="/2021/04/03/2021-04-03-design-jian-zao-zhe/itstack-demo-design-3-03.png" alt></p>
+<p>工程中有三个核心类和一个测试类，核心类是建造者模式的具体实现。与ifelse实现方式相比，多出来了两个二外的类。具体功能如下；</p>
 <ul>
-<li>ICacheAdapter，定义了适配接口，分别包装两个集群中差异化的接口名称。EGMCacheAdapter、IIRCacheAdapter</li>
-<li>JDKProxy、JDKInvocationHandler，是代理类的定义和实现，这部分也就是抽象工厂的另外一种实现方式。通过这样的方式可以很好的把原有操作Redis的方法进行代理操作，通过控制不同的入参对象，控制缓存的使用。</li>
+<li>Builder，建造者类具体的各种组装由此类实现。</li>
+<li>DecorationPackageMenu，是IMenu接口的实现类，主要是承载建造过程中的填充器。相当于这是一套承载物料和创建者中间衔接的内容。</li>
 </ul>
-<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><h4 id="定义适配接口"><a href="#定义适配接口" class="headerlink" title="定义适配接口"></a>定义适配接口</h4><pre><code>public interface ICacheAdapter {
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><h4 id="定义装修包接口"><a href="#定义装修包接口" class="headerlink" title="定义装修包接口"></a>定义装修包接口</h4><pre><code>public interface IMenu {
 
-    String get(String key);
+    IMenu appendCeiling(Matter matter); // 吊顶
 
-    void set(String key, String value);
+    IMenu appendCoat(Matter matter);    // 涂料
 
-    void set(String key, String value, long timeout, TimeUnit timeUnit);
+    IMenu appendFloor(Matter matter);   // 地板
 
-    void del(String key);
+    IMenu appendTile(Matter matter);    // 地砖
 
-}</code></pre><p>这个类的主要作用是让所有集群的提供方，能在统一的方法名称下进行操作。也方面后续的拓展。</p>
-<h4 id="实现集群使用服务"><a href="#实现集群使用服务" class="headerlink" title="实现集群使用服务"></a>实现集群使用服务</h4><pre><code>public class EGMCacheAdapter implements ICacheAdapter {
+    String getDetail();                 // 明细 
 
-    private EGM egm = new EGM();
+}
+</code></pre><p>接口类中定义了填充各项物料的方法；吊顶、涂料、地板、地砖，以及最终提供获取全部明细的方法。</p>
+<h4 id="装修包实现"><a href="#装修包实现" class="headerlink" title="装修包实现"></a>装修包实现</h4><pre><code>public class DecorationPackageMenu implements IMenu {
 
-    public String get(String key) {
-        return egm.gain(key);
+    private List&lt;Matter&gt; list = new ArrayList&lt;Matter&gt;();  // 装修清单
+    private BigDecimal price = BigDecimal.ZERO;      // 装修价格
+
+    private BigDecimal area;  // 面积
+    private String grade;     // 装修等级；豪华欧式、轻奢田园、现代简约
+
+    private DecorationPackageMenu() {
     }
 
-    public void set(String key, String value) {
-        egm.set(key, value);
+    public DecorationPackageMenu(Double area, String grade) {
+        this.area = new BigDecimal(area);
+        this.grade = grade;
     }
 
-    public void set(String key, String value, long timeout, TimeUnit timeUnit) {
-        egm.setEx(key, value, timeout, timeUnit);
+    public IMenu appendCeiling(Matter matter) {
+        list.add(matter);
+        price = price.add(area.multiply(new BigDecimal(&quot;0.2&quot;)).multiply(matter.price()));
+        return this;
     }
 
-    public void del(String key) {
-        egm.delete(key);
-    }
-}</code></pre><pre><code>public class IIRCacheAdapter implements ICacheAdapter {
-
-    private IIR iir = new IIR();
-
-    public String get(String key) {
-        return iir.get(key);
+    public IMenu appendCoat(Matter matter) {
+        list.add(matter);
+        price = price.add(area.multiply(new BigDecimal(&quot;1.4&quot;)).multiply(matter.price()));
+        return this;
     }
 
-    public void set(String key, String value) {
-        iir.set(key, value);
+    public IMenu appendFloor(Matter matter) {
+        list.add(matter);
+        price = price.add(area.multiply(matter.price()));
+        return this;
     }
 
-    public void set(String key, String value, long timeout, TimeUnit timeUnit) {
-        iir.setExpire(key, value, timeout, timeUnit);
+    public IMenu appendTile(Matter matter) {
+        list.add(matter);
+        price = price.add(area.multiply(matter.price()));
+        return this;
     }
 
-    public void del(String key) {
-        iir.del(key);
+    public String getDetail() {
+
+        StringBuilder detail = new StringBuilder(&quot;\r\n-------------------------------------------------------\r\n&quot; +
+                &quot;装修清单&quot; + &quot;\r\n&quot; +
+                &quot;套餐等级：&quot; + grade + &quot;\r\n&quot; +
+                &quot;套餐价格：&quot; + price.setScale(2, BigDecimal.ROUND_HALF_UP) + &quot; 元\r\n&quot; +
+                &quot;房屋面积：&quot; + area.doubleValue() + &quot; 平米\r\n&quot; +
+                &quot;材料清单：\r\n&quot;);
+
+        for (Matter matter: list) {
+            detail.append(matter.scene()).append(&quot;：&quot;).append(matter.brand()).append(&quot;、&quot;).append(matter.model()).append(&quot;、平米价格：&quot;).append(matter.price()).append(&quot; 元。\n&quot;);
+        }
+
+        return detail.toString();
     }
 
-}</code></pre><p>以上两个实现都非常容易，在统一方法名下进行包装。</p>
-<h4 id="定义抽象工程代理类和实现"><a href="#定义抽象工程代理类和实现" class="headerlink" title="定义抽象工程代理类和实现"></a>定义抽象工程代理类和实现</h4><p>JDKProxy:</p>
-<pre><code>public static &lt;T&gt; T getProxy(Class&lt;T&gt; interfaceClass, ICacheAdapter cacheAdapter) throws Exception {
-    InvocationHandler handler = new JDKInvocationHandler(cacheAdapter);
-    ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-    Class&lt;?&gt;[] classes = interfaceClass.getInterfaces();
-    return (T) Proxy.newProxyInstance(classLoader, new Class[]{classes[0]}, handler);
-}</code></pre><p>这里主要的作用就是完成代理类，同时对于使用哪个集群有外部通过入参进行传递。</p>
-<p>JDKInvocationHandler:</p>
-<pre><code>public class JDKInvocationHandler implements InvocationHandler {
+}
+</code></pre><p>装修包的实现中每一个方法都会了 this，也就可以非常方便的用于连续填充各项物料。</p>
+<p>同时在填充时也会根据物料计算平米数下的报价，吊顶和涂料按照平米数适量乘以常熟计算。</p>
+<p>最后同样提供了统一的获取装修清单的明细方法。</p>
+<h3 id="建造者方法"><a href="#建造者方法" class="headerlink" title="建造者方法"></a>建造者方法</h3><pre><code>public class Builder {
 
-    private ICacheAdapter cacheAdapter;
-
-    public JDKInvocationHandler(ICacheAdapter cacheAdapter) {
-        this.cacheAdapter = cacheAdapter;
+    public IMenu levelOne(Double area) {
+        return new DecorationPackageMenu(area, &quot;豪华欧式&quot;)
+                .appendCeiling(new LevelTwoCeiling())    // 吊顶，二级顶
+                .appendCoat(new DuluxCoat())             // 涂料，多乐士
+                .appendFloor(new ShengXiangFloor());     // 地板，圣象
     }
 
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        return ICacheAdapter.class.getMethod(method.getName(), ClassLoaderUtils.getClazzByArgs(args)).invoke(cacheAdapter, args);
+    public IMenu levelTwo(Double area){
+        return new DecorationPackageMenu(area, &quot;轻奢田园&quot;)
+                .appendCeiling(new LevelTwoCeiling())   // 吊顶，二级顶
+                .appendCoat(new LiBangCoat())           // 涂料，立邦
+                .appendTile(new MarcoPoloTile());       // 地砖，马可波罗
     }
 
-}</code></pre><p>在代理类的实现中其实也非常简单，通过穿透进来的集群服务进行方法操作。</p>
-<p>另外在invoke中通过使用获取方法名称反射方式，调用对应的方法功能，也就简化了整体的使用。</p>
+    public IMenu levelThree(Double area){
+        return new DecorationPackageMenu(area, &quot;现代简约&quot;)
+                .appendCeiling(new LevelOneCeiling())   // 吊顶，二级顶
+                .appendCoat(new LiBangCoat())           // 涂料，立邦
+                .appendTile(new DongPengTile());        // 地砖，东鹏
+    }
+
+}
+</code></pre><p>建造者的使用中就已经非常容易了，统一的建造方式，通过不同物料填充出不同的装修风格；豪华欧式、轻奢田园、现代简约，如果将来业务扩展也可以将这部分内容配置到数据库自动生成。但整体的思想还可以使用创建者模式进行搭建。</p>
 <h3 id="测试验证"><a href="#测试验证" class="headerlink" title="测试验证"></a>测试验证</h3><pre><code>@Test
-public void test_CacheService() throws Exception {
-    CacheService proxy_EGM = JDKProxy.getProxy(CacheServiceImpl.class, new EGMCacheAdapter());
-    proxy_EGM.set(&quot;user_name_01&quot;,&quot;小哥&quot;);
-    String val01 = proxy_EGM.get(&quot;user_name_01&quot;);
-    System.out.println(val01);
-
-    CacheService proxy_IIR = JDKProxy.getProxy(CacheServiceImpl.class, new IIRCacheAdapter());
-    proxy_IIR.set(&quot;user_name_01&quot;,&quot;小哥&quot;);
-    String val02 = proxy_IIR.get(&quot;user_name_01&quot;);
-    System.out.println(val02);
-}</code></pre><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
-<li><p>抽象工厂模式，所要解决的问题就是在一个产品族，存在多个不同类型的产品(Redis集群、操作系统)情况下，接口选择的问题。而这种场景在业务开发中也是非常多见的，只不过可能有时候没有将它们抽象化出来。</p>
-</li>
-<li><p>当你知道什么场景下何时可以被抽象工程优化代码，那么你的代码层级结构以及满足业务需求上，都可以得到很好的完成功能实现并提升扩展性和优雅度。</p>
-</li>
-<li><p>那么这个设计模式满足了；单一职责、开闭原则、解耦等优点，但如果说随着业务的不断拓展，可能会造成类实现上的复杂度。但也可以说算不上缺点，因为可以随着其他设计方式的引入和代理类以及自动生成加载的方式降低此项缺点。</p>
-</li>
+public void test_Builder(){
+    Builder builder = new Builder();
+    // 豪华欧式
+    System.out.println(builder.levelOne(132.52D).getDetail());
+    // 轻奢田园
+    System.out.println(builder.levelTwo(98.25D).getDetail());
+    // 现代简约
+    System.out.println(builder.levelThree(85.43D).getDetail());
+}
+</code></pre><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>通过上面对建造者模式的使用，已经可以摸索出一点心得。那就是什么时候会选择这样的设计模式，当：一些基本物料不会变，而其组合经常变化的时候，就可以选择这样的设计模式来构建代码。</li>
+<li>此设计模式满足了单一职责原则以及可复用的技术、建造者独立、易扩展、便于控制细节风险。但同时当出现特别多的物料以及很多的组合后，类的不断扩展也会造成难以维护的问题。但这种设计结构模型可以把重复的内容抽象到数据库中，按照需要配置。这样就可以减少代码中大量的重复。</li>
 </ul>
 
             </div>
@@ -725,7 +921,7 @@ public void test_CacheService() throws Exception {
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://adbo.gitee.io/2021/04/02/2021-04-02-design-chou-xiang/">http://adbo.gitee.io/2021/04/02/2021-04-02-design-chou-xiang/</a>
+                    <a href="http://adbo.gitee.io/2021/04/03/2021-04-03-design-jian-zao-zhe/">http://adbo.gitee.io/2021/04/03/2021-04-03-design-jian-zao-zhe/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -935,7 +1131,7 @@ public void test_CacheService() throws Exception {
         repo: 'gitalk',
         owner: 'FlynnCN',
         admin: "FlynnCN",
-        id: '2021-04-02T22-43-52',
+        id: '2021-04-03T22-43-52',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -958,7 +1154,8 @@ public void test_CacheService() throws Exception {
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2021/04/03/2021-04-03-design-jian-zao-zhe/">
                     <div class="card-image">
@@ -975,9 +1172,9 @@ public void test_CacheService() throws Exception {
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-04-03
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-03
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -990,6 +1187,7 @@ public void test_CacheService() throws Exception {
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -1008,12 +1206,12 @@ public void test_CacheService() throws Exception {
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/04/01/2021-04-01-design-gong-han/">
+                <a href="/2021/04/02/2021-04-02-design-chou-xiang/">
                     <div class="card-image">
                         
-                        <img src="/medias/cover/design.png" class="responsive-img" alt="工厂模式">
+                        <img src="/medias/cover/itstack-demo-design-2-01.png" class="responsive-img" alt="抽象模式">
                         
-                        <span class="card-title">工厂模式</span>
+                        <span class="card-title">抽象模式</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1024,7 +1222,7 @@ public void test_CacheService() throws Exception {
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-01
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-02
                             </span>
                         <span class="publish-author">
                             
