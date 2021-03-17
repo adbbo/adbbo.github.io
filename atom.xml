@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://adbo.gitee.io/"/>
-  <updated>2021-03-17T09:26:04.124Z</updated>
+  <updated>2021-03-17T14:46:38.005Z</updated>
   <id>http://adbo.gitee.io/</id>
   
   <author>
@@ -17,11 +17,40 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>单例模式</title>
+    <link href="http://adbo.gitee.io/2021/04/05/2021-04-05-design-dan-li/"/>
+    <id>http://adbo.gitee.io/2021/04/05/2021-04-05-design-dan-li/</id>
+    <published>2021-04-05T14:43:52.000Z</published>
+    <updated>2021-03-17T14:46:38.005Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;单例模式介绍&quot;&gt;&lt;a href=&quot;#单例模式介绍&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="设计模式" scheme="http://adbo.gitee.io/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+    
+      <category term="设计模式" scheme="http://adbo.gitee.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+  </entry>
+  
+  <entry>
     <title>原型模式</title>
     <link href="http://adbo.gitee.io/2021/04/04/2021-04-04-design-yuan-xing/"/>
     <id>http://adbo.gitee.io/2021/04/04/2021-04-04-design-yuan-xing/</id>
     <published>2021-04-04T14:43:52.000Z</published>
-    <updated>2021-03-17T09:26:04.124Z</updated>
+    <updated>2021-03-17T09:32:25.666Z</updated>
     
     <summary type="html">
     
@@ -50,7 +79,7 @@
     <link href="http://adbo.gitee.io/2021/04/03/2021-04-03-design-jian-zao-zhe/"/>
     <id>http://adbo.gitee.io/2021/04/03/2021-04-03-design-jian-zao-zhe/</id>
     <published>2021-04-03T14:43:52.000Z</published>
-    <updated>2021-03-17T08:55:06.743Z</updated>
+    <updated>2021-03-17T09:32:49.908Z</updated>
     
     <summary type="html">
     
@@ -79,7 +108,7 @@
     <link href="http://adbo.gitee.io/2021/04/02/2021-04-02-design-chou-xiang/"/>
     <id>http://adbo.gitee.io/2021/04/02/2021-04-02-design-chou-xiang/</id>
     <published>2021-04-02T14:43:52.000Z</published>
-    <updated>2021-03-16T13:04:38.090Z</updated>
+    <updated>2021-03-17T09:33:19.878Z</updated>
     
     <summary type="html">
     
@@ -108,7 +137,7 @@
     <link href="http://adbo.gitee.io/2021/04/01/2021-04-01-design-gong-han/"/>
     <id>http://adbo.gitee.io/2021/04/01/2021-04-01-design-gong-han/</id>
     <published>2021-04-01T14:43:52.000Z</published>
-    <updated>2021-03-17T08:57:11.899Z</updated>
+    <updated>2021-03-17T09:34:04.736Z</updated>
     
     <summary type="html">
     
@@ -555,35 +584,6 @@
 &lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;来源《MySQL实战45课》&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&quot;日志相关问题&quot;&gt;&lt;a
-        
-      
-    
-    </summary>
-    
-      <category term="SQL" scheme="http://adbo.gitee.io/categories/SQL/"/>
-    
-    
-      <category term="MySQL" scheme="http://adbo.gitee.io/tags/MySQL/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>count(*)最快</title>
-    <link href="http://adbo.gitee.io/2021/02/27/2021-02-27-mysql-14/"/>
-    <id>http://adbo.gitee.io/2021/02/27/2021-02-27-mysql-14/</id>
-    <published>2021-02-27T14:43:52.000Z</published>
-    <updated>2021-02-21T15:44:11.716Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;来源《MySQL实战45课》&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2
         
       
     
