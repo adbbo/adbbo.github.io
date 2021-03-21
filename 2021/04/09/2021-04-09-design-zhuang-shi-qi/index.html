@@ -4,7 +4,7 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="组合模式, Adbo~Blog">
+    <meta name="keywords" content="装饰器模式, Adbo~Blog">
     <meta name="description" content="重学 Java 设计模式">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>组合模式 | Adbo</title>
+    <title>装饰器模式 | Adbo</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -291,12 +291,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/cover/itstack-demo-design-8-01.png')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/cover/itstack-demo-design-9-01.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">组合模式</h1>
+                    <h1 class="description center-align post-title">装饰器模式</h1>
                 </div>
             </div>
         </div>
@@ -438,7 +438,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-04-08
+                    2021-04-09
                 </div>
                 
 
@@ -458,370 +458,206 @@
                 <blockquote>
 <p>本文章仅用于本人学习笔记记录<br>微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）</p>
 </blockquote>
-<h2 id="组合模式介绍"><a href="#组合模式介绍" class="headerlink" title="组合模式介绍"></a>组合模式介绍</h2><p><img src="/2021/04/08/2021-04-08-design-zu-he/itstack-demo-design-8-01.png" alt></p>
-<p>从上图可以看到这有点像螺丝🔩和螺母，通过一堆的链接组织出一棵结构树。而这种通过把相似对象(也可以称作是方法)组合成一组可被调用的结构树对象的设计思路叫做组合模式。组合模式也就是把相似对象(也可以称作是方法)组合成一组可被调用的结构树对象。</p>
-<p>这种设计方式可以让你的服务组节点进行自由组合对外提供服务，例如你有三个原子校验功能(A：身份证、B：银行卡、C：手机号)服务并对外提供调用使用。有些调用方需要使用AB组合，有些调用方需要使用到CBA组合，还有一些可能只使用三者中的一个。那么这个时候你就可以使用组合模式进行构建服务，对于不同类型的调用方配置不同的组织关系树，而这个树结构你可以配置到数据库中也可以不断的通过图形界面来控制树结构。</p>
-<p>所以不同的设计模式用在恰当好处的场景可以让代码逻辑非常清晰并易于扩展，同时也可以减少团队新增人员对项目的学习成本。</p>
-<h2 id="案例场景模拟"><a href="#案例场景模拟" class="headerlink" title="案例场景模拟"></a>案例场景模拟</h2><p><img src="/2021/04/08/2021-04-08-design-zu-he/itstack-demo-design-8-02.png" alt></p>
-<p>以上是一个非常简化版的营销规则决策树，根据性别、年龄来发放不同类型的优惠券，来刺激消费起到精准用户促活的目的。</p>
-<h2 id="用一坨坨代码实现"><a href="#用一坨坨代码实现" class="headerlink" title="用一坨坨代码实现"></a>用一坨坨代码实现</h2><h3 id="工程结构"><a href="#工程结构" class="headerlink" title="工程结构"></a>工程结构</h3><pre><code>itstack-demo-design-8-01
+<h2 id="装饰器模式介绍"><a href="#装饰器模式介绍" class="headerlink" title="装饰器模式介绍"></a>装饰器模式介绍</h2><p>装饰器的核心就是在不改原有类的基础上给类新增功能。不改变原有类，可能会想到继承、AOP切面，当然这些方式都可以实现，但是使用装饰器模式会是另外一种思路更为灵活，可以避免继承导致的子类过多，也可以避免AOP带来的复杂性。、</p>
+<p>new BufferedReader(new FileReader(“”));，这段代码你是否熟悉，开发到字节流、字符流、文件流的内容时都见到了这样的代码，一层嵌套一层，一层嵌套一层，字节流转字符流等等，而这样方式的使用就是装饰器模式的一种体现。</p>
+<h2 id="案例场景模拟"><a href="#案例场景模拟" class="headerlink" title="案例场景模拟"></a>案例场景模拟</h2><p><img src="/2021/04/09/2021-04-09-design-zhuang-shi-qi/itstack-demo-design-9-02.png" alt></p>
+<p>在本案例中我们模拟一个单点登录功能扩充的场景</p>
+<p>一般在业务开发的初期，往往内部的ERP使用只需要判断账户验证即可，验证通过后即可访问ERP的所有资源。但随着业务的不断发展，团队里开始出现专门的运营人员、营销人员、数据人员，每个人员对于ERP的使用需求不同，有些需要创建活动，有些只是查看数据。同时为了保证数据的安全性，不会让每个用户都有最高的权限。</p>
+<p>那么以往使用的SSO是一个组件化通用的服务，不能在里面添加需要的用户访问验证功能。这个时候我们就可以使用装饰器模式，扩充原有的单点登录服务。但同时也保证原有功能不受破坏，可以继续使用。</p>
+<h3 id="场景模拟工程"><a href="#场景模拟工程" class="headerlink" title="场景模拟工程"></a>场景模拟工程</h3><pre><code>itstack-demo-design-9-00
 └── src
     └── main
         └── java
             └── org.itstack.demo.design
-                └── EngineController.java
-</code></pre><h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><pre><code>public class EngineController {
+                ├── HandlerInterceptor.java
+                └── SsoInterceptor.java
+</code></pre><p>这里模拟的是spring中的类：HandlerInterceptor，实现接口功能SsoInterceptor模拟的单点登录拦截服务。</p>
+<h3 id="场景简述"><a href="#场景简述" class="headerlink" title="场景简述"></a>场景简述</h3><h4 id="模拟Spring的HandlerInterceptor"><a href="#模拟Spring的HandlerInterceptor" class="headerlink" title="模拟Spring的HandlerInterceptor"></a>模拟Spring的HandlerInterceptor</h4><pre><code>public interface HandlerInterceptor {
 
-    private Logger logger = LoggerFactory.getLogger(EngineController.class);
+    boolean preHandle(String request, String response, Object handler);
 
-    public String process(final String userId, final String userSex, final int userAge) {
+}
+</code></pre><p>实际的单点登录开发会基于；org.springframework.web.servlet.HandlerInterceptor 实现。</p>
+<h4 id="模拟单点登录功能"><a href="#模拟单点登录功能" class="headerlink" title="模拟单点登录功能"></a>模拟单点登录功能</h4><pre><code>public class SsoInterceptor implements HandlerInterceptor{
 
-        logger.info(&quot;ifelse实现方式判断用户结果。userId：{} userSex：{} userAge：{}&quot;, userId, userSex, userAge);
-
-        if (&quot;man&quot;.equals(userSex)) {
-            if (userAge &lt; 25) {
-                return &quot;果实A&quot;;
-            }
-
-            if (userAge &gt;= 25) {
-                return &quot;果实B&quot;;
-            }
-        }
-
-        if (&quot;woman&quot;.equals(userSex)) {
-            if (userAge &lt; 25) {
-                return &quot;果实C&quot;;
-            }
-
-            if (userAge &gt;= 25) {
-                return &quot;果实D&quot;;
-            }
-        }
-
-        return null;
-
+    public boolean preHandle(String request, String response, Object handler) {
+        // 模拟获取cookie
+        String ticket = request.substring(1, 8);
+        // 模拟校验
+        return ticket.equals(&quot;success&quot;);
     }
 
 }
-</code></pre><h2 id="组合模式重构代码"><a href="#组合模式重构代码" class="headerlink" title="组合模式重构代码"></a>组合模式重构代码</h2><p>接下来的重构部分代码改动量相对来说会比较大一些，为了让我们可以把不同类型的决策节点和最终的果实组装成一棵可被运行的决策树，需要做适配设计和工厂方法调用，具体会体现在定义接口以及抽象类和初始化配置决策节点(性别、年龄)上。建议这部分代码多阅读几次，最好实践下。</p>
-<h3 id="工程结构-1"><a href="#工程结构-1" class="headerlink" title="工程结构"></a>工程结构</h3><pre><code>itstack-demo-design-8-02
+</code></pre><h2 id="用一坨坨代码实现"><a href="#用一坨坨代码实现" class="headerlink" title="用一坨坨代码实现"></a>用一坨坨代码实现</h2><p>继承类的实现方式也是一个比较通用的方式，通过继承后重写方法，并发将自己的逻辑覆盖进去。如果是一些简单的场景且不需要不断维护和扩展的，此类实现并不会有什么，也不会导致子类过多。</p>
+<h3 id="工程结构"><a href="#工程结构" class="headerlink" title="工程结构"></a>工程结构</h3><pre><code>itstack-demo-design-9-01
 └── src
-    ├── main
-    │   └── java
-    │      └── org.itstack.demo.design.domain
-    │          ├── model
-    │          │   ├── aggregates
-    │          │   │   └── TreeRich.java
-    │          │   └── vo
-    │          │       ├── EngineResult.java
-    │          │       ├── TreeNode.java
-    │          │       ├── TreeNodeLink.java    
-    │          │       └── TreeRoot.java    
-    │          └── service
-    │              ├── engine
-    │              │   ├── impl    
-    │              │   │   └── TreeEngineHandle.java       
-    │              │   ├── EngineBase.java 
-    │              │   ├── EngineConfig.java       
-    │              │   └── IEngine.java    
-    │              └── logic
-    │                  ├── impl    
-    │                  │   ├── LogicFilter.java     
-    │                  │   └── LogicFilter.java        
-    │                  └── LogicFilter.java    
-    └── test
-         └── java
-             └── org.itstack.demo.design.test
-                 └── ApiTest.java
-</code></pre><p>组合模式模型结构</p>
-<p><img src="/2021/04/08/2021-04-08-design-zu-he/itstack-demo-design-8-03.png" alt></p>
-<p>LogicFilter开始定义适配的决策过滤器，BaseLogic是对接口的实现，提供最基本的通用方法。UserAgeFilter、UserGenerFilter，是两个具体的实现类用于判断年龄和性别。</p>
-<h3 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h3><h4 id="基础对象"><a href="#基础对象" class="headerlink" title="基础对象"></a>基础对象</h4><p>![](Image 1.png)</p>
-<p>以上这部分简单介绍，不包含逻辑只是各项必要属性的get/set</p>
-<h4 id="树节点逻辑过滤器接口"><a href="#树节点逻辑过滤器接口" class="headerlink" title="树节点逻辑过滤器接口"></a>树节点逻辑过滤器接口</h4><pre><code>public interface LogicFilter {
+    └── main
+        └── java
+            └── org.itstack.demo.design
+                └── LoginSsoDecorator.java
+</code></pre><p>以上工程结构非常简单，只是通过 LoginSsoDecorator 继承 SsoInterceptor，重写方法功能。</p>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><pre><code>public class LoginSsoDecorator extends SsoInterceptor {
 
-    /**
-     * 逻辑决策器
-     *
-     * @param matterValue          决策值
-     * @param treeNodeLineInfoList 决策节点
-     * @return 下一个节点Id
-     */
-    Long filter(String matterValue, List&lt;TreeNodeLink&gt; treeNodeLineInfoList);
-
-    /**
-     * 获取决策值
-     *
-     * @param decisionMatter 决策物料
-     * @return 决策值
-     */
-    String matterValue(Long treeId, String userId, Map&lt;String, String&gt; decisionMatter);
-
-}
-</code></pre><p>这一部分定义了适配的通用接口，逻辑决策器、获取决策值，让每一个提供决策能力的节点都必须实现此接口，保证统一性。</p>
-<h4 id="决策抽象类提供基础服务"><a href="#决策抽象类提供基础服务" class="headerlink" title="决策抽象类提供基础服务"></a>决策抽象类提供基础服务</h4><pre><code>public abstract class BaseLogic implements LogicFilter {
-
-    @Override
-    public Long filter(String matterValue, List&lt;TreeNodeLink&gt; treeNodeLinkList) {
-        for (TreeNodeLink nodeLine : treeNodeLinkList) {
-            if (decisionLogic(matterValue, nodeLine)) return nodeLine.getNodeIdTo();
-        }
-        return 0L;
-    }
-
-    @Override
-    public abstract String matterValue(Long treeId, String userId, Map&lt;String, String&gt; decisionMatter);
-
-    private boolean decisionLogic(String matterValue, TreeNodeLink nodeLink) {
-        switch (nodeLink.getRuleLimitType()) {
-            case 1:
-                return matterValue.equals(nodeLink.getRuleLimitValue());
-            case 2:
-                return Double.parseDouble(matterValue) &gt; Double.parseDouble(nodeLink.getRuleLimitValue());
-            case 3:
-                return Double.parseDouble(matterValue) &lt; Double.parseDouble(nodeLink.getRuleLimitValue());
-            case 4:
-                return Double.parseDouble(matterValue) &lt;= Double.parseDouble(nodeLink.getRuleLimitValue());
-            case 5:
-                return Double.parseDouble(matterValue) &gt;= Double.parseDouble(nodeLink.getRuleLimitValue());
-            default:
-                return false;
-        }
-    }
-
-}
-</code></pre><p>在抽象方法中实现了接口方法，同时定义了基本的决策方法；1、2、3、4、5，等于、小于、大于、小于等于、大于等于的判断逻辑。</p>
-<p>同时定义了抽象方法，让每一个实现接口的类都必须按照规则提供决策值，这个决策值用于做逻辑比对。</p>
-<h4 id="树节点逻辑实现类"><a href="#树节点逻辑实现类" class="headerlink" title="树节点逻辑实现类"></a>树节点逻辑实现类</h4><p>年龄节点</p>
-<pre><code>public class UserAgeFilter extends BaseLogic {
-
-    @Override
-    public String matterValue(Long treeId, String userId, Map&lt;String, String&gt; decisionMatter) {
-        return decisionMatter.get(&quot;age&quot;);
-    }
-
-}
-</code></pre><p>性别节点</p>
-<pre><code>public class UserGenderFilter extends BaseLogic {
-
-    @Override
-    public String matterValue(Long treeId, String userId, Map&lt;String, String&gt; decisionMatter) {
-        return decisionMatter.get(&quot;gender&quot;);
-    }
-
-}
-</code></pre><p>以上两个决策逻辑的节点获取值的方式都非常简单，只是获取用户的入参即可。实际的业务开发可以从数据库、RPC接口、缓存运算等各种方式获取。</p>
-<h4 id="决策引擎接口定义"><a href="#决策引擎接口定义" class="headerlink" title="决策引擎接口定义"></a>决策引擎接口定义</h4><pre><code>public interface IEngine {
-
-    EngineResult process(final Long treeId, final String userId, TreeRich treeRich, final Map&lt;String, String&gt; decisionMatter);
-
-}
-</code></pre><p>对于使用方来说也同样需要定义统一的接口操作，这样的好处非常方便后续拓展出不同类型的决策引擎，也就是可以建造不同的决策工厂。</p>
-<h4 id="决策节点配置"><a href="#决策节点配置" class="headerlink" title="决策节点配置"></a>决策节点配置</h4><pre><code>public class EngineConfig {
-
-    static Map&lt;String, LogicFilter&gt; logicFilterMap;
+    private static Map&lt;String, String&gt; authMap = new ConcurrentHashMap&lt;String, String&gt;();
 
     static {
-        logicFilterMap = new ConcurrentHashMap&lt;&gt;();
-        logicFilterMap.put(&quot;userAge&quot;, new UserAgeFilter());
-        logicFilterMap.put(&quot;userGender&quot;, new UserGenderFilter());
+        authMap.put(&quot;huahua&quot;, &quot;queryUserInfo&quot;);
+        authMap.put(&quot;doudou&quot;, &quot;queryUserInfo&quot;);
     }
-
-    public Map&lt;String, LogicFilter&gt; getLogicFilterMap() {
-        return logicFilterMap;
-    }
-
-    public void setLogicFilterMap(Map&lt;String, LogicFilter&gt; logicFilterMap) {
-        this.logicFilterMap = logicFilterMap;
-    }
-
-}
-</code></pre><p>在这里将可提供服务的决策节点配置到map结构中，对于这样的map结构可以抽取到数据库中，那么就可以非常方便的管理。</p>
-<h4 id="基础决策引擎功能"><a href="#基础决策引擎功能" class="headerlink" title="基础决策引擎功能"></a>基础决策引擎功能</h4><pre><code>public abstract class EngineBase extends EngineConfig implements IEngine {
-
-    private Logger logger = LoggerFactory.getLogger(EngineBase.class);
 
     @Override
-    public abstract EngineResult process(Long treeId, String userId, TreeRich treeRich, Map&lt;String, String&gt; decisionMatter);
+    public boolean preHandle(String request, String response, Object handler) {
+        // 模拟获取cookie
+        String ticket = request.substring(1, 8);
+        // 模拟校验
+        boolean success = ticket.equals(&quot;success&quot;);
 
-    protected TreeNode engineDecisionMaker(TreeRich treeRich, Long treeId, String userId, Map&lt;String, String&gt; decisionMatter) {
-        TreeRoot treeRoot = treeRich.getTreeRoot();
-        Map&lt;Long, TreeNode&gt; treeNodeMap = treeRich.getTreeNodeMap();
-        // 规则树根ID
-        Long rootNodeId = treeRoot.getTreeRootNodeId();
-        TreeNode treeNodeInfo = treeNodeMap.get(rootNodeId);
-        //节点类型[NodeType]；1子叶、2果实
-        while (treeNodeInfo.getNodeType().equals(1)) {
-            String ruleKey = treeNodeInfo.getRuleKey();
-            LogicFilter logicFilter = logicFilterMap.get(ruleKey);
-            String matterValue = logicFilter.matterValue(treeId, userId, decisionMatter);
-            Long nextNode = logicFilter.filter(matterValue, treeNodeInfo.getTreeNodeLinkList());
-            treeNodeInfo = treeNodeMap.get(nextNode);
-            logger.info(&quot;决策树引擎=&gt;{} userId：{} treeId：{} treeNode：{} ruleKey：{} matterValue：{}&quot;, treeRoot.getTreeName(), userId, treeId, treeNodeInfo.getTreeNodeId(), ruleKey, matterValue);
-        }
-        return treeNodeInfo;
+        if (!success) return false;
+
+        String userId = request.substring(9);
+        String method = authMap.get(userId);
+
+        // 模拟方法校验
+        return &quot;queryUserInfo&quot;.equals(method);
     }
 
 }
-</code></pre><p>这里主要提供决策树流程的处理过程，有点像通过链路的关系(性别、年龄)在二叉树中寻找果实节点的过程。</p>
-<p>同时提供一个抽象方法，执行决策流程的方法供外部去做具体的实现。</p>
-<h4 id="决策引擎的实现"><a href="#决策引擎的实现" class="headerlink" title="决策引擎的实现"></a>决策引擎的实现</h4><pre><code>public class TreeEngineHandle extends EngineBase {
-
-    @Override
-    public EngineResult process(Long treeId, String userId, TreeRich treeRich, Map&lt;String, String&gt; decisionMatter) {
-        // 决策流程
-        TreeNode treeNode = engineDecisionMaker(treeRich, treeId, userId, decisionMatter);
-        // 决策结果
-        return new EngineResult(userId, treeId, treeNode.getTreeNodeId(), treeNode.getNodeValue());
-    }
-
+</code></pre><p>以上这部分通过继承重写方法，将个人可访问哪些方法的功能添加到方法中。</p>
+<h3 id="测试验证"><a href="#测试验证" class="headerlink" title="测试验证"></a>测试验证</h3><pre><code>@Test
+public void test_LoginSsoDecorator() {
+    LoginSsoDecorator ssoDecorator = new LoginSsoDecorator();
+    String request = &quot;1successhuahua&quot;;
+    boolean success = ssoDecorator.preHandle(request, &quot;ewcdqwt40liuiu&quot;, &quot;t&quot;);
+    System.out.println(&quot;登录校验：&quot; + request + (success ? &quot; 放行&quot; : &quot; 拦截&quot;));
 }
-</code></pre><pre><code>这里对于决策引擎的实现就非常简单了，通过传递进来的必要信息；决策树信息、决策物料值，来做具体的树形结构决策。</code></pre><h3 id="测试验证"><a href="#测试验证" class="headerlink" title="测试验证"></a>测试验证</h3><h4 id="组装树关系"><a href="#组装树关系" class="headerlink" title="组装树关系"></a>组装树关系</h4><pre><code>@Before
-public void init() {
-    // 节点：1
-    TreeNode treeNode_01 = new TreeNode();
-    treeNode_01.setTreeId(10001L);
-    treeNode_01.setTreeNodeId(1L);
-    treeNode_01.setNodeType(1);
-    treeNode_01.setNodeValue(null);
-    treeNode_01.setRuleKey(&quot;userGender&quot;);
-    treeNode_01.setRuleDesc(&quot;用户性别[男/女]&quot;);
-    // 链接：1-&gt;11
-    TreeNodeLink treeNodeLink_11 = new TreeNodeLink();
-    treeNodeLink_11.setNodeIdFrom(1L);
-    treeNodeLink_11.setNodeIdTo(11L);
-    treeNodeLink_11.setRuleLimitType(1);
-    treeNodeLink_11.setRuleLimitValue(&quot;man&quot;);
-    // 链接：1-&gt;12
-    TreeNodeLink treeNodeLink_12 = new TreeNodeLink();
-    treeNodeLink_12.setNodeIdTo(1L);
-    treeNodeLink_12.setNodeIdTo(12L);
-    treeNodeLink_12.setRuleLimitType(1);
-    treeNodeLink_12.setRuleLimitValue(&quot;woman&quot;);
-    List&lt;TreeNodeLink&gt; treeNodeLinkList_1 = new ArrayList&lt;&gt;();
-    treeNodeLinkList_1.add(treeNodeLink_11);
-    treeNodeLinkList_1.add(treeNodeLink_12);
-    treeNode_01.setTreeNodeLinkList(treeNodeLinkList_1);
-    // 节点：11
-    TreeNode treeNode_11 = new TreeNode();
-    treeNode_11.setTreeId(10001L);
-    treeNode_11.setTreeNodeId(11L);
-    treeNode_11.setNodeType(1);
-    treeNode_11.setNodeValue(null);
-    treeNode_11.setRuleKey(&quot;userAge&quot;);
-    treeNode_11.setRuleDesc(&quot;用户年龄&quot;);
-    // 链接：11-&gt;111
-    TreeNodeLink treeNodeLink_111 = new TreeNodeLink();
-    treeNodeLink_111.setNodeIdFrom(11L);
-    treeNodeLink_111.setNodeIdTo(111L);
-    treeNodeLink_111.setRuleLimitType(3);
-    treeNodeLink_111.setRuleLimitValue(&quot;25&quot;);
-    // 链接：11-&gt;112
-    TreeNodeLink treeNodeLink_112 = new TreeNodeLink();
-    treeNodeLink_112.setNodeIdFrom(11L);
-    treeNodeLink_112.setNodeIdTo(112L);
-    treeNodeLink_112.setRuleLimitType(5);
-    treeNodeLink_112.setRuleLimitValue(&quot;25&quot;);
-    List&lt;TreeNodeLink&gt; treeNodeLinkList_11 = new ArrayList&lt;&gt;();
-    treeNodeLinkList_11.add(treeNodeLink_111);
-    treeNodeLinkList_11.add(treeNodeLink_112);
-    treeNode_11.setTreeNodeLinkList(treeNodeLinkList_11);
-    // 节点：12
-    TreeNode treeNode_12 = new TreeNode();
-    treeNode_12.setTreeId(10001L);
-    treeNode_12.setTreeNodeId(12L);
-    treeNode_12.setNodeType(1);
-    treeNode_12.setNodeValue(null);
-    treeNode_12.setRuleKey(&quot;userAge&quot;);
-    treeNode_12.setRuleDesc(&quot;用户年龄&quot;);
-    // 链接：12-&gt;121
-    TreeNodeLink treeNodeLink_121 = new TreeNodeLink();
-    treeNodeLink_121.setNodeIdFrom(12L);
-    treeNodeLink_121.setNodeIdTo(121L);
-    treeNodeLink_121.setRuleLimitType(3);
-    treeNodeLink_121.setRuleLimitValue(&quot;25&quot;);
-    // 链接：12-&gt;122
-    TreeNodeLink treeNodeLink_122 = new TreeNodeLink();
-    treeNodeLink_122.setNodeIdFrom(12L);
-    treeNodeLink_122.setNodeIdTo(122L);
-    treeNodeLink_122.setRuleLimitType(5);
-    treeNodeLink_122.setRuleLimitValue(&quot;25&quot;);
-    List&lt;TreeNodeLink&gt; treeNodeLinkList_12 = new ArrayList&lt;&gt;();
-    treeNodeLinkList_12.add(treeNodeLink_121);
-    treeNodeLinkList_12.add(treeNodeLink_122);
-    treeNode_12.setTreeNodeLinkList(treeNodeLinkList_12);
-    // 节点：111
-    TreeNode treeNode_111 = new TreeNode();
-    treeNode_111.setTreeId(10001L);
-    treeNode_111.setTreeNodeId(111L);
-    treeNode_111.setNodeType(2);
-    treeNode_111.setNodeValue(&quot;果实A&quot;);
-    // 节点：112
-    TreeNode treeNode_112 = new TreeNode();
-    treeNode_112.setTreeId(10001L);
-    treeNode_112.setTreeNodeId(112L);
-    treeNode_112.setNodeType(2);
-    treeNode_112.setNodeValue(&quot;果实B&quot;);
-    // 节点：121
-    TreeNode treeNode_121 = new TreeNode();
-    treeNode_121.setTreeId(10001L);
-    treeNode_121.setTreeNodeId(121L);
-    treeNode_121.setNodeType(2);
-    treeNode_121.setNodeValue(&quot;果实C&quot;);
-    // 节点：122
-    TreeNode treeNode_122 = new TreeNode();
-    treeNode_122.setTreeId(10001L);
-    treeNode_122.setTreeNodeId(122L);
-    treeNode_122.setNodeType(2);
-    treeNode_122.setNodeValue(&quot;果实D&quot;);
-    // 树根
-    TreeRoot treeRoot = new TreeRoot();
-    treeRoot.setTreeId(10001L);
-    treeRoot.setTreeRootNodeId(1L);
-    treeRoot.setTreeName(&quot;规则决策树&quot;);
-    Map&lt;Long, TreeNode&gt; treeNodeMap = new HashMap&lt;&gt;();
-    treeNodeMap.put(1L, treeNode_01);
-    treeNodeMap.put(11L, treeNode_11);
-    treeNodeMap.put(12L, treeNode_12);
-    treeNodeMap.put(111L, treeNode_111);
-    treeNodeMap.put(112L, treeNode_112);
-    treeNodeMap.put(121L, treeNode_121);
-    treeNodeMap.put(122L, treeNode_122);
-    treeRich = new TreeRich(treeRoot, treeNodeMap);
-}
-</code></pre><p><img src="/2021/04/08/2021-04-08-design-zu-he/itstack-demo-design-8-04.png" alt></p>
+</code></pre><h2 id="装饰器模式重构代码"><a href="#装饰器模式重构代码" class="headerlink" title="装饰器模式重构代码"></a>装饰器模式重构代码</h2><p>装饰器主要解决的是直接继承下因功能的不断横向扩展导致子类膨胀的问题，而是用装饰器模式后就会比直接继承显得更加灵活同时这样也就不再需要考虑子类的维护。</p>
+<p>在装饰器模式中有四个比较重要点抽象出来的点；</p>
 <ul>
-<li>重要，这一部分是组合模式非常重要的使用，在我们已经建造好的决策树关系下，可以创建出树的各个节点，以及对节点间使用链路进行串联。</li>
-<li>及时后续你需要做任何业务的扩展都可以在里面添加相应的节点，并做动态化的配置。</li>
-<li>关于这部分手动组合的方式可以提取到数据库中，那么也就可以扩展到图形界面的进行配置操作。</li>
+<li>抽象构件角色(Component) - 定义抽象接口</li>
+<li>具体构件角色(ConcreteComponent) - 实现抽象接口，可以是一组</li>
+<li>装饰角色(Decorator) - 定义抽象类并继承接口中的方法，保证一致性</li>
+<li>具体装饰角色(ConcreteDecorator) - 扩展装饰具体的实现逻辑</li>
 </ul>
-<h3 id="编写测试类"><a href="#编写测试类" class="headerlink" title="编写测试类"></a>编写测试类</h3><pre><code>@Test
-public void test_tree() {
-    logger.info(&quot;决策树组合结构信息：\r\n&quot; + JSON.toJSONString(treeRich));
+<p>通过以上这四项来实现装饰器模式，主要核心内容会体现在抽象类的定义和实现上。</p>
+<h3 id="工程结构-1"><a href="#工程结构-1" class="headerlink" title="工程结构"></a>工程结构</h3><pre><code>itstack-demo-design-9-02
+└── src
+    └── main
+        └── java
+            └── org.itstack.demo.design
+                ├── LoginSsoDecorator.java
+                └── SsoDecorator.java
+</code></pre><p>装饰器模式模型结构</p>
+<p><img src="/2021/04/09/2021-04-09-design-zhuang-shi-qi/itstack-demo-design-9-03.png" alt></p>
+<p>以上是一个装饰器实现的类图结构，重点的类是SsoDecorator，这个类是一个抽象类主要完成了对接口HandlerInterceptor继承。</p>
+<p>当装饰角色继承接口后会提供构造函数，入参就是继承的接口实现类即可，这样就可以很方便的扩展出不同功能组件。</p>
+<h3 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h3><h4 id="抽象类装饰角色"><a href="#抽象类装饰角色" class="headerlink" title="抽象类装饰角色"></a>抽象类装饰角色</h4><pre><code>public abstract class SsoDecorator implements HandlerInterceptor {
 
-    IEngine treeEngineHandle = new TreeEngineHandle();
-    Map&lt;String, String&gt; decisionMatter = new HashMap&lt;&gt;();
-    decisionMatter.put(&quot;gender&quot;, &quot;man&quot;);
-    decisionMatter.put(&quot;age&quot;, &quot;29&quot;);
+    private HandlerInterceptor handlerInterceptor;
 
-    EngineResult result = treeEngineHandle.process(10001L, &quot;Oli09pLkdjh&quot;, treeRich, decisionMatter);
+    private SsoDecorator(){}
 
-    logger.info(&quot;测试结果：{}&quot;, JSON.toJSONString(result));
+    public SsoDecorator(HandlerInterceptor handlerInterceptor) {
+        this.handlerInterceptor = handlerInterceptor;
+    }
+
+    public boolean preHandle(String request, String response, Object handler) {
+        return handlerInterceptor.preHandle(request, response, handler);
+    }
+
 }
-</code></pre><p>在这里提供了调用的通过组织模式创建出来的流程决策树，调用的时候传入了决策树的ID，那么如果是业务开发中就可以方便的解耦决策树与业务的绑定关系，按需传入决策树ID即可。</p>
-<p>此外入参我们还提供了需要处理；男(man)、年龄(29岁)，的参数信息。</p>
-<h4 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h4><pre><code>23:35:05.711 [main] INFO  o.i.d.d.d.service.engine.EngineBase - 决策树引擎=&gt;规则决策树 userId：Oli09pLkdjh treeId：10001 treeNode：11 ruleKey：userGender matterValue：man
-23:35:05.712 [main] INFO  o.i.d.d.d.service.engine.EngineBase - 决策树引擎=&gt;规则决策树 userId：Oli09pLkdjh treeId：10001 treeNode：112 ruleKey：userAge matterValue：29
-23:35:05.715 [main] INFO  org.itstack.demo.design.test.ApiTest - 测试结果：{&quot;nodeId&quot;:112,&quot;nodeValue&quot;:&quot;果实B&quot;,&quot;success&quot;:true,&quot;treeId&quot;:10001,&quot;userId&quot;:&quot;Oli09pLkdjh&quot;}
+</code></pre><p>在装饰类中有两个重点的地方是；1)继承了处理接口、2)提供了构造函数、3)覆盖了方法preHandle。</p>
+<p>以上三个点是装饰器模式的核心处理部分，这样可以踢掉对子类继承的方式实现逻辑功能扩展。</p>
+<h4 id="装饰角色逻辑实现"><a href="#装饰角色逻辑实现" class="headerlink" title="装饰角色逻辑实现"></a>装饰角色逻辑实现</h4><pre><code>public class LoginSsoDecorator extends SsoDecorator {
 
-Process finished with exit code 0
-</code></pre><p>从测试结果上看这与我们使用ifelse是一样的，但是目前这与的组合模式设计下，就非常方便后续的拓展和修改。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
-<li><p>从以上的决策树场景来看，组合模式的主要解决的是一系列简单逻辑节点或者扩展的复杂逻辑节点在不同结构的组织下，对于外部的调用是仍然可以非常简单的。</p>
+    private Logger logger = LoggerFactory.getLogger(LoginSsoDecorator.class);
+
+    private static Map&lt;String, String&gt; authMap = new ConcurrentHashMap&lt;String, String&gt;();
+
+    static {
+        authMap.put(&quot;huahua&quot;, &quot;queryUserInfo&quot;);
+        authMap.put(&quot;doudou&quot;, &quot;queryUserInfo&quot;);
+    }
+
+    public LoginSsoDecorator(HandlerInterceptor handlerInterceptor) {
+        super(handlerInterceptor);
+    }
+
+    @Override
+    public boolean preHandle(String request, String response, Object handler) {
+        boolean success = super.preHandle(request, response, handler);
+        if (!success) return false;
+        String userId = request.substring(8);
+        String method = authMap.get(userId);
+        logger.info(&quot;模拟单点登录方法访问拦截校验：{} {}&quot;, userId, method);
+        // 模拟方法校验
+        return &quot;queryUserInfo&quot;.equals(method);
+    }
+}
+</code></pre><p>在具体的装饰类实现中，继承了装饰类SsoDecorator，那么现在就可以扩展方法；preHandle</p>
+<p>在preHandle的实现中可以看到，这里只关心扩展部分的功能，同时不会影响原有类的核心服务，也不会因为使用继承方式而导致的多余子类，增加了整体的灵活性。</p>
+<h3 id="测试验证-1"><a href="#测试验证-1" class="headerlink" title="测试验证"></a>测试验证</h3><pre><code>@Test
+public void test_LoginSsoDecorator() {
+    LoginSsoDecorator ssoDecorator = new LoginSsoDecorator(new SsoInterceptor());
+    String request = &quot;1successhuahua&quot;;
+    boolean success = ssoDecorator.preHandle(request, &quot;ewcdqwt40liuiu&quot;, &quot;t&quot;);
+    System.out.println(&quot;登录校验：&quot; + request + (success ? &quot; 放行&quot; : &quot; 拦截&quot;));
+}
+</code></pre><p>这里测试了对装饰器模式的使用，通过透传原有单点登录类new SsoInterceptor()，传递给装饰器，让装饰器可以执行扩充的功能。</p>
+<p>同时对于传递者和装饰器都可以是多组的，在一些实际的业务开发中，往往也是由于太多类型的子类实现而导致不易于维护，从而使用装饰器模式替代。</p>
+<h2 id="简单例子"><a href="#简单例子" class="headerlink" title="简单例子"></a>简单例子</h2><h3 id="结构图"><a href="#结构图" class="headerlink" title="结构图"></a>结构图</h3><p>![](Image 1.png)</p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><pre><code>public interface Verify {
+    /**
+     * 验证接口
+     */
+    boolean verify(String userId, String code, LocalDate localDate);
+}</code></pre><pre><code>public class BaseVerifyImpl implements Verify{
+    /**
+     * admin验证
+     */
+    @Override
+    public boolean verify(String userId, String code, LocalDate localDate) {
+        return &quot;admin&quot;.equals(userId) || &quot;add&quot;.equals(code) ? true : false;
+    }
+}</code></pre><pre><code>public abstract class Decorator implements Verify {
+    private Verify verify;
+
+    public Decorator(Verify verify) {
+        this.verify = verify;
+    }
+
+    @Override
+    public boolean verify(String userId, String code, LocalDate localDate) {
+        return verify.verify(userId, code, localDate);
+    }
+}</code></pre><pre><code>public class Expand extends Decorator{
+
+    public Expand(Verify verify) {
+        super(verify);
+    }
+
+    /**
+     * admin检验,并且时间校验
+     */
+    @Override
+    public boolean verify(String userId, String code, LocalDate localDate) {
+        if (super.verify(userId, code, localDate)) {
+            return !LocalDate.now().isBefore(localDate) ? true : false;
+        }
+        return false;
+    }
+}</code></pre><pre><code>public class Test {
+    public static void main(String[] args) {
+        Expand expand = new Expand(new BaseVerifyImpl());
+        System.out.println(expand.verify(&quot;admin&quot;, &quot;add&quot;, LocalDate.now()));
+    }
+}</code></pre><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li><p>使用装饰器模式满足单一职责原则，你可以在自己的装饰类中完成功能逻辑的扩展，而不影响主类，同时可以按需在运行时添加和删除这部分逻辑。另外装饰器模式与继承父类重写方法，在某些时候需要按需选择，并不一定某一个就是最好。</p>
 </li>
-<li><p>这部分设计模式保证了开闭原则，无需更改模型结构你就可以提供新的逻辑节点的使用并配合组织出新的关系树。但如果是一些功能差异化非常大的接口进行包装就会变得比较困难，但也不是不能很好的处理，只不过需要做一些适配和特定化的开发。</p>
+<li><p>装饰器实现的重点是对抽象类继承接口方式的使用，同时设定被继承的接口可以通过构造函数传递其实现类，由此增加扩展性并重写方法里可以实现此部分父类实现的功能。</p>
 </li>
-<li><p>组合模式也就是把相似对象(也可以称作是方法)组合成一组可被调用的结构树对象。</p>
+<li><p>就像夏天热你穿短裤，冬天冷你穿棉裤，雨天挨浇你穿雨衣一样，你的根本本身没有被改变，而你的需求却被不同的装饰而实现。</p>
+</li>
+<li><p>装饰器的核心就是在不改原有类的基础上给类新增功能。例如new BufferedReader(new FileReader(“”))。</p>
 </li>
 </ul>
 
@@ -849,7 +685,7 @@ Process finished with exit code 0
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://adbo.gitee.io/2021/04/08/2021-04-08-design-zu-he/">http://adbo.gitee.io/2021/04/08/2021-04-08-design-zu-he/</a>
+                    <a href="http://adbo.gitee.io/2021/04/09/2021-04-09-design-zhuang-shi-qi/">http://adbo.gitee.io/2021/04/09/2021-04-09-design-zhuang-shi-qi/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -1059,7 +895,7 @@ Process finished with exit code 0
         repo: 'gitalk',
         owner: 'FlynnCN',
         admin: "FlynnCN",
-        id: '2021-04-08T22-43-52',
+        id: '2021-04-09T22-43-52',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -1082,7 +918,8 @@ Process finished with exit code 0
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2021/04/09/2021-04-09-design-zhuang-shi-qi/">
                     <div class="card-image">
@@ -1099,9 +936,9 @@ Process finished with exit code 0
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-04-09
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-09
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -1114,6 +951,7 @@ Process finished with exit code 0
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -1132,12 +970,12 @@ Process finished with exit code 0
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/04/07/2021-04-07-design-qiao-jie/">
+                <a href="/2021/04/08/2021-04-08-design-zu-he/">
                     <div class="card-image">
                         
-                        <img src="/medias/cover/itstack-demo-design-7-01.png" class="responsive-img" alt="桥接模式">
+                        <img src="/medias/cover/itstack-demo-design-8-01.png" class="responsive-img" alt="组合模式">
                         
-                        <span class="card-title">桥接模式</span>
+                        <span class="card-title">组合模式</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1148,7 +986,7 @@ Process finished with exit code 0
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-07
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-08
                             </span>
                         <span class="publish-author">
                             
