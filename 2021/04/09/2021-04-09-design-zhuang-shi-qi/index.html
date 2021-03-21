@@ -618,7 +618,8 @@ public void test_LoginSsoDecorator() {
     public boolean verify(String userId, String code, LocalDate localDate) {
         return &quot;admin&quot;.equals(userId) || &quot;add&quot;.equals(code) ? true : false;
     }
-}</code></pre><pre><code>public abstract class Decorator implements Verify {
+}</code></pre><p>重点看Decorator类和Expand类</p>
+<pre><code>public abstract class Decorator implements Verify {
     private Verify verify;
 
     public Decorator(Verify verify) {
