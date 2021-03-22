@@ -4,7 +4,7 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="享元模式, Adbo~Blog">
+    <meta name="keywords" content="代理模式, Adbo~Blog">
     <meta name="description" content="重学 Java 设计模式">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>享元模式 | Adbo</title>
+    <title>代理模式 | Adbo</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -291,12 +291,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/cover/itstack-demo-design-11-01.png')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/cover/itstack-demo-design-12-01.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">享元模式</h1>
+                    <h1 class="description center-align post-title">代理模式</h1>
                 </div>
             </div>
         </div>
@@ -438,7 +438,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-04-11
+                    2021-04-12
                 </div>
                 
 
@@ -458,175 +458,143 @@
                 <blockquote>
 <p>本文章仅用于本人学习笔记记录<br>微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）</p>
 </blockquote>
-<h2 id="享元模式介绍"><a href="#享元模式介绍" class="headerlink" title="享元模式介绍"></a>享元模式介绍</h2><p>享元模式，主要在于共享通用对象，减少内存的使用，提升系统的访问效率。而这部分共享对象通常比较耗费内存或者需要查询大量接口或者使用数据库资源，因此统一抽离作为共享对象使用。</p>
-<p>另外享元模式可以分为在服务端和客户端，一般互联网H5和Web场景下大部分数据都需要服务端进行处理，比如数据库连接池的使用、多线程线程池的使用，除了这些功能外，还有些需要服务端进行包装后的处理下发给客户端，因为服务端需要做享元处理。但在一些游戏场景下，很多都是客户端需要进行渲染地图效果，比如；树木、花草、鱼虫，通过设置不同元素描述使用享元公用对象，减少内存的占用，让客户端的游戏更加流畅。</p>
-<p>在享元模型的实现中需要使用到享元工厂来进行管理这部分独立的对象和共享的对象，避免出现线程安全的问题。</p>
-<h2 id="案例场景模拟"><a href="#案例场景模拟" class="headerlink" title="案例场景模拟"></a>案例场景模拟</h2><p>模拟在商品秒杀场景下使用享元模式查询优化</p>
-<p>你是否经历过一个商品下单的项目从最初的日均十几单到一个月后每个时段秒杀量破十万的项目。一般在最初如果没有经验的情况下可能会使用数据库行级锁的方式下保证商品库存的扣减操作，但是随着业务的快速发展秒杀的用户越来越多，这个时候数据库已经扛不住了，一般都会使用redis的分布式锁来控制商品库存。</p>
-<p>同时在查询的时候也不需要每一次对不同的活动查询都从库中获取，因为这里除了库存以外其他的活动商品信息都是固定不变的，以此这里一般大家会缓存到内存中。</p>
-<p>这里我们模拟使用享元模式工厂结构，提供活动商品的查询。活动商品相当于不变的信息，而库存部分属于变化的信息。</p>
-<h2 id="用一坨坨代码实现"><a href="#用一坨坨代码实现" class="headerlink" title="用一坨坨代码实现"></a>用一坨坨代码实现</h2><h3 id="工程结构"><a href="#工程结构" class="headerlink" title="工程结构"></a>工程结构</h3><pre><code>itstack-demo-design-11-01
-└── src
-    └── main
-        └── java
-            └── org.itstack.demo.design
-                └── ActivityController.java
-</code></pre><h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><pre><code>public class ActivityController {
-
-    public Activity queryActivityInfo(Long id) {
-        // 模拟从实际业务应用从接口中获取活动信息
-        Activity activity = new Activity();
-        activity.setId(10001L);
-        activity.setName(&quot;图书嗨乐&quot;);
-        activity.setDesc(&quot;图书优惠券分享激励分享活动第二期&quot;);
-        activity.setStartTime(new Date());
-        activity.setStopTime(new Date());
-        activity.setStock(new Stock(1000,1));
-        return activity;
-    }
-
-}</code></pre><p>这里模拟的是从接口中查询活动信息，基本也就是从数据库中获取所有的商品信息和库存。有点像最开始写的商品销售系统，数据库就可以抗住购物量。</p>
-<h2 id="享元模式重构代码"><a href="#享元模式重构代码" class="headerlink" title="享元模式重构代码"></a>享元模式重构代码</h2><p>享元模式一般情况下使用此结构在平时的开发中并不太多，除了一些线程池、数据库连接池外，再就是游戏场景下的场景渲染。另外这个设计的模式思想是减少内存的使用提升效率，与我们之前使用的原型模式通过克隆对象的方式生成复杂对象，减少rpc的调用，都是此类思想。</p>
-<h3 id="工程结构-1"><a href="#工程结构-1" class="headerlink" title="工程结构"></a>工程结构</h3><pre><code>itstack-demo-design-11-02
+<h2 id="代理模式介绍"><a href="#代理模式介绍" class="headerlink" title="代理模式介绍"></a>代理模式介绍</h2><p>代理模式有点像老大和小弟，也有点像分销商。主要解决的是问题是为某些资源的访问、对象的类的易用操作上提供方便使用的代理服务。而这种设计思想的模式经常会出现在我们的系统中，或者你用到过的组件中，它们都提供给你一种非常简单易用的方式控制原本你需要编写很多代码的进行使用的服务类。</p>
+<p>类似这样的场景可以想到；</p>
+<ul>
+<li>你的数据库访问层面经常会提供一个较为基础的应用，以此来减少应用服务扩容时不至于数据库连接数暴增。</li>
+<li>使用过的一些中间件例如；RPC框架，在拿到jar包对接口的描述后，中间件会在服务启动的时候生成对应的代理类，当调用接口的时候，实际是通过代理类发出的socket信息进行通过。</li>
+<li>另外像我们常用的MyBatis，基本是定义接口但是不需要写实现类，就可以对xml或者自定义注解里的sql语句进行增删改查操作。</li>
+</ul>
+<h2 id="案例场景模拟"><a href="#案例场景模拟" class="headerlink" title="案例场景模拟"></a>案例场景模拟</h2><p><img src="/2021/04/12/2021-04-12-design-dai-li/itstack-demo-design-12-02.png" alt></p>
+<p>对于Mybatis的使用中只需要定义接口不需要写实现类就可以完成增删改查操作</p>
+<h2 id="代理类模式实现过程"><a href="#代理类模式实现过程" class="headerlink" title="代理类模式实现过程"></a>代理类模式实现过程</h2><p>接下来会使用代理类模式来模拟实现一个Mybatis中对类的代理过程，也就是只需要定义接口，就可以关联到方法注解中的sql语句完成对数据库的操作。</p>
+<p>这里需要注意一些知识点:</p>
+<ul>
+<li>BeanDefinitionRegistryPostProcessor，spring的接口类用于处理对bean的定义注册。</li>
+<li>GenericBeanDefinition，定义bean的信息，在mybatis-spring中使用到的是；ScannedGenericBeanDefinition 略有不同。</li>
+<li>FactoryBean，用于处理bean工厂的类，这个类非常见。</li>
+</ul>
+<h3 id="工程结构"><a href="#工程结构" class="headerlink" title="工程结构"></a>工程结构</h3><pre><code>itstack-demo-design-12-00
 └── src
     ├── main
-    │   └── java
-    │       └── org.itstack.demo.design
-    │           ├── util
-    │           │    └── RedisUtils.java    
-    │           ├── Activity.java
-    │           ├── ActivityController.java
-    │           ├── ActivityFactory.java
-    │           └── Stock.java
+    │   ├── java
+    │   │   └── org.itstack.demo.design
+    │   │       ├── agent
+    │   │       │    ├── MapperFactoryBean.java
+    │   │       │    ├── RegisterBeanFactory.java
+    │   │       │    └── Select.java
+    │   │       └── IUserDao.java
+    │   └── resources    
+    │       └── spring-config.xml
     └── test
         └── java
             └── org.itstack.demo.test
                 └── ApiTest.java
-</code></pre><p>享元模式模型结构</p>
-<p><img src="/2021/04/11/2021-04-11-design-xiang-yuan/itstack-demo-design-11-03.png" alt></p>
-<h3 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h3><h4 id="活动信息"><a href="#活动信息" class="headerlink" title="活动信息"></a>活动信息</h4><pre><code>public class Activity {
-
-    private Long id;        // 活动ID
-    private String name;    // 活动名称
-    private String desc;    // 活动描述
-    private Date startTime; // 开始时间
-    private Date stopTime;  // 结束时间
-    private Stock stock;    // 活动库存
-
-    // ...get/set
-}</code></pre><h4 id="库存信息"><a href="#库存信息" class="headerlink" title="库存信息"></a>库存信息</h4><pre><code>public class Stock {
-
-    private int total; // 库存总量
-    private int used;  // 库存已用
-
-    // ...get/set
-}
-</code></pre><h4 id="享元工厂"><a href="#享元工厂" class="headerlink" title="享元工厂"></a>享元工厂</h4><pre><code>public class ActivityFactory {
-
-    static Map&lt;Long, Activity&gt; activityMap = new HashMap&lt;Long, Activity&gt;();
-
-    public static Activity getActivity(Long id) {
-        Activity activity = activityMap.get(id);
-        if (null == activity) {
-            // 模拟从实际业务应用从接口中获取活动信息
-            activity = new Activity();
-            activity.setId(10001L);
-            activity.setName(&quot;图书嗨乐&quot;);
-            activity.setDesc(&quot;图书优惠券分享激励分享活动第二期&quot;);
-            activity.setStartTime(new Date());
-            activity.setStopTime(new Date());
-            activityMap.put(id, activity);
-        }
-        return activity;
-    }
-
-}</code></pre><p>这里提供的是一个享元工厂🏭，通过map结构存放已经从库表或者接口中查询到的数据，存放到内存中，用于下次可以直接获取。</p>
-<h4 id="模拟Redis类"><a href="#模拟Redis类" class="headerlink" title="模拟Redis类"></a>模拟Redis类</h4><pre><code>public class RedisUtils {
-
-    private ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
-
-    private AtomicInteger stock = new AtomicInteger(0);
-
-    public RedisUtils() {
-        scheduledExecutorService.scheduleAtFixedRate(() -&gt; {
-            // 模拟库存消耗
-            stock.addAndGet(1);
-        }, 0, 100000, TimeUnit.MICROSECONDS);
-
-    }
-
-    public int getStockUsed() {
-        return stock.get();
-    }
-
-}</code></pre><p>这里处理模拟redis的操作工具类外，还提供了一个定时任务用于模拟库存的使用，这样方面我们在测试的时候可以观察到库存的变化。</p>
-<h4 id="活动控制类"><a href="#活动控制类" class="headerlink" title="活动控制类"></a>活动控制类</h4><pre><code>public class ActivityController {
-
-    private RedisUtils redisUtils = new RedisUtils();
-
-    public Activity queryActivityInfo(Long id) {
-        Activity activity = ActivityFactory.getActivity(id);
-        // 模拟从Redis中获取库存变化信息
-        Stock stock = new Stock(1000, redisUtils.getStockUsed());
-        activity.setStock(stock);
-        return activity;
-    }
-
-}</code></pre><ul>
-<li>在活动控制类中使用了享元工厂获取活动信息，查询后将库存信息在补充上。因为库存信息是变化的，而活动信息是固定不变的。</li>
-<li>在活动控制类中使用了享元工厂获取活动信息，查询后将库存信息在补充上。因为库存信息是变化的，而活动信息是固定不变的。</li>
+</code></pre><p>代理模式中间件模型结构</p>
+<p><img src="/2021/04/12/2021-04-12-design-dai-li/itstack-demo-design-12-03.png" alt></p>
+<ul>
+<li>此模型中涉及的类并不多，但都是抽离出来的核心处理类。主要的事情就是对类的代理和注册到spring中。</li>
+<li>上图中最上面是关于中间件的实现部分，下面对应的是功能的使用。</li>
 </ul>
-<h3 id="测试验证"><a href="#测试验证" class="headerlink" title="测试验证"></a>测试验证</h3><pre><code>public class ApiTest {
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><h4 id="自定义注解"><a href="#自定义注解" class="headerlink" title="自定义注解"></a>自定义注解</h4><pre><code>@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD})
+public @interface Select {
 
-    private Logger logger = LoggerFactory.getLogger(ApiTest.class);
+    String value() default &quot;&quot;;  // sql语句
 
-    private ActivityController activityController = new ActivityController();
+}
+</code></pre><p>这里我们定义了一个模拟mybatis-spring中的自定义注解，用于使用在方法层面。</p>
+<h4 id="Dao层接口"><a href="#Dao层接口" class="headerlink" title="Dao层接口"></a>Dao层接口</h4><pre><code>public interface IUserDao {
 
-    @Test
-    public void test_queryActivityInfo() throws InterruptedException {
-        for (int idx = 0; idx &lt; 10; idx++) {
-            Long req = 10001L;
-            Activity activity = activityController.queryActivityInfo(req);
-            logger.info(&quot;测试结果：{} {}&quot;, req, JSON.toJSONString(activity));
-            Thread.sleep(1200);
-        }
+    @Select(&quot;select userName from user where id = #{uId}&quot;)
+    String queryUserInfo(String uId);
+
+}
+</code></pre><p>这里定义一个Dao层接口，并把自定义注解添加上。这与你使用的mybatis组件是一样的。</p>
+<h4 id="代理类定义"><a href="#代理类定义" class="headerlink" title="代理类定义"></a>代理类定义</h4><pre><code>public class MapperFactoryBean&lt;T&gt; implements FactoryBean&lt;T&gt; {
+
+    private Logger logger = LoggerFactory.getLogger(MapperFactoryBean.class);
+
+    private Class&lt;T&gt; mapperInterface;
+
+    public MapperFactoryBean(Class&lt;T&gt; mapperInterface) {
+        this.mapperInterface = mapperInterface;
+    }
+
+    @Override
+    public T getObject() throws Exception {
+        InvocationHandler handler = (proxy, method, args) -&gt; {
+            Select select = method.getAnnotation(Select.class);
+            logger.info(&quot;SQL：{}&quot;, select.value().replace(&quot;#{uId}&quot;, args[0].toString()));
+            return args[0] + &quot;,沉淀、分享、成长，让自己和他人都能有所收获！&quot;;
+        };
+        return (T) Proxy.newProxyInstance(this.getClass().getClassLoader(), new Class[]{mapperInterface}, handler);
+    }
+
+    @Override
+    public Class&lt;?&gt; getObjectType() {
+        return mapperInterface;
+    }
+
+    @Override
+    public boolean isSingleton() {
+        return true;
     }
 
 }
-</code></pre><h2 id="简单例子"><a href="#简单例子" class="headerlink" title="简单例子"></a>简单例子</h2><p>只有年龄变化</p>
-<pre><code>public class UserInfo {
-    private Long id;
-    private String name;
-    private int age;
-}</code></pre><pre><code>public class UserFactory {
-    static Map&lt;Long, UserInfo&gt; map = new HashMap&lt;&gt;();
+</code></pre><ul>
+<li>如果你有阅读过mybatis源码，是可以看到这样的一个类；MapperFactoryBean，这里我们也模拟一个这样的类，在里面实现我们对代理类的定义。</li>
+<li>通过继承FactoryBean，提供bean对象，也就是方法；T getObject()。</li>
+<li>在方法getObject()中提供类的代理以及模拟对sql语句的处理，这里包含了用户调用dao层方法时候的处理逻辑。</li>
+<li>还有最上面我们提供构造函数来透传需要被代理类，Class<t> mapperInterface，在mybatis中也是使用这样的方式进行透传。</t></li>
+<li>另外getObjectType()提供对象类型反馈，以及isSingleton()返回类是单例的。</li>
+</ul>
+<h4 id="将Bean定义注册到Spring容器"><a href="#将Bean定义注册到Spring容器" class="headerlink" title="将Bean定义注册到Spring容器"></a>将Bean定义注册到Spring容器</h4><pre><code>public class RegisterBeanFactory implements BeanDefinitionRegistryPostProcessor {
 
-    public static UserInfo getUserInfo(Long id) {
-        if (Objects.isNull(map.get(id))) {
-            // 理论上这里应该查询数据库
-            System.out.println(&quot;==========&quot;);
-            UserInfo userInfo = new UserInfo();
-            userInfo.setId(id);
-            userInfo.setName(&quot;aaa&quot;);
-            map.put(id, userInfo);
-            return userInfo;
-        }
-        return map.get(id);
-    }
-}</code></pre><pre><code>public class Test {
-    public static void main(String[] args) {
-        for (int i = 0; i &lt; 10; i++) {
+    @Override
+    public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
 
-            UserInfo userInfo = UserFactory.getUserInfo(10L);
-            userInfo.setAge(new Random().nextInt(100));
-            System.out.println(userInfo);
-        }
+        GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
+        beanDefinition.setBeanClass(MapperFactoryBean.class);
+        beanDefinition.setScope(&quot;singleton&quot;);
+        beanDefinition.getConstructorArgumentValues().addGenericArgumentValue(IUserDao.class);
+
+        BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(beanDefinition, &quot;userDao&quot;);
+        BeanDefinitionReaderUtils.registerBeanDefinition(definitionHolder, registry);
     }
-}</code></pre><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
-<li>关于享元模式的设计可以着重学习享元工厂的设计，在一些有大量重复对象可复用的场景下，使用此场景在服务端减少接口的调用，在客户端减少内存的占用。是这个设计模式的主要应用方式。</li>
-<li>另外通过map结构的使用方式也可以看到，使用一个固定id来存放和获取对象，是非常关键的点。而且不只是在享元模式中使用，一些其他工厂模式、适配器模式、组合模式中都可以通过map结构存放服务供外部获取，减少ifelse的判断使用。</li>
-<li>当然除了这种设计的减少内存的使用优点外，也有它带来的缺点，在一些复杂的业务处理场景，很不容易区分出内部和外部状态，就像我们活动信息部分与库存变化部分。如果不能很好的拆分，就会把享元工厂设计的非常混乱，难以维护。</li>
-<li>享元模式，主要在于共享通用对象，减少内存的使用，提升系统的访问效率。而这部分共享对象通常比较耗费内存或者需要查询大量接口或者使用数据库资源，因此统一抽离作为共享对象使用。</li>
+
+    @Override
+    public void postProcessBeanFactory(ConfigurableListableBeanFactory configurableListableBeanFactory) throws BeansException {
+        // left intentionally blank
+    }
+
+}
+</code></pre><ul>
+<li>这里我们将代理的bean交给spring容器管理，也就可以非常方便让我们可以获取到代理的bean。这部分是spring中关于一个bean注册过程的源码。</li>
+<li>GenericBeanDefinition，用于定义一个bean的基本信息setBeanClass(MapperFactoryBean.class);，也包括可以透传给构造函数信息addGenericArgumentValue(IUserDao.class);</li>
+<li>最后使用 BeanDefinitionReaderUtils.registerBeanDefinition，进行bean的注册，也就是注册到DefaultListableBeanFactory中。</li>
+</ul>
+<h4 id="配置文件spring-config"><a href="#配置文件spring-config" class="headerlink" title="配置文件spring-config"></a>配置文件spring-config</h4><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd&quot;
+       default-autowire=&quot;byName&quot;&gt;
+
+    &lt;bean id=&quot;userDao&quot; class=&quot;org.itstack.demo.design.agent.RegisterBeanFactory&quot;/&gt;
+
+&lt;/beans&gt;
+</code></pre><p>接下来在配置文件中添加我们的bean配置，在mybatis的使用中一般会配置扫描的dao层包，这样就可以减少这部分的配置。</p>
+<h4 id="测试验证"><a href="#测试验证" class="headerlink" title="测试验证"></a>测试验证</h4><pre><code>@Test
+public void test_IUserDao() {
+    BeanFactory beanFactory = new ClassPathXmlApplicationContext(&quot;spring-config.xml&quot;);
+    IUserDao userDao = beanFactory.getBean(&quot;userDao&quot;, IUserDao.class);
+    String res = userDao.queryUserInfo(&quot;100001&quot;);
+    logger.info(&quot;测试结果：{}&quot;, res);
+}
+</code></pre><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>代理模式除了开发中间件外还可以是对服务的包装，物联网组件等等，让复杂的各项服务变为轻量级调用、缓存使用。你可以理解为你家里的电灯开关，我们不能操作220v电线的人肉连接，但是可以使用开关，避免触电。</li>
+<li>代理模式主要解决的是问题是为某些资源的访问、对象的类的易用操作上提供方便使用的代理服务。</li>
 </ul>
 
             </div>
@@ -653,7 +621,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://adbo.gitee.io/2021/04/11/2021-04-11-design-xiang-yuan/">http://adbo.gitee.io/2021/04/11/2021-04-11-design-xiang-yuan/</a>
+                    <a href="http://adbo.gitee.io/2021/04/12/2021-04-12-design-dai-li/">http://adbo.gitee.io/2021/04/12/2021-04-12-design-dai-li/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -863,7 +831,7 @@
         repo: 'gitalk',
         owner: 'FlynnCN',
         admin: "FlynnCN",
-        id: '2021-04-11T22-43-52',
+        id: '2021-04-12T22-43-52',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -886,7 +854,8 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2021/04/12/2021-04-12-design-dai-li/">
                     <div class="card-image">
@@ -903,9 +872,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-04-12
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-12
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -918,6 +887,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -936,12 +906,12 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/04/10/2021-04-10-design-wai-guan/">
+                <a href="/2021/04/11/2021-04-11-design-xiang-yuan/">
                     <div class="card-image">
                         
-                        <img src="/medias/cover/itstack-demo-design-10-01.png" class="responsive-img" alt="外观模式">
+                        <img src="/medias/cover/itstack-demo-design-11-01.png" class="responsive-img" alt="享元模式">
                         
-                        <span class="card-title">外观模式</span>
+                        <span class="card-title">享元模式</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -952,7 +922,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-10
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-11
                             </span>
                         <span class="publish-author">
                             
