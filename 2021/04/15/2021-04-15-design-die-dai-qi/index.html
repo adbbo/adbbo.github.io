@@ -4,7 +4,7 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="命令模式, Adbo~Blog">
+    <meta name="keywords" content="迭代器模式, Adbo~Blog">
     <meta name="description" content="重学 Java 设计模式">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>命令模式 | Adbo</title>
+    <title>迭代器模式 | Adbo</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -291,12 +291,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/cover/itstack-demo-design-14-01.png')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/cover/itstack-demo-design-15-01.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">命令模式</h1>
+                    <h1 class="description center-align post-title">迭代器模式</h1>
                 </div>
             </div>
         </div>
@@ -438,7 +438,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-04-14
+                    2021-04-15
                 </div>
                 
 
@@ -458,184 +458,230 @@
                 <blockquote>
 <p>本文章仅用于本人学习笔记记录<br>微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）</p>
 </blockquote>
-<h2 id="命令模式介绍"><a href="#命令模式介绍" class="headerlink" title="命令模式介绍"></a>命令模式介绍</h2><p>命令模式是行为模式中的一种，以数据驱动的方式将命令对象，可以使用构造函数的方式传递给调用者。调用者再提供相应的实现为命令执行提供操作方法。</p>
-<p>在这个设计模式的实现过程中有如下几个比较重要的点；</p>
+<h2 id="迭代器模式介绍"><a href="#迭代器模式介绍" class="headerlink" title="迭代器模式介绍"></a>迭代器模式介绍</h2><p>迭代器模式，常见的就是我们日常使用的iterator遍历。虽然这个设计模式在我们的实际业务开发中的场景并不多，但却几乎每天都要使用jdk为我们提供的list集合遍历。另外增强的for循环虽然是循环输出数据，但是他不是迭代器模式。迭代器模式的特点是实现Iterable接口，通过next的方式获取集合元素，同时具备对元素的删除等操作。而增强的for循环是不可以的。</p>
+<p>这种设计模式的优点是可以让我们以相同的方式，遍历不同的数据结构元素，这些数据结构包括；数组、链表、树等，而用户在使用遍历的时候并不需要去关心每一种数据结构的遍历处理逻辑，从让使用变得统一易用。</p>
+<h2 id="案例场景模拟"><a href="#案例场景模拟" class="headerlink" title="案例场景模拟"></a>案例场景模拟</h2><p><img src="/2021/04/15/2021-04-15-design-die-dai-qi/itstack-demo-design-15-02.png" alt></p>
+<h2 id="迭代器模式遍历组织结构"><a href="#迭代器模式遍历组织结构" class="headerlink" title="迭代器模式遍历组织结构"></a>迭代器模式遍历组织结构</h2><p>在实现迭代器模式之前可以先阅读下java中list方法关于iterator的实现部分，几乎所有的迭代器开发都会按照这个模式来实现，这个模式主要分为以下几块；</p>
 <ul>
-<li>抽象命令类：声明执行命令的接口和方法</li>
-<li>具体的命令实现类：接口类的具体实现，可以是一组相似的行为逻辑</li>
-<li>实现者：也就是为命令做实现的具体实现类</li>
-<li>调用者：处理命令、实现的具体操作者，负责对外提供命令服务</li>
+<li>Collection，集合方法部分用于对自定义的数据结构添加通用方法:add、remove、iterator等核心方法。</li>
+<li>Iterable，提供获取迭代器，这个接口类会被Collection继承。</li>
+<li>Iterator，提供了两个方法的定义:hasNext、next，会在具体的数据结构中写实现方式。</li>
 </ul>
-<h2 id="案例场景模拟"><a href="#案例场景模拟" class="headerlink" title="案例场景模拟"></a>案例场景模拟</h2><p><img src="/2021/04/14/2021-04-14-design-ming-ling/itstack-demo-design-14-02.png" alt></p>
-<p>在这个案例中我们模拟在餐厅中点餐交给厨师👨‍🍳烹饪的场景</p>
-<p>命令场景的核心的逻辑是调用方与不需要去关心具体的逻辑实现，在这个场景中也就是点餐人员只需要把需要点的各种菜系交个小二就可以，小二再把各项菜品交给各个厨师进行烹饪。也就是点餐人员不需要跟各个厨师交流，只需要在统一的环境里下达命令就可以。</p>
-<p>在这个场景中可以看到有不同的菜品；山东（鲁菜）、四川（川菜）、江苏（苏菜）、广东（粤菜）、福建（闽菜）、浙江（浙菜）、湖南（湘菜），每种菜品都会有不同的厨师👩‍🍳进行烹饪。而客户并不会去关心具体是谁烹饪，厨师也不会去关心谁点的餐。客户只关心早点上菜，厨师只关心还有多少个菜要做。而这中间的衔接的过程，由小二完成。</p>
-<h2 id="用一坨坨代码实现"><a href="#用一坨坨代码实现" class="headerlink" title="用一坨坨代码实现"></a>用一坨坨代码实现</h2><h3 id="工程结构"><a href="#工程结构" class="headerlink" title="工程结构"></a>工程结构</h3><pre><code>itstack-demo-design-14-01
-└── src
-    └── main
-        └── java
-            └── org.itstack.demo.design
-                └── XiaoEr.java
-</code></pre><h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><pre><code>public class XiaoEr {
-
-    private Logger logger = LoggerFactory.getLogger(XiaoEr.class);
-
-    private Map&lt;Integer, String&gt; cuisineMap = new ConcurrentHashMap&lt;Integer, String&gt;();
-
-    public void order(int cuisine) {
-        // 广东（粤菜）
-        if (1 == cuisine) {
-            cuisineMap.put(1, &quot;广东厨师，烹饪鲁菜，宫廷最大菜系，以孔府风味为龙头&quot;);
-        }
-
-        // 江苏（苏菜）
-        if (2 == cuisine) {
-            cuisineMap.put(2, &quot;江苏厨师，烹饪苏菜，宫廷第二大菜系，古今国宴上最受人欢迎的菜系。&quot;);
-        }
-
-        // 山东（鲁菜）
-        if (3 == cuisine) {
-            cuisineMap.put(3, &quot;山东厨师，烹饪鲁菜，宫廷最大菜系，以孔府风味为龙头.&quot;);
-        }
-
-        // 四川（川菜）
-        if (4 == cuisine) {
-            cuisineMap.put(4, &quot;四川厨师，烹饪川菜，中国最有特色的菜系，也是民间最大菜系。&quot;);
-        }
-
-    }
-
-    public void placeOrder() {
-        logger.info(&quot;菜单：{}&quot;, JSON.toJSONString(cuisineMap));
-    }
-
-}
-</code></pre><p>在这个类的实现中提供了两个方法，一个方法用于点单添加菜品order()，另外一个方法展示菜品的信息placeOrder()。</p>
-<h2 id="命令模式重构代码"><a href="#命令模式重构代码" class="headerlink" title="命令模式重构代码"></a>命令模式重构代码</h2><p>命令模式可以将上述的模式拆解三层大块，命令、命令实现者、命令的调用者，当有新的菜品或者厨师扩充时候就可以在指定的类结构下进行实现添加即可，外部的调用也会非常的容易扩展。</p>
-<h3 id="工程结构-1"><a href="#工程结构-1" class="headerlink" title="工程结构"></a>工程结构</h3><pre><code>itstack-demo-design-14-02
+<h3 id="工程结构"><a href="#工程结构" class="headerlink" title="工程结构"></a>工程结构</h3><pre><code>itstack-demo-design-15-00
 └── src
     ├── main
     │   └── java
     │       └── org.itstack.demo.design
-    │           ├── cook
-    │           │    ├── impl
-    │           │    │   ├── GuangDongCook.java
-    │           │    │   ├── JiangSuCook.java
-    │           │    │   ├── ShanDongCook.java
-    │           │    │   └── SiChuanCook.java
-    │           │    └── ICook.java
-    │           ├── cuisine
-    │           │    ├── impl
-    │           │    │   ├── GuangDoneCuisine.java
-    │           │    │   ├── JiangSuCuisine.java
-    │           │    │   ├── ShanDongCuisine.java
-    │           │    │   └── SiChuanCuisine.java
-    │           │    └── ICuisine.java
-    │           └── XiaoEr.java
+    │           ├── group
+    │           │    ├── Employee.java
+    │           │    ├── GroupStructure.java
+    │           │    └── Link.java
+    │           └──  lang
+    │                ├── Collection.java
+    │                ├── Iterable.java
+    │                └── Iterator.java
     └── test
         └── java
-            └── org.itstack.demo.test
+            └── org.itstack.demo.design.test
                 └── ApiTest.java
-</code></pre><h3 id="命令模式模型结构"><a href="#命令模式模型结构" class="headerlink" title="命令模式模型结构"></a>命令模式模型结构</h3><p><img src="/2021/04/14/2021-04-14-design-ming-ling/itstack-demo-design-14-03.png" alt></p>
-<h3 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h3><h4 id="抽象命令定义-菜品接口"><a href="#抽象命令定义-菜品接口" class="headerlink" title="抽象命令定义(菜品接口)"></a>抽象命令定义(菜品接口)</h4><pre><code>public interface ICuisine {
+</code></pre><h3 id="迭代器模式模型结构"><a href="#迭代器模式模型结构" class="headerlink" title="迭代器模式模型结构"></a>迭代器模式模型结构</h3><p><img src="/2021/04/15/2021-04-15-design-die-dai-qi/itstack-demo-design-15-03.png" alt></p>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><h4 id="雇员实体类"><a href="#雇员实体类" class="headerlink" title="雇员实体类"></a>雇员实体类</h4><pre><code>/**
+ * 雇员
+ */
+public class Employee {
 
-    void cook(); // 烹调、制作
+    private String uId;   // ID
+    private String name;  // 姓名
+    private String desc;  // 备注
 
-}</code></pre><h4 id="广东（粤菜）"><a href="#广东（粤菜）" class="headerlink" title="广东（粤菜）"></a>广东（粤菜）</h4><pre><code>public class GuangDoneCuisine implements ICuisine {
+    // ...get/set
+}
+</code></pre><h4 id="树节点链路"><a href="#树节点链路" class="headerlink" title="树节点链路"></a>树节点链路</h4><pre><code>/**
+ * 树节点链路
+ */
+public class Link {
 
-    private ICook cook;
+    private String fromId; // 雇员ID
+    private String toId;   // 雇员ID    
 
-    public GuangDoneCuisine(ICook cook) {
-        this.cook = cook;
-    }
+    // ...get/set
+}
+</code></pre><p>这个类用于描述结构树中的各个节点之间的关系链，也就是A to B、B to C、B to D，以此描述出一套完整的树组织结构。</p>
+<h4 id="迭代器定义"><a href="#迭代器定义" class="headerlink" title="迭代器定义"></a>迭代器定义</h4><pre><code>public interface Iterator&lt;E&gt; {
 
-    public void cook() {
-        cook.doCooking();
-    }
+    boolean hasNext();
+
+    E next();
 
 }
-</code></pre><h4 id="江苏（苏菜）"><a href="#江苏（苏菜）" class="headerlink" title="江苏（苏菜）"></a>江苏（苏菜）</h4><pre><code>public class JiangSuCuisine implements ICuisine {
+</code></pre><p>方法描述:hasNext，判断是否有下一个元素、next，获取下一个元素。这个在list的遍历中是经常用到的。</p>
+<h4 id="可迭代接口定义"><a href="#可迭代接口定义" class="headerlink" title="可迭代接口定义"></a>可迭代接口定义</h4><pre><code>public interface Iterable&lt;E&gt; {
 
-    private ICook cook;
-
-    public JiangSuCuisine(ICook cook) {
-        this.cook = cook;
-    }
-
-    public void cook() {
-        cook.doCooking();
-    }
+    Iterator&lt;E&gt; iterator();
 
 }
-</code></pre><p>在实现的类中都有添加了一个厨师类(ICook)，并通过这个类提供的方法进行操作命令(烹饪菜品)cook.doCooking()。</p>
-<h4 id="抽象实现者定义-厨师接口"><a href="#抽象实现者定义-厨师接口" class="headerlink" title="抽象实现者定义(厨师接口)"></a>抽象实现者定义(厨师接口)</h4><pre><code>public interface ICook {
+</code></pre><p>这个接口中提供了上面迭代器的实现Iterator的获取，也就是后续在自己的数据结构中需要实现迭代器的功能并交给Iterable，由此让外部调用方进行获取使用。</p>
+<h4 id="集合功能接口定义"><a href="#集合功能接口定义" class="headerlink" title="集合功能接口定义"></a>集合功能接口定义</h4><pre><code>public interface Collection&lt;E, L&gt; extends Iterable&lt;E&gt; {
 
-    void doCooking();
+    boolean add(E e);
 
-}
-</code></pre><p>这里定义的是具体的为命令的实现者，这里也就是菜品对应的厨师烹饪的指令实现。</p>
-<h4 id="粤菜，厨师"><a href="#粤菜，厨师" class="headerlink" title="粤菜，厨师"></a>粤菜，厨师</h4><pre><code>public class GuangDongCook implements ICook {
+    boolean remove(E e);
 
-    private Logger logger = LoggerFactory.getLogger(ICook.class);
+    boolean addLink(String key, L l);
 
-    public void doCooking() {
-        logger.info(&quot;广东厨师，烹饪鲁菜，宫廷最大菜系，以孔府风味为龙头&quot;);
-    }
+    boolean removeLink(String key);
+
+    Iterator&lt;E&gt; iterator();
 
 }
-</code></pre><h4 id="苏菜，厨师"><a href="#苏菜，厨师" class="headerlink" title="苏菜，厨师"></a>苏菜，厨师</h4><pre><code>public class JiangSuCook implements ICook {
+</code></pre><ul>
+<li>定义集合操作接口；Collection，同时继承了另外一个接口Iterable的方法iterator()。这样后续谁来实现这个接口，就需要实现上述定义的一些基本功能；添加元素、删除元素、遍历。</li>
+<li>这里定义了两个泛型&lt;E, L&gt;，因为我们的数据结构一个是用于添加元素，另外一个是用于添加树节点的链路关系。</li>
+</ul>
+<h4 id="核心-迭代器功能实现"><a href="#核心-迭代器功能实现" class="headerlink" title="(核心)迭代器功能实现"></a>(核心)迭代器功能实现</h4><pre><code>public class GroupStructure implements Collection&lt;Employee, Link&gt; {
 
-    private Logger logger = LoggerFactory.getLogger(ICook.class);
+    private String groupId;                                                 // 组织ID，也是一个组织链的头部ID
+    private String groupName;                                               // 组织名称
+    private Map&lt;String, Employee&gt; employeeMap = new ConcurrentHashMap&lt;String, Employee&gt;();  // 雇员列表
+    private Map&lt;String, List&lt;Link&gt;&gt; linkMap = new ConcurrentHashMap&lt;String, List&lt;Link&gt;&gt;();  // 组织架构关系；id-&gt;list
+    private Map&lt;String, String&gt; invertedMap = new ConcurrentHashMap&lt;String, String&gt;();       // 反向关系链
 
-    public void doCooking() {
-        logger.info(&quot;江苏厨师，烹饪苏菜，宫廷第二大菜系，古今国宴上最受人欢迎的菜系。&quot;);
+    public GroupStructure(String groupId, String groupName) {
+        this.groupId = groupId;
+        this.groupName = groupName;
     }
 
-}
-</code></pre><p>在这个实现的过程是模拟打了日志，相当于通知了厨房里具体的厨师进行菜品烹饪。</p>
-<h4 id="调用者-小二"><a href="#调用者-小二" class="headerlink" title="调用者(小二)"></a>调用者(小二)</h4><pre><code>public class XiaoEr {
-
-    private Logger logger = LoggerFactory.getLogger(XiaoEr.class);
-
-    private List&lt;ICuisine&gt; cuisineList = new ArrayList&lt;ICuisine&gt;();
-
-    public void order(ICuisine cuisine) {
-        cuisineList.add(cuisine);
+    public boolean add(Employee employee) {
+        return null != employeeMap.put(employee.getuId(), employee);
     }
 
-    public synchronized void placeOrder() {
-        for (ICuisine cuisine : cuisineList) {
-            cuisine.cook();
+    public boolean remove(Employee o) {
+        return null != employeeMap.remove(o.getuId());
+    }
+
+    public boolean addLink(String key, Link link) {
+        invertedMap.put(link.getToId(), link.getFromId());
+        if (linkMap.containsKey(key)) {
+            return linkMap.get(key).add(link);
+        } else {
+            List&lt;Link&gt; links = new LinkedList&lt;Link&gt;();
+            links.add(link);
+            linkMap.put(key, links);
+            return true;
         }
-        cuisineList.clear();
+    }
+
+    public boolean removeLink(String key) {
+        return null != linkMap.remove(key);
+    }
+
+    public Iterator&lt;Employee&gt; iterator() {
+
+        return new Iterator&lt;Employee&gt;() {
+
+            HashMap&lt;String, Integer&gt; keyMap = new HashMap&lt;String, Integer&gt;();
+
+            int totalIdx = 0;
+            private String fromId = groupId;  // 雇员ID，From
+            private String toId = groupId;   // 雇员ID，To
+
+            public boolean hasNext() {
+                return totalIdx &lt; employeeMap.size();
+            }
+
+            public Employee next() {
+                List&lt;Link&gt; links = linkMap.get(toId);
+                int cursorIdx = getCursorIdx(toId);
+
+                // 同级节点扫描
+                if (null == links) {
+                    cursorIdx = getCursorIdx(fromId);
+                    links = linkMap.get(fromId);
+                }
+
+                // 上级节点扫描
+                while (cursorIdx &gt; links.size() - 1) {
+                    fromId = invertedMap.get(fromId);
+                    cursorIdx = getCursorIdx(fromId);
+                    links = linkMap.get(fromId);
+                }
+
+                // 获取节点
+                Link link = links.get(cursorIdx);
+                toId = link.getToId();
+                fromId = link.getFromId();
+                totalIdx++;
+
+                // 返回结果
+                return employeeMap.get(link.getToId());
+            }
+
+            // 给每个层级定义宽度遍历进度
+            public int getCursorIdx(String key) {
+                int idx = 0;
+                if (keyMap.containsKey(key)) {
+                    idx = keyMap.get(key);
+                    keyMap.put(key, ++idx);
+                } else {
+                    keyMap.put(key, idx);
+                }
+                return idx;
+            }
+        };
     }
 
 }
-</code></pre><p>在调用者的具体实现中，提供了菜品的添加和菜单执行烹饪。这个过程是命令模式的具体调用，通过外部将菜品和厨师传递进来而进行具体的调用。</p>
-<h4 id="测试验证"><a href="#测试验证" class="headerlink" title="测试验证"></a>测试验证</h4><pre><code>@Test
-public void test(){
+</code></pre><ul>
+<li>以上的这部分代码稍微有点长，主要包括了对元素的添加和删除。另外最重要的是对遍历的实现 new Iterator<employee>。</employee></li>
+<li>添加和删除元素相对来说比较简单，使用了两个map数组结构进行定义；雇员列表、组织架构关系；id-&gt;list。当元素添加元素的时候，会分别在不同的方法中向map结构中进行填充指向关系(A-&gt;B)，也就构建出了我们的树形组织关系。</li>
+</ul>
+<p>迭代器实现思路</p>
+<ul>
+<li>这里的树形结构我们需要做的是深度遍历，也就是左侧的一直遍历到最深节点。</li>
+<li>当遍历到最深节点后，开始遍历最深节点的横向节点。</li>
+<li>当横向节点遍历完成后则向上寻找横向节点，直至树结构全部遍历完成。</li>
+</ul>
+<h3 id="测试验证"><a href="#测试验证" class="headerlink" title="测试验证"></a>测试验证</h3><pre><code>@Test
+public void test_iterator() { 
+    // 数据填充
+    GroupStructure groupStructure = new GroupStructure(&quot;1&quot;, &quot;小傅哥&quot;);  
 
-    // 菜系 + 厨师；广东（粤菜）、江苏（苏菜）、山东（鲁菜）、四川（川菜）
-    ICuisine guangDoneCuisine = new GuangDoneCuisine(new GuangDongCook());
-    JiangSuCuisine jiangSuCuisine = new JiangSuCuisine(new JiangSuCook());
-    ShanDongCuisine shanDongCuisine = new ShanDongCuisine(new ShanDongCook());
-    SiChuanCuisine siChuanCuisine = new SiChuanCuisine(new SiChuanCook());
+    // 雇员信息
+    groupStructure.add(new Employee(&quot;2&quot;, &quot;花花&quot;, &quot;二级部门&quot;));
+    groupStructure.add(new Employee(&quot;3&quot;, &quot;豆包&quot;, &quot;二级部门&quot;));
+    groupStructure.add(new Employee(&quot;4&quot;, &quot;蹦蹦&quot;, &quot;三级部门&quot;));
+    groupStructure.add(new Employee(&quot;5&quot;, &quot;大烧&quot;, &quot;三级部门&quot;));
+    groupStructure.add(new Employee(&quot;6&quot;, &quot;虎哥&quot;, &quot;四级部门&quot;));
+    groupStructure.add(new Employee(&quot;7&quot;, &quot;玲姐&quot;, &quot;四级部门&quot;));
+    groupStructure.add(new Employee(&quot;8&quot;, &quot;秋雅&quot;, &quot;四级部门&quot;));   
 
-    // 点单
-    XiaoEr xiaoEr = new XiaoEr();
-    xiaoEr.order(guangDoneCuisine);
-    xiaoEr.order(jiangSuCuisine);
-    xiaoEr.order(shanDongCuisine);
-    xiaoEr.order(siChuanCuisine);
+    // 节点关系 1-&gt;(1,2) 2-&gt;(4,5)
+    groupStructure.addLink(&quot;1&quot;, new Link(&quot;1&quot;, &quot;2&quot;));
+    groupStructure.addLink(&quot;1&quot;, new Link(&quot;1&quot;, &quot;3&quot;));
+    groupStructure.addLink(&quot;2&quot;, new Link(&quot;2&quot;, &quot;4&quot;));
+    groupStructure.addLink(&quot;2&quot;, new Link(&quot;2&quot;, &quot;5&quot;));
+    groupStructure.addLink(&quot;5&quot;, new Link(&quot;5&quot;, &quot;6&quot;));
+    groupStructure.addLink(&quot;5&quot;, new Link(&quot;5&quot;, &quot;7&quot;));
+    groupStructure.addLink(&quot;5&quot;, new Link(&quot;5&quot;, &quot;8&quot;));       
 
-    // 下单
-    xiaoEr.placeOrder();
+    Iterator&lt;Employee&gt; iterator = groupStructure.iterator();
+    while (iterator.hasNext()) {
+        Employee employee = iterator.next();
+        logger.info(&quot;{}，雇员 Id：{} Name：{}&quot;, employee.getDesc(), employee.getuId(), employee.getName());
+    }
 }
-</code></pre><p>这里可以主要观察菜品与厨师的组合；new GuangDoneCuisine(new GuangDongCook());，每一个具体的命令都拥有一个对应的实现类，可以进行组合。</p>
+</code></pre><pre><code>22:23:37.166 [main] INFO  org.itstack.demo.design.test.ApiTest - 二级部门，雇员 Id：2 Name：花花
+22:23:37.168 [main] INFO  org.itstack.demo.design.test.ApiTest - 三级部门，雇员 Id：4 Name：蹦蹦
+22:23:37.169 [main] INFO  org.itstack.demo.design.test.ApiTest - 三级部门，雇员 Id：5 Name：大烧
+22:23:37.169 [main] INFO  org.itstack.demo.design.test.ApiTest - 四级部门，雇员 Id：6 Name：虎哥
+22:23:37.169 [main] INFO  org.itstack.demo.design.test.ApiTest - 四级部门，雇员 Id：7 Name：玲姐
+22:23:37.169 [main] INFO  org.itstack.demo.design.test.ApiTest - 四级部门，雇员 Id：8 Name：秋雅
+22:23:37.169 [main] INFO  org.itstack.demo.design.test.ApiTest - 二级部门，雇员 Id：3 Name：豆包
+
+Process finished with exit code 0
+</code></pre><p>从遍历的结果可以看到，我们是顺着树形结构的深度开始遍历，一直到右侧的节点3；雇员 Id：2、雇员 Id：4…雇员 Id：3</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
-<li>从以上的内容和例子可以感受到，命令模式的使用场景需要分为三个比较大的块；命令、实现、调用者，而这三块内容的拆分也是选择适合场景的关键因素，经过这样的拆分可以让逻辑具备单一职责的性质，便于扩展。</li>
-<li>通过这样的实现方式与if语句相比，降低了耦合性也方便其他的命令和实现的扩展。但同时这样的设计模式也带来了一点问题，就是在各种命令与实现的组合下，会扩展出很多的实现类，需要进行管理。</li>
-<li>命令模式是行为模式中的一种，以数据驱动的方式将命令对象，可以使用构造函数的方式传递给调用者。调用者再提供相应的实现为命令执行提供操作方法。</li>
+<li>迭代器的设计模式从以上的功能实现可以看到，满足了单一职责和开闭原则，外界的调用方也不需要知道任何一个不同的数据结构在使用上的遍历差异。可以非常方便的扩展，也让整个遍历变得更加干净整洁。</li>
 </ul>
 
             </div>
@@ -662,7 +708,7 @@ public void test(){
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://adbo.gitee.io/2021/04/14/2021-04-14-design-ming-ling/">http://adbo.gitee.io/2021/04/14/2021-04-14-design-ming-ling/</a>
+                    <a href="http://adbo.gitee.io/2021/04/15/2021-04-15-design-die-dai-qi/">http://adbo.gitee.io/2021/04/15/2021-04-15-design-die-dai-qi/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -872,7 +918,7 @@ public void test(){
         repo: 'gitalk',
         owner: 'FlynnCN',
         admin: "FlynnCN",
-        id: '2021-04-14T22-43-52',
+        id: '2021-04-15T22-43-52',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -895,7 +941,8 @@ public void test(){
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2021/04/15/2021-04-15-design-die-dai-qi/">
                     <div class="card-image">
@@ -912,9 +959,9 @@ public void test(){
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-04-15
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-15
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -927,6 +974,7 @@ public void test(){
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -945,12 +993,12 @@ public void test(){
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/04/13/2021-04-13-design-ze-ren-lian/">
+                <a href="/2021/04/14/2021-04-14-design-ming-ling/">
                     <div class="card-image">
                         
-                        <img src="/medias/cover/itstack-demo-design-13-01.png" class="responsive-img" alt="责任链模式">
+                        <img src="/medias/cover/itstack-demo-design-14-01.png" class="responsive-img" alt="命令模式">
                         
-                        <span class="card-title">责任链模式</span>
+                        <span class="card-title">命令模式</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -961,7 +1009,7 @@ public void test(){
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-13
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-14
                             </span>
                         <span class="publish-author">
                             
