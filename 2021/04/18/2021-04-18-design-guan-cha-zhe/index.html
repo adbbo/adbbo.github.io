@@ -4,7 +4,7 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="备忘录模式, Adbo~Blog">
+    <meta name="keywords" content="观察者模式, Adbo~Blog">
     <meta name="description" content="重学 Java 设计模式">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>备忘录模式 | Adbo</title>
+    <title>观察者模式 | Adbo</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -291,12 +291,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/cover/itstack-demo-design-17-01.png')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/cover/itstack-demo-design-18-01.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">备忘录模式</h1>
+                    <h1 class="description center-align post-title">观察者模式</h1>
                 </div>
             </div>
         </div>
@@ -438,7 +438,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-04-17
+                    2021-04-18
                 </div>
                 
 
@@ -458,157 +458,194 @@
                 <blockquote>
 <p>本文章仅用于本人学习笔记记录<br>微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）</p>
 </blockquote>
-<h2 id="备忘录模式介绍"><a href="#备忘录模式介绍" class="headerlink" title="备忘录模式介绍"></a>备忘录模式介绍</h2><p>备忘录模式是以可以恢复或者说回滚，配置、版本、悔棋为核心功能的设计模式，而这种设计模式属于行为模式。在功能实现上是以不破坏原对象为基础增加备忘录操作类，记录原对象的行为从而实现备忘录模式。</p>
-<p>这个设计在我们平常的生活或者开发中也是比较常见的，比如：后悔药、孟婆汤(一下回滚到0)，IDEA编辑和撤销、小霸王游戏机存档。</p>
-<h2 id="案例场景模拟"><a href="#案例场景模拟" class="headerlink" title="案例场景模拟"></a>案例场景模拟</h2><p><img src="/2021/04/17/2021-04-17-design-bei-wang-lu/itstack-demo-design-17-03.png" alt></p>
-<h2 id="备忘录模式记录配置文件版本信息"><a href="#备忘录模式记录配置文件版本信息" class="headerlink" title="备忘录模式记录配置文件版本信息"></a>备忘录模式记录配置文件版本信息</h2><p>备忘录的设计模式实现方式，重点在于不更改原有类的基础上，增加备忘录类存放记录。可能平时虽然不一定非得按照这个设计模式的代码结构来实现自己的需求，但是对于功能上可能也完成过类似的功能，记录系统的信息。</p>
-<h3 id="工程结构"><a href="#工程结构" class="headerlink" title="工程结构"></a>工程结构</h3><pre><code>itstack-demo-design-17-00
+<h2 id="观察者模式介绍"><a href="#观察者模式介绍" class="headerlink" title="观察者模式介绍"></a>观察者模式介绍</h2><p>简单来讲观察者🕵模式，就是当一个行为发生时传递信息给另外一个用户接收做出相应的处理，两者之间没有直接的耦合关联。</p>
+<p>除了生活中的场景外，在我们编程开发中也会常用到一些观察者的模式或者组件，例如我们经常使用的MQ服务，虽然MQ服务是有一个通知中心并不是每一个类服务进行通知，但整体上也可以算作是观察者模式的思路设计。再比如可能有做过的一些类似事件监听总线，让主线服务与其他辅线业务服务分离，为了使系统降低耦合和增强扩展性，也会使用观察者模式进行处理。</p>
+<h2 id="案例场景模拟"><a href="#案例场景模拟" class="headerlink" title="案例场景模拟"></a>案例场景模拟</h2><p><img src="/2021/04/18/2021-04-18-design-guan-cha-zhe/itstack-demo-design-18-03.png" alt></p>
+<h3 id="场景模拟工程"><a href="#场景模拟工程" class="headerlink" title="场景模拟工程"></a>场景模拟工程</h3><pre><code>itstack-demo-design-18-00
 └── src
-    ├── main
-    │   └── java
-    │       └── org.itstack.demo.design
-    │           ├── Admin.java
-    │           ├── ConfigFile.java
-    │           ├── ConfigMemento.java
-    │           └── ConfigOriginator.java
-    └── test
+    └── main
         └── java
-            └── org.itstack.demo.design.test
-                └── ApiTest.java
-</code></pre><p>备忘录模式模型结构</p>
-<p><img src="/2021/04/17/2021-04-17-design-bei-wang-lu/itstack-demo-design-17-04.png" alt></p>
+            └── org.itstack.demo.design
+                └── MinibusTargetService.java
+</code></pre><h3 id="场景简述"><a href="#场景简述" class="headerlink" title="场景简述"></a>场景简述</h3><h4 id="摇号服务接口"><a href="#摇号服务接口" class="headerlink" title="摇号服务接口"></a>摇号服务接口</h4><pre><code>public class MinibusTargetService {
+
+    /**
+     * 模拟摇号，但不是摇号算法
+     *
+     * @param uId 用户编号
+     * @return 结果
+     */
+    public String lottery(String uId) {
+        return Math.abs(uId.hashCode()) % 2 == 0 ? &quot;恭喜你，编码&quot;.concat(uId).concat(&quot;在本次摇号中签&quot;) : &quot;很遗憾，编码&quot;.concat(uId).concat(&quot;在本次摇号未中签或摇号资格已过期&quot;);
+    }
+
+}
+</code></pre><h2 id="用一坨坨代码实现"><a href="#用一坨坨代码实现" class="headerlink" title="用一坨坨代码实现"></a>用一坨坨代码实现</h2><p>按照需求需要在原有的摇号接口中添加MQ消息发送以及短消息通知功能，如果是最直接的方式那么可以直接在方法中补充功能即可。</p>
+<h3 id="工程结构"><a href="#工程结构" class="headerlink" title="工程结构"></a>工程结构</h3><pre><code>itstack-demo-design-18-01
+└── src
+    └── main
+        └── java
+            └── org.itstack.demo.design
+                ├── LotteryResult.java
+                ├── LotteryService.java
+                └── LotteryServiceImpl.java
+</code></pre><p>这段代码接口中包括了三部分内容；返回对象(LotteryResult)、定义接口(LotteryService)、具体实现(LotteryServiceImpl)。</p>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><pre><code>public class LotteryServiceImpl implements LotteryService {
+
+    private Logger logger = LoggerFactory.getLogger(LotteryServiceImpl.class);
+
+    private MinibusTargetService minibusTargetService = new MinibusTargetService();
+
+    public LotteryResult doDraw(String uId) {
+        // 摇号
+        String lottery = minibusTargetService.lottery(uId);
+        // 发短信
+        logger.info(&quot;给用户 {} 发送短信通知(短信)：{}&quot;, uId, lottery);
+        // 发MQ消息
+        logger.info(&quot;记录用户 {} 摇号结果(MQ)：{}&quot;, uId, lottery);
+        // 结果
+        return new LotteryResult(uId, lottery, new Date());
+    }
+
+}
+</code></pre><h2 id="观察者模式重构代码"><a href="#观察者模式重构代码" class="headerlink" title="观察者模式重构代码"></a>观察者模式重构代码</h2><h3 id="工程结构-1"><a href="#工程结构-1" class="headerlink" title="工程结构"></a>工程结构</h3><pre><code>itstack-demo-design-18-02
+└── src
+    └── main
+        └── java
+            └── org.itstack.demo.design
+                ├── event
+                │    ├── listener
+                │    │    ├── EventListener.java
+                │    │    ├── MessageEventListener.java
+                │    │    └── MQEventListener.java
+                │    └── EventManager.java
+                ├── LotteryResult.java
+                ├── LotteryService.java
+                └── LotteryServiceImpl.java
+</code></pre><p>观察者模式模型结构</p>
+<p><img src="/2021/04/18/2021-04-18-design-guan-cha-zhe/itstack-demo-design-18-04.png" alt></p>
 <ul>
-<li>以上是工程结构的一个类图，其实相对来说并不复杂，除了原有的配置类(ConfigFile)以外，只新增加了三个类。</li>
-<li>ConfigMemento：备忘录类，相当于是对原有配置类的扩展</li>
-<li>ConfigOriginator：记录者类，获取和返回备忘录类对象信息</li>
-<li>Admin：管理员类，用于操作记录备忘信息，比如你一些列的顺序执行了什么或者某个版本下的内容信息</li>
+<li>从上图可以分为三大块看；事件监听、事件处理、具体的业务流程，另外在业务流程中 LotteryService 定义的是抽象类，因为这样可以通过抽象类将事件功能屏蔽，外部业务流程开发者不需要知道具体的通知操作。</li>
+<li>右下角圆圈图表示的是核心流程与非核心流程的结构，一般在开发中会把主线流程开发完成后，再使用通知的方式处理辅助流程。他们可以是异步的，在MQ以及定时任务的处理下，保证最终一致性。</li>
 </ul>
-<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><h4 id="配置信息类"><a href="#配置信息类" class="headerlink" title="配置信息类"></a>配置信息类</h4><pre><code>public class ConfigFile {
+<h3 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h3><h4 id="事件监听接口定义"><a href="#事件监听接口定义" class="headerlink" title="事件监听接口定义"></a>事件监听接口定义</h4><pre><code>public interface EventListener {
 
-    private String versionNo; // 版本号
-    private String content;   // 内容
-    private Date dateTime;    // 时间
-    private String operator;  // 操作人
+    void doEvent(LotteryResult result);
 
-    // ...get/set
 }
-</code></pre><p>配置类可以是任何形式的，这里只是简单的描述了一个基本的配置内容信息。</p>
-<h4 id="备忘录类"><a href="#备忘录类" class="headerlink" title="备忘录类"></a>备忘录类</h4><pre><code>public class ConfigMemento {
+</code></pre><p>接口中定义了基本的事件类，这里如果方法的入参信息类型是变化的可以使用泛型<t></t></p>
+<h4 id="短消息事件"><a href="#短消息事件" class="headerlink" title="短消息事件"></a>短消息事件</h4><pre><code>public class MessageEventListener implements EventListener {
 
-    private ConfigFile configFile;
+    private Logger logger = LoggerFactory.getLogger(MessageEventListener.class);
 
-    public ConfigMemento(ConfigFile configFile) {
-        this.configFile = configFile;
-    }
-
-    public ConfigFile getConfigFile() {
-        return configFile;
-    }
-
-    public void setConfigFile(ConfigFile configFile) {
-        this.configFile = configFile;
+    @Override
+    public void doEvent(LotteryResult result) {
+        logger.info(&quot;给用户 {} 发送短信通知(短信)：{}&quot;, result.getuId(), result.getMsg());
     }
 
 }
-</code></pre><p>备忘录是对原有配置类的扩展，可以设置和获取配置信息。</p>
-<h4 id="记录者类"><a href="#记录者类" class="headerlink" title="记录者类"></a>记录者类</h4><pre><code>public class ConfigOriginator {
+</code></pre><h4 id="MQ发送事件"><a href="#MQ发送事件" class="headerlink" title="MQ发送事件"></a>MQ发送事件</h4><pre><code>public class MQEventListener implements EventListener {
 
-    private ConfigFile configFile;
+    private Logger logger = LoggerFactory.getLogger(MQEventListener.class);
 
-    public ConfigFile getConfigFile() {
-        return configFile;
+    @Override
+    public void doEvent(LotteryResult result) {
+        logger.info(&quot;记录用户 {} 摇号结果(MQ)：{}&quot;, result.getuId(), result.getMsg());
     }
 
-    public void setConfigFile(ConfigFile configFile) {
-        this.configFile = configFile;
+}
+</code></pre><h4 id="事件处理类"><a href="#事件处理类" class="headerlink" title="事件处理类"></a>事件处理类</h4><pre><code>public class EventManager {
+
+    Map&lt;Enum&lt;EventType&gt;, List&lt;EventListener&gt;&gt; listeners = new HashMap&lt;&gt;();
+
+    public EventManager(Enum&lt;EventType&gt;... operations) {
+        for (Enum&lt;EventType&gt; operation : operations) {
+            this.listeners.put(operation, new ArrayList&lt;&gt;());
+        }
     }
 
-    public ConfigMemento saveMemento(){
-        return new ConfigMemento(configFile);
+    public enum EventType {
+        MQ, Message
     }
 
-    public void getMemento(ConfigMemento memento){
-        this.configFile = memento.getConfigFile();
+    /**
+     * 订阅
+     * @param eventType 事件类型
+     * @param listener  监听
+     */
+    public void subscribe(Enum&lt;EventType&gt; eventType, EventListener listener) {
+        List&lt;EventListener&gt; users = listeners.get(eventType);
+        users.add(listener);
+    }
+
+    /**
+     * 取消订阅
+     * @param eventType 事件类型
+     * @param listener  监听
+     */
+    public void unsubscribe(Enum&lt;EventType&gt; eventType, EventListener listener) {
+        List&lt;EventListener&gt; users = listeners.get(eventType);
+        users.remove(listener);
+    }
+
+    /**
+     * 通知
+     * @param eventType 事件类型
+     * @param result    结果
+     */
+    public void notify(Enum&lt;EventType&gt; eventType, LotteryResult result) {
+        List&lt;EventListener&gt; users = listeners.get(eventType);
+        for (EventListener listener : users) {
+            listener.doEvent(result);
+        }
     }
 
 }
 </code></pre><ul>
-<li><p>记录者类除了对ConfigFile配置类增加了获取和设置方法外，还增加了保存saveMemento()、获取getMemento(ConfigMemento memento)。</p>
-</li>
-<li><p>saveMemento：保存备忘录的时候会创建一个备忘录信息，并返回回去，交给管理者处理。</p>
-</li>
-<li><p>getMemento：获取的之后并不是直接返回，而是把备忘录的信息交给现在的配置文件this.configFile，这部分需要注意。</p>
-</li>
+<li>整个处理的实现上提供了三个主要方法；订阅(subscribe)、取消订阅(unsubscribe)、通知(notify)。这三个方法分别用于对监听时间的添加和使用。</li>
+<li>另外因为事件有不同的类型，这里使用了枚举的方式进行处理，也方便让外部在规定下使用事件，而不至于乱传信息(EventType.MQ、EventType.Message)。</li>
 </ul>
-<h4 id="管理员类"><a href="#管理员类" class="headerlink" title="管理员类"></a>管理员类</h4><pre><code>public class Admin {
+<h4 id="业务抽象类接口"><a href="#业务抽象类接口" class="headerlink" title="业务抽象类接口"></a>业务抽象类接口</h4><pre><code>public abstract class LotteryService {
 
-    private int cursorIdx = 0;
-    private List&lt;ConfigMemento&gt; mementoList = new ArrayList&lt;ConfigMemento&gt;();
-    private Map&lt;String, ConfigMemento&gt; mementoMap = new ConcurrentHashMap&lt;String, ConfigMemento&gt;();
+    private EventManager eventManager;
 
-    public void append(ConfigMemento memento) {
-        mementoList.add(memento);
-        mementoMap.put(memento.getConfigFile().getVersionNo(), memento);
-        cursorIdx++;
+    public LotteryService() {
+        eventManager = new EventManager(EventManager.EventType.MQ, EventManager.EventType.Message);
+        eventManager.subscribe(EventManager.EventType.MQ, new MQEventListener());
+        eventManager.subscribe(EventManager.EventType.Message, new MessageEventListener());
     }
 
-    public ConfigMemento undo() {
-        if (--cursorIdx &lt;= 0) return mementoList.get(0);
-        return mementoList.get(cursorIdx);
+    public LotteryResult draw(String uId) {
+        LotteryResult lotteryResult = doDraw(uId);
+        // 需要什么通知就给调用什么方法
+        eventManager.notify(EventManager.EventType.MQ, lotteryResult);
+        eventManager.notify(EventManager.EventType.Message, lotteryResult);
+        return lotteryResult;
     }
 
-    public ConfigMemento redo() {
-        if (++cursorIdx &gt; mementoList.size()) return mementoList.get(mementoList.size() - 1);
-        return mementoList.get(cursorIdx);
-    }
+    protected abstract LotteryResult doDraw(String uId);
 
-    public ConfigMemento get(String versionNo){
-        return mementoMap.get(versionNo);
+}
+</code></pre><h4 id="业务接口实现类"><a href="#业务接口实现类" class="headerlink" title="业务接口实现类"></a>业务接口实现类</h4><pre><code>public class LotteryServiceImpl extends LotteryService {
+
+    private MinibusTargetService minibusTargetService = new MinibusTargetService();
+
+    @Override
+    protected LotteryResult doDraw(String uId) {
+        // 摇号
+        String lottery = minibusTargetService.lottery(uId);
+        // 结果
+        return new LotteryResult(uId, lottery, new Date());
     }
 
 }
-</code></pre><ul>
-<li>在这个类中主要实现的核心功能就是记录配置文件信息，也就是备忘录的效果，之后提供可以回滚和获取的方法，拿到备忘录的具体内容。</li>
-<li>同时这里设置了两个数据结构来存放备忘录，实际使用中可以按需设置。List<configmemento>、Map&lt;String, ConfigMemento&gt;。</configmemento></li>
-<li>最后是提供的备忘录操作方法；存放(append)、回滚(undo)、返回(redo)、定向获取(get)，这样四个操作方法。</li>
-</ul>
-<h3 id="测试验证"><a href="#测试验证" class="headerlink" title="测试验证"></a>测试验证</h3><pre><code>@Test
+</code></pre><h4 id="测试验证"><a href="#测试验证" class="headerlink" title="测试验证"></a>测试验证</h4><pre><code>@Test
 public void test() {
-    Admin admin = new Admin();
-    ConfigOriginator configOriginator = new ConfigOriginator();
-    configOriginator.setConfigFile(new ConfigFile(&quot;1000001&quot;, &quot;配置内容A=哈哈&quot;, new Date(), &quot;小傅哥&quot;));
-    admin.append(configOriginator.saveMemento()); // 保存配置
-    configOriginator.setConfigFile(new ConfigFile(&quot;1000002&quot;, &quot;配置内容A=嘻嘻&quot;, new Date(), &quot;小傅哥&quot;));
-    admin.append(configOriginator.saveMemento()); // 保存配置
-    configOriginator.setConfigFile(new ConfigFile(&quot;1000003&quot;, &quot;配置内容A=么么&quot;, new Date(), &quot;小傅哥&quot;));
-    admin.append(configOriginator.saveMemento()); // 保存配置
-    configOriginator.setConfigFile(new ConfigFile(&quot;1000004&quot;, &quot;配置内容A=嘿嘿&quot;, new Date(), &quot;小傅哥&quot;));
-    admin.append(configOriginator.saveMemento()); // 保存配置  
-
-    // 历史配置(回滚)
-    configOriginator.getMemento(admin.undo());
-    logger.info(&quot;历史配置(回滚)undo：{}&quot;, JSON.toJSONString(configOriginator.getConfigFile()));  
-
-    // 历史配置(回滚)
-    configOriginator.getMemento(admin.undo());
-    logger.info(&quot;历史配置(回滚)undo：{}&quot;, JSON.toJSONString(configOriginator.getConfigFile()));  
-
-    // 历史配置(前进)
-    configOriginator.getMemento(admin.redo());
-    logger.info(&quot;历史配置(前进)redo：{}&quot;, JSON.toJSONString(configOriginator.getConfigFile()));   
-
-    // 历史配置(获取)
-    configOriginator.getMemento(admin.get(&quot;1000002&quot;));
-    logger.info(&quot;历史配置(获取)get：{}&quot;, JSON.toJSONString(configOriginator.getConfigFile()));
+    LotteryService lotteryService = new LotteryServiceImpl();
+    LotteryResult result = lotteryService.draw(&quot;2765789109876&quot;);
+    logger.info(&quot;测试结果：{}&quot;, JSON.toJSONString(result));
 }
-</code></pre><p>上面添加了四次配置后，下面分别进行操作是；回滚1次、再回滚1次，之后向前进1次，最后是获取指定的版本配置。具体的效果可以参考测试结果。</p>
-<pre><code>23:12:09.512 [main] INFO  org.itstack.demo.design.test.ApiTest - 历史配置(回滚)undo：{&quot;content&quot;:&quot;配置内容A=嘿嘿&quot;,&quot;dateTime&quot;:159209829432,&quot;operator&quot;:&quot;小傅哥&quot;,&quot;versionNo&quot;:&quot;1000004&quot;}
-23:12:09.514 [main] INFO  org.itstack.demo.design.test.ApiTest - 历史配置(回滚)undo：{&quot;content&quot;:&quot;配置内容A=么么&quot;,&quot;dateTime&quot;:159209829432,&quot;operator&quot;:&quot;小傅哥&quot;,&quot;versionNo&quot;:&quot;1000003&quot;}
-23:12:09.514 [main] INFO  org.itstack.demo.design.test.ApiTest - 历史配置(前进)redo：{&quot;content&quot;:&quot;配置内容A=嘿嘿&quot;,&quot;dateTime&quot;:159209829432,&quot;operator&quot;:&quot;小傅哥&quot;,&quot;versionNo&quot;:&quot;1000004&quot;}
-23:12:09.514 [main] INFO  org.itstack.demo.design.test.ApiTest - 历史配置(获取)get：{&quot;content&quot;:&quot;配置内容A=嘻嘻&quot;,&quot;dateTime&quot;:159320989432,&quot;operator&quot;:&quot;小傅哥&quot;,&quot;versionNo&quot;:&quot;1000002&quot;}
-
-Process finished with exit code 0
-</code></pre><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>备忘录模式是以可以恢复或者说回滚，配置、版本、悔棋为核心功能的设计模式，而这种设计模式属于行为模式。在功能实现上是以不破坏原对象为基础增加备忘录操作类，记录原对象的行为从而实现备忘录模式。</p>
+</code></pre><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>简单来讲观察者🕵模式，就是当一个行为发生时传递信息给另外一个用户接收做出相应的处理，两者之间没有直接的耦合关联。</p>
 
             </div>
             <hr>
@@ -634,7 +671,7 @@ Process finished with exit code 0
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://adbo.gitee.io/2021/04/17/2021-04-17-design-bei-wang-lu/">http://adbo.gitee.io/2021/04/17/2021-04-17-design-bei-wang-lu/</a>
+                    <a href="http://adbo.gitee.io/2021/04/18/2021-04-18-design-guan-cha-zhe/">http://adbo.gitee.io/2021/04/18/2021-04-18-design-guan-cha-zhe/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -844,7 +881,7 @@ Process finished with exit code 0
         repo: 'gitalk',
         owner: 'FlynnCN',
         admin: "FlynnCN",
-        id: '2021-04-17T22-43-52',
+        id: '2021-04-18T22-43-52',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -867,7 +904,8 @@ Process finished with exit code 0
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2021/04/18/2021-04-18-design-guan-cha-zhe/">
                     <div class="card-image">
@@ -884,9 +922,9 @@ Process finished with exit code 0
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-04-18
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-18
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -899,6 +937,7 @@ Process finished with exit code 0
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -917,12 +956,12 @@ Process finished with exit code 0
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/04/16/2021-04-16-design-zhong-jie-zhe/">
+                <a href="/2021/04/17/2021-04-17-design-bei-wang-lu/">
                     <div class="card-image">
                         
-                        <img src="/medias/cover/itstack-demo-design-16-01.png" class="responsive-img" alt="中介者模式">
+                        <img src="/medias/cover/itstack-demo-design-17-01.png" class="responsive-img" alt="备忘录模式">
                         
-                        <span class="card-title">中介者模式</span>
+                        <span class="card-title">备忘录模式</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -933,7 +972,7 @@ Process finished with exit code 0
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-16
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-17
                             </span>
                         <span class="publish-author">
                             
