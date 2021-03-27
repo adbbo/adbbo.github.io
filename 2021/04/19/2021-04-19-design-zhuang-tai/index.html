@@ -4,7 +4,7 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="观察者模式, Adbo~Blog">
+    <meta name="keywords" content="状态模式, Adbo~Blog">
     <meta name="description" content="重学 Java 设计模式">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>观察者模式 | Adbo</title>
+    <title>状态模式 | Adbo</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -291,12 +291,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/cover/itstack-demo-design-18-01.png')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/cover/itstack-demo-design-19-01.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">观察者模式</h1>
+                    <h1 class="description center-align post-title">状态模式</h1>
                 </div>
             </div>
         </div>
@@ -438,7 +438,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-04-18
+                    2021-04-19
                 </div>
                 
 
@@ -458,194 +458,413 @@
                 <blockquote>
 <p>本文章仅用于本人学习笔记记录<br>微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）</p>
 </blockquote>
-<h2 id="观察者模式介绍"><a href="#观察者模式介绍" class="headerlink" title="观察者模式介绍"></a>观察者模式介绍</h2><p>简单来讲观察者🕵模式，就是当一个行为发生时传递信息给另外一个用户接收做出相应的处理，两者之间没有直接的耦合关联。</p>
-<p>除了生活中的场景外，在我们编程开发中也会常用到一些观察者的模式或者组件，例如我们经常使用的MQ服务，虽然MQ服务是有一个通知中心并不是每一个类服务进行通知，但整体上也可以算作是观察者模式的思路设计。再比如可能有做过的一些类似事件监听总线，让主线服务与其他辅线业务服务分离，为了使系统降低耦合和增强扩展性，也会使用观察者模式进行处理。</p>
-<h2 id="案例场景模拟"><a href="#案例场景模拟" class="headerlink" title="案例场景模拟"></a>案例场景模拟</h2><p><img src="/2021/04/18/2021-04-18-design-guan-cha-zhe/itstack-demo-design-18-03.png" alt></p>
-<h3 id="场景模拟工程"><a href="#场景模拟工程" class="headerlink" title="场景模拟工程"></a>场景模拟工程</h3><pre><code>itstack-demo-design-18-00
+<h2 id="状态模式介绍"><a href="#状态模式介绍" class="headerlink" title="状态模式介绍"></a>状态模式介绍</h2><p>状态模式描述的是一个行为下的多种状态变更，比如我们最常见的一个网站的页面，在你登录与不登录下展示的内容是略有差异的(不登录不能展示个人信息)，而这种登录与不登录就是我们通过改变状态，而让整个行为发生了变化。</p>
+<h2 id="案例场景模拟"><a href="#案例场景模拟" class="headerlink" title="案例场景模拟"></a>案例场景模拟</h2><p><img src="/2021/04/19/2021-04-19-design-zhuang-tai/itstack-demo-design-19-03.png" alt></p>
+<h3 id="场景模拟工程"><a href="#场景模拟工程" class="headerlink" title="场景模拟工程"></a>场景模拟工程</h3><pre><code>itstack-demo-design-19-00
 └── src
     └── main
         └── java
             └── org.itstack.demo.design
-                └── MinibusTargetService.java
-</code></pre><h3 id="场景简述"><a href="#场景简述" class="headerlink" title="场景简述"></a>场景简述</h3><h4 id="摇号服务接口"><a href="#摇号服务接口" class="headerlink" title="摇号服务接口"></a>摇号服务接口</h4><pre><code>public class MinibusTargetService {
+                ├── ActivityInfo.java
+                ├── Status.java
+                └── ActivityService.java
+</code></pre><p>在这个模拟工程里我们提供了三个类，包括；状态枚举(Status)、活动对象(ActivityInfo)、活动服务(ActivityService)，三个服务类。</p>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><h4 id="基本活动信息"><a href="#基本活动信息" class="headerlink" title="基本活动信息"></a>基本活动信息</h4><pre><code>public class ActivityInfo {
+
+    private String activityId;    // 活动ID
+    private String activityName;  // 活动名称
+    private Enum&lt;Status&gt; status;  // 活动状态
+    private Date beginTime;       // 开始时间
+    private Date endTime;         // 结束时间
+
+    // ...get/set
+}  </code></pre><h4 id="活动枚举状态"><a href="#活动枚举状态" class="headerlink" title="活动枚举状态"></a>活动枚举状态</h4><pre><code>public enum Status {
+
+    // 1创建编辑、2待审核、3审核通过(任务扫描成活动中)、4审核拒绝(可以撤审到编辑状态)、5活动中、6活动关闭、7活动开启(任务扫描成活动中)
+    Editing, Check, Pass, Refuse, Doing, Close, Open
+
+}
+</code></pre><h4 id="活动服务接口"><a href="#活动服务接口" class="headerlink" title="活动服务接口"></a>活动服务接口</h4><pre><code>public class ActivityService {
+
+    private static Map&lt;String, Enum&lt;Status&gt;&gt; statusMap = new ConcurrentHashMap&lt;String, Enum&lt;Status&gt;&gt;();
+
+    public static void init(String activityId, Enum&lt;Status&gt; status) {
+        // 模拟查询活动信息
+        ActivityInfo activityInfo = new ActivityInfo();
+        activityInfo.setActivityId(activityId);
+        activityInfo.setActivityName(&quot;早起学习打卡领奖活动&quot;);
+        activityInfo.setStatus(status);
+        activityInfo.setBeginTime(new Date());
+        activityInfo.setEndTime(new Date());
+        statusMap.put(activityId, status);
+    }
 
     /**
-     * 模拟摇号，但不是摇号算法
+     * 查询活动信息
      *
-     * @param uId 用户编号
-     * @return 结果
+     * @param activityId 活动ID
+     * @return 查询结果
      */
-    public String lottery(String uId) {
-        return Math.abs(uId.hashCode()) % 2 == 0 ? &quot;恭喜你，编码&quot;.concat(uId).concat(&quot;在本次摇号中签&quot;) : &quot;很遗憾，编码&quot;.concat(uId).concat(&quot;在本次摇号未中签或摇号资格已过期&quot;);
+    public static ActivityInfo queryActivityInfo(String activityId) {
+        // 模拟查询活动信息
+        ActivityInfo activityInfo = new ActivityInfo();
+        activityInfo.setActivityId(activityId);
+        activityInfo.setActivityName(&quot;早起学习打卡领奖活动&quot;);
+        activityInfo.setStatus(statusMap.get(activityId));
+        activityInfo.setBeginTime(new Date());
+        activityInfo.setEndTime(new Date());
+        return activityInfo;
+    }
+
+    /**
+     * 查询活动状态
+     *
+     * @param activityId 活动ID
+     * @return 查询结果
+     */
+    public static Enum&lt;Status&gt; queryActivityStatus(String activityId) {
+        return statusMap.get(activityId);
+    }
+
+    /**
+     * 执行状态变更
+     *
+     * @param activityId   活动ID
+     * @param beforeStatus 变更前状态
+     * @param afterStatus  变更后状态 b
+     */
+    public static synchronized void execStatus(String activityId, Enum&lt;Status&gt; beforeStatus, Enum&lt;Status&gt; afterStatus) {
+        if (!beforeStatus.equals(statusMap.get(activityId))) return;
+        statusMap.put(activityId, afterStatus);
     }
 
 }
-</code></pre><h2 id="用一坨坨代码实现"><a href="#用一坨坨代码实现" class="headerlink" title="用一坨坨代码实现"></a>用一坨坨代码实现</h2><p>按照需求需要在原有的摇号接口中添加MQ消息发送以及短消息通知功能，如果是最直接的方式那么可以直接在方法中补充功能即可。</p>
-<h3 id="工程结构"><a href="#工程结构" class="headerlink" title="工程结构"></a>工程结构</h3><pre><code>itstack-demo-design-18-01
+</code></pre><h2 id="用一坨坨代码实现"><a href="#用一坨坨代码实现" class="headerlink" title="用一坨坨代码实现"></a>用一坨坨代码实现</h2><h3 id="工程结构"><a href="#工程结构" class="headerlink" title="工程结构"></a>工程结构</h3><pre><code>itstack-demo-design-19-01
 └── src
     └── main
         └── java
             └── org.itstack.demo.design
-                ├── LotteryResult.java
-                ├── LotteryService.java
-                └── LotteryServiceImpl.java
-</code></pre><p>这段代码接口中包括了三部分内容；返回对象(LotteryResult)、定义接口(LotteryService)、具体实现(LotteryServiceImpl)。</p>
-<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><pre><code>public class LotteryServiceImpl implements LotteryService {
+                ├── ActivityExecStatusController.java
+                └── Result.java
+</code></pre><p>整个实现的工程结构比较简单，只包括了两个类；ActivityExecStatusController、Result，一个是处理流程状态，另外一个是返回的对象。</p>
+<h3 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h3><pre><code>public class ActivityExecStatusController {
 
-    private Logger logger = LoggerFactory.getLogger(LotteryServiceImpl.class);
+    /**
+     * 活动状态变更
+     * 1. 编辑中 -&gt; 提审、关闭
+     * 2. 审核通过 -&gt; 拒绝、关闭、活动中
+     * 3. 审核拒绝 -&gt; 撤审、关闭
+     * 4. 活动中 -&gt; 关闭
+     * 5. 活动关闭 -&gt; 开启
+     * 6. 活动开启 -&gt; 关闭
+     *
+     * @param activityId   活动ID
+     * @param beforeStatus 变更前状态
+     * @param afterStatus  变更后状态
+     * @return 返回结果
+     */
+    public Result execStatus(String activityId, Enum&lt;Status&gt; beforeStatus, Enum&lt;Status&gt; afterStatus) {
 
-    private MinibusTargetService minibusTargetService = new MinibusTargetService();
+        // 1. 编辑中 -&gt; 提审、关闭
+        if (Status.Editing.equals(beforeStatus)) {
+            if (Status.Check.equals(afterStatus) || Status.Close.equals(afterStatus)) {
+                ActivityService.execStatus(activityId, beforeStatus, afterStatus);
+                return new Result(&quot;0000&quot;, &quot;变更状态成功&quot;);
+            } else {
+                return new Result(&quot;0001&quot;, &quot;变更状态拒绝&quot;);
+            }
+        }
 
-    public LotteryResult doDraw(String uId) {
-        // 摇号
-        String lottery = minibusTargetService.lottery(uId);
-        // 发短信
-        logger.info(&quot;给用户 {} 发送短信通知(短信)：{}&quot;, uId, lottery);
-        // 发MQ消息
-        logger.info(&quot;记录用户 {} 摇号结果(MQ)：{}&quot;, uId, lottery);
-        // 结果
-        return new LotteryResult(uId, lottery, new Date());
+        // 2. 审核通过 -&gt; 拒绝、关闭、活动中
+        if (Status.Pass.equals(beforeStatus)) {
+            if (Status.Refuse.equals(afterStatus) || Status.Doing.equals(afterStatus) || Status.Close.equals(afterStatus)) {
+                ActivityService.execStatus(activityId, beforeStatus, afterStatus);
+                return new Result(&quot;0000&quot;, &quot;变更状态成功&quot;);
+            } else {
+                return new Result(&quot;0001&quot;, &quot;变更状态拒绝&quot;);
+            }
+        }
+
+        // 3. 审核拒绝 -&gt; 撤审、关闭
+        if (Status.Refuse.equals(beforeStatus)) {
+            if (Status.Editing.equals(afterStatus) || Status.Close.equals(afterStatus)) {
+                ActivityService.execStatus(activityId, beforeStatus, afterStatus);
+                return new Result(&quot;0000&quot;, &quot;变更状态成功&quot;);
+            } else {
+                return new Result(&quot;0001&quot;, &quot;变更状态拒绝&quot;);
+            }
+        }
+
+        // 4. 活动中 -&gt; 关闭
+        if (Status.Doing.equals(beforeStatus)) {
+            if (Status.Close.equals(afterStatus)) {
+                ActivityService.execStatus(activityId, beforeStatus, afterStatus);
+                return new Result(&quot;0000&quot;, &quot;变更状态成功&quot;);
+            } else {
+                return new Result(&quot;0001&quot;, &quot;变更状态拒绝&quot;);
+            }
+        }
+
+        // 5. 活动关闭 -&gt; 开启
+        if (Status.Close.equals(beforeStatus)) {
+            if (Status.Open.equals(afterStatus)) {
+                ActivityService.execStatus(activityId, beforeStatus, afterStatus);
+                return new Result(&quot;0000&quot;, &quot;变更状态成功&quot;);
+            } else {
+                return new Result(&quot;0001&quot;, &quot;变更状态拒绝&quot;);
+            }
+        }
+
+        // 6. 活动开启 -&gt; 关闭
+        if (Status.Open.equals(beforeStatus)) {
+            if (Status.Close.equals(afterStatus)) {
+                ActivityService.execStatus(activityId, beforeStatus, afterStatus);
+                return new Result(&quot;0000&quot;, &quot;变更状态成功&quot;);
+            } else {
+                return new Result(&quot;0001&quot;, &quot;变更状态拒绝&quot;);
+            }
+        }
+
+        return new Result(&quot;0001&quot;, &quot;非可处理的活动状态变更&quot;);
+
     }
 
 }
-</code></pre><h2 id="观察者模式重构代码"><a href="#观察者模式重构代码" class="headerlink" title="观察者模式重构代码"></a>观察者模式重构代码</h2><h3 id="工程结构-1"><a href="#工程结构-1" class="headerlink" title="工程结构"></a>工程结构</h3><pre><code>itstack-demo-design-18-02
+</code></pre><h2 id="状态模式重构代码"><a href="#状态模式重构代码" class="headerlink" title="状态模式重构代码"></a>状态模式重构代码</h2><h3 id="工程结构-1"><a href="#工程结构-1" class="headerlink" title="工程结构"></a>工程结构</h3><pre><code>itstack-demo-design-19-02
 └── src
     └── main
         └── java
             └── org.itstack.demo.design
                 ├── event
-                │    ├── listener
-                │    │    ├── EventListener.java
-                │    │    ├── MessageEventListener.java
-                │    │    └── MQEventListener.java
-                │    └── EventManager.java
-                ├── LotteryResult.java
-                ├── LotteryService.java
-                └── LotteryServiceImpl.java
-</code></pre><p>观察者模式模型结构</p>
-<p><img src="/2021/04/18/2021-04-18-design-guan-cha-zhe/itstack-demo-design-18-04.png" alt></p>
+                │    ├── CheckState.java
+                │    └── CloseState.java
+                │    └── DoingState.java
+                │    └── EditingState.java
+                │    └── OpenState.java
+                │    └── PassState.java
+                │    └── RefuseState.java
+                ├── Result.java
+                ├── State.java
+                └── StateHandler.java
+</code></pre><p>状态模式模型结构</p>
+<p><img src="/2021/04/19/2021-04-19-design-zhuang-tai/itstack-demo-design-19-04.png" alt></p>
 <ul>
-<li>从上图可以分为三大块看；事件监听、事件处理、具体的业务流程，另外在业务流程中 LotteryService 定义的是抽象类，因为这样可以通过抽象类将事件功能屏蔽，外部业务流程开发者不需要知道具体的通知操作。</li>
-<li>右下角圆圈图表示的是核心流程与非核心流程的结构，一般在开发中会把主线流程开发完成后，再使用通知的方式处理辅助流程。他们可以是异步的，在MQ以及定时任务的处理下，保证最终一致性。</li>
+<li>以上是状态模式的整个工程结构模型，State是一个抽象类，定义了各种操作接口(提审、审核、拒审等)。</li>
+<li>右侧的不同颜色状态与我们场景模拟中的颜色保持一致，是各种状态流程流转的实现操作。这里的实现有一个关键点就是每一种状态到下一个状态，都分配到各个实现方法中控制，也就不需要if语言进行判断了。</li>
+<li>最后是StateHandler对状态流程的统一处理，里面提供Map结构的各项服务接口调用，也就避免了使用if判断各项状态转变的流程。</li>
 </ul>
-<h3 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h3><h4 id="事件监听接口定义"><a href="#事件监听接口定义" class="headerlink" title="事件监听接口定义"></a>事件监听接口定义</h4><pre><code>public interface EventListener {
-
-    void doEvent(LotteryResult result);
-
-}
-</code></pre><p>接口中定义了基本的事件类，这里如果方法的入参信息类型是变化的可以使用泛型<t></t></p>
-<h4 id="短消息事件"><a href="#短消息事件" class="headerlink" title="短消息事件"></a>短消息事件</h4><pre><code>public class MessageEventListener implements EventListener {
-
-    private Logger logger = LoggerFactory.getLogger(MessageEventListener.class);
-
-    @Override
-    public void doEvent(LotteryResult result) {
-        logger.info(&quot;给用户 {} 发送短信通知(短信)：{}&quot;, result.getuId(), result.getMsg());
-    }
-
-}
-</code></pre><h4 id="MQ发送事件"><a href="#MQ发送事件" class="headerlink" title="MQ发送事件"></a>MQ发送事件</h4><pre><code>public class MQEventListener implements EventListener {
-
-    private Logger logger = LoggerFactory.getLogger(MQEventListener.class);
-
-    @Override
-    public void doEvent(LotteryResult result) {
-        logger.info(&quot;记录用户 {} 摇号结果(MQ)：{}&quot;, result.getuId(), result.getMsg());
-    }
-
-}
-</code></pre><h4 id="事件处理类"><a href="#事件处理类" class="headerlink" title="事件处理类"></a>事件处理类</h4><pre><code>public class EventManager {
-
-    Map&lt;Enum&lt;EventType&gt;, List&lt;EventListener&gt;&gt; listeners = new HashMap&lt;&gt;();
-
-    public EventManager(Enum&lt;EventType&gt;... operations) {
-        for (Enum&lt;EventType&gt; operation : operations) {
-            this.listeners.put(operation, new ArrayList&lt;&gt;());
-        }
-    }
-
-    public enum EventType {
-        MQ, Message
-    }
+<h3 id="代码实现-2"><a href="#代码实现-2" class="headerlink" title="代码实现"></a>代码实现</h3><h4 id="定义状态抽象类"><a href="#定义状态抽象类" class="headerlink" title="定义状态抽象类"></a>定义状态抽象类</h4><pre><code>ublic abstract class State {
 
     /**
-     * 订阅
-     * @param eventType 事件类型
-     * @param listener  监听
+     * 活动提审
+     *
+     * @param activityId    活动ID
+     * @param currentStatus 当前状态
+     * @return 执行结果
      */
-    public void subscribe(Enum&lt;EventType&gt; eventType, EventListener listener) {
-        List&lt;EventListener&gt; users = listeners.get(eventType);
-        users.add(listener);
-    }
+    public abstract Result arraignment(String activityId, Enum&lt;Status&gt; currentStatus);
 
     /**
-     * 取消订阅
-     * @param eventType 事件类型
-     * @param listener  监听
+     * 审核通过
+     *
+     * @param activityId    活动ID
+     * @param currentStatus 当前状态
+     * @return 执行结果
      */
-    public void unsubscribe(Enum&lt;EventType&gt; eventType, EventListener listener) {
-        List&lt;EventListener&gt; users = listeners.get(eventType);
-        users.remove(listener);
-    }
+    public abstract Result checkPass(String activityId, Enum&lt;Status&gt; currentStatus);
 
     /**
-     * 通知
-     * @param eventType 事件类型
-     * @param result    结果
+     * 审核拒绝
+     *
+     * @param activityId    活动ID
+     * @param currentStatus 当前状态
+     * @return 执行结果
      */
-    public void notify(Enum&lt;EventType&gt; eventType, LotteryResult result) {
-        List&lt;EventListener&gt; users = listeners.get(eventType);
-        for (EventListener listener : users) {
-            listener.doEvent(result);
-        }
+    public abstract Result checkRefuse(String activityId, Enum&lt;Status&gt; currentStatus);
+
+    /**
+     * 撤审撤销
+     *
+     * @param activityId    活动ID
+     * @param currentStatus 当前状态
+     * @return 执行结果
+     */
+    public abstract Result checkRevoke(String activityId, Enum&lt;Status&gt; currentStatus);
+
+    /**
+     * 活动关闭
+     *
+     * @param activityId    活动ID
+     * @param currentStatus 当前状态
+     * @return 执行结果
+     */
+    public abstract Result close(String activityId, Enum&lt;Status&gt; currentStatus);
+
+    /**
+     * 活动开启
+     *
+     * @param activityId    活动ID
+     * @param currentStatus 当前状态
+     * @return 执行结果
+     */
+    public abstract Result open(String activityId, Enum&lt;Status&gt; currentStatus);
+
+    /**
+     * 活动执行
+     *
+     * @param activityId    活动ID
+     * @param currentStatus 当前状态
+     * @return 执行结果
+     */
+    public abstract Result doing(String activityId, Enum&lt;Status&gt; currentStatus);
+
+}</code></pre><h4 id="编辑"><a href="#编辑" class="headerlink" title="编辑"></a>编辑</h4><pre><code>public class EditingState extends State {
+
+    public Result arraignment(String activityId, Enum&lt;Status&gt; currentStatus) {
+        ActivityService.execStatus(activityId, currentStatus, Status.Check);
+        return new Result(&quot;0000&quot;, &quot;活动提审成功&quot;);
     }
 
-}
-</code></pre><ul>
-<li>整个处理的实现上提供了三个主要方法；订阅(subscribe)、取消订阅(unsubscribe)、通知(notify)。这三个方法分别用于对监听时间的添加和使用。</li>
-<li>另外因为事件有不同的类型，这里使用了枚举的方式进行处理，也方便让外部在规定下使用事件，而不至于乱传信息(EventType.MQ、EventType.Message)。</li>
-</ul>
-<h4 id="业务抽象类接口"><a href="#业务抽象类接口" class="headerlink" title="业务抽象类接口"></a>业务抽象类接口</h4><pre><code>public abstract class LotteryService {
-
-    private EventManager eventManager;
-
-    public LotteryService() {
-        eventManager = new EventManager(EventManager.EventType.MQ, EventManager.EventType.Message);
-        eventManager.subscribe(EventManager.EventType.MQ, new MQEventListener());
-        eventManager.subscribe(EventManager.EventType.Message, new MessageEventListener());
+    public Result checkPass(String activityId, Enum&lt;Status&gt; currentStatus) {
+        return new Result(&quot;0001&quot;, &quot;编辑中不可审核通过&quot;);
     }
 
-    public LotteryResult draw(String uId) {
-        LotteryResult lotteryResult = doDraw(uId);
-        // 需要什么通知就给调用什么方法
-        eventManager.notify(EventManager.EventType.MQ, lotteryResult);
-        eventManager.notify(EventManager.EventType.Message, lotteryResult);
-        return lotteryResult;
+    public Result checkRefuse(String activityId, Enum&lt;Status&gt; currentStatus) {
+        return new Result(&quot;0001&quot;, &quot;编辑中不可审核拒绝&quot;);
     }
-
-    protected abstract LotteryResult doDraw(String uId);
-
-}
-</code></pre><h4 id="业务接口实现类"><a href="#业务接口实现类" class="headerlink" title="业务接口实现类"></a>业务接口实现类</h4><pre><code>public class LotteryServiceImpl extends LotteryService {
-
-    private MinibusTargetService minibusTargetService = new MinibusTargetService();
 
     @Override
-    protected LotteryResult doDraw(String uId) {
-        // 摇号
-        String lottery = minibusTargetService.lottery(uId);
-        // 结果
-        return new LotteryResult(uId, lottery, new Date());
+    public Result checkRevoke(String activityId, Enum&lt;Status&gt; currentStatus) {
+        return new Result(&quot;0001&quot;, &quot;编辑中不可撤销审核&quot;);
+    }
+
+    public Result close(String activityId, Enum&lt;Status&gt; currentStatus) {
+        ActivityService.execStatus(activityId, currentStatus, Status.Close);
+        return new Result(&quot;0000&quot;, &quot;活动关闭成功&quot;);
+    }
+
+    public Result open(String activityId, Enum&lt;Status&gt; currentStatus) {
+        return new Result(&quot;0001&quot;, &quot;非关闭活动不可开启&quot;);
+    }
+
+    public Result doing(String activityId, Enum&lt;Status&gt; currentStatus) {
+        return new Result(&quot;0001&quot;, &quot;编辑中活动不可执行活动中变更&quot;);
+    }
+
+}
+</code></pre><h4 id="提审"><a href="#提审" class="headerlink" title="提审"></a>提审</h4><pre><code>public class CheckState extends State {
+
+    public Result arraignment(String activityId, Enum&lt;Status&gt; currentStatus) {
+        return new Result(&quot;0001&quot;, &quot;待审核状态不可重复提审&quot;);
+    }
+
+    public Result checkPass(String activityId, Enum&lt;Status&gt; currentStatus) {
+        ActivityService.execStatus(activityId, currentStatus, Status.Pass);
+        return new Result(&quot;0000&quot;, &quot;活动审核通过完成&quot;);
+    }
+
+    public Result checkRefuse(String activityId, Enum&lt;Status&gt; currentStatus) {
+        ActivityService.execStatus(activityId, currentStatus, Status.Refuse);
+        return new Result(&quot;0000&quot;, &quot;活动审核拒绝完成&quot;);
+    }
+
+    @Override
+    public Result checkRevoke(String activityId, Enum&lt;Status&gt; currentStatus) {
+        ActivityService.execStatus(activityId, currentStatus, Status.Editing);
+        return new Result(&quot;0000&quot;, &quot;活动审核撤销回到编辑中&quot;);
+    }
+
+    public Result close(String activityId, Enum&lt;Status&gt; currentStatus) {
+        ActivityService.execStatus(activityId, currentStatus, Status.Close);
+        return new Result(&quot;0000&quot;, &quot;活动审核关闭完成&quot;);
+    }
+
+    public Result open(String activityId, Enum&lt;Status&gt; currentStatus) {
+        return new Result(&quot;0001&quot;, &quot;非关闭活动不可开启&quot;);
+    }
+
+    public Result doing(String activityId, Enum&lt;Status&gt; currentStatus) {
+        return new Result(&quot;0001&quot;, &quot;待审核活动不可执行活动中变更&quot;);
+    }
+
+}
+</code></pre><h4 id="状态处理服务"><a href="#状态处理服务" class="headerlink" title="状态处理服务"></a>状态处理服务</h4><pre><code>public class StateHandler {
+
+    private Map&lt;Enum&lt;Status&gt;, State&gt; stateMap = new ConcurrentHashMap&lt;Enum&lt;Status&gt;, State&gt;();
+
+    public StateHandler() {
+        stateMap.put(Status.Check, new CheckState());     // 待审核
+        stateMap.put(Status.Close, new CloseState());     // 已关闭
+        stateMap.put(Status.Doing, new DoingState());     // 活动中
+        stateMap.put(Status.Editing, new EditingState()); // 编辑中
+        stateMap.put(Status.Open, new OpenState());       // 已开启
+        stateMap.put(Status.Pass, new PassState());       // 审核通过
+        stateMap.put(Status.Refuse, new RefuseState());   // 审核拒绝
+    }
+
+    public Result arraignment(String activityId, Enum&lt;Status&gt; currentStatus) {
+        return stateMap.get(currentStatus).arraignment(activityId, currentStatus);
+    }
+
+    public Result checkPass(String activityId, Enum&lt;Status&gt; currentStatus) {
+        return stateMap.get(currentStatus).checkPass(activityId, currentStatus);
+    }
+
+    public Result checkRefuse(String activityId, Enum&lt;Status&gt; currentStatus) {
+        return stateMap.get(currentStatus).checkRefuse(activityId, currentStatus);
+    }
+
+    public Result checkRevoke(String activityId, Enum&lt;Status&gt; currentStatus) {
+        return stateMap.get(currentStatus).checkRevoke(activityId, currentStatus);
+    }
+
+    public Result close(String activityId, Enum&lt;Status&gt; currentStatus) {
+        return stateMap.get(currentStatus).close(activityId, currentStatus);
+    }
+
+    public Result open(String activityId, Enum&lt;Status&gt; currentStatus) {
+        return stateMap.get(currentStatus).open(activityId, currentStatus);
+    }
+
+    public Result doing(String activityId, Enum&lt;Status&gt; currentStatus) {
+        return stateMap.get(currentStatus).doing(activityId, currentStatus);
     }
 
 }
 </code></pre><h4 id="测试验证"><a href="#测试验证" class="headerlink" title="测试验证"></a>测试验证</h4><pre><code>@Test
-public void test() {
-    LotteryService lotteryService = new LotteryServiceImpl();
-    LotteryResult result = lotteryService.draw(&quot;2765789109876&quot;);
-    logger.info(&quot;测试结果：{}&quot;, JSON.toJSONString(result));
+public void test_Editing2Arraignment() {
+    String activityId = &quot;100001&quot;;
+    ActivityService.init(activityId, Status.Editing);
+    StateHandler stateHandler = new StateHandler();
+    Result result = stateHandler.arraignment(activityId, Status.Editing);
+    logger.info(&quot;测试结果(编辑中To提审活动)：{}&quot;, JSON.toJSONString(result));
+    logger.info(&quot;活动信息：{} 状态：{}&quot;, JSON.toJSONString(ActivityService.queryActivityInfo(activityId)), JSON.toJSONString(ActivityService.queryActivityInfo(activityId).getStatus()));
 }
-</code></pre><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>简单来讲观察者🕵模式，就是当一个行为发生时传递信息给另外一个用户接收做出相应的处理，两者之间没有直接的耦合关联。</p>
+
+
+23:59:20.883 [main] INFO  org.itstack.demo.design.test.ApiTest - 测试结果(编辑中To提审活动)：{&quot;code&quot;:&quot;0000&quot;,&quot;info&quot;:&quot;活动提审成功&quot;}
+23:59:20.907 [main] INFO  org.itstack.demo.design.test.ApiTest - 活动信息：{&quot;activityId&quot;:&quot;100001&quot;,&quot;activityName&quot;:&quot;早起学习打卡领奖活动&quot;,&quot;beginTime&quot;:1593694760892,&quot;endTime&quot;:1593694760892,&quot;status&quot;:&quot;Check&quot;} 状态：&quot;Check&quot;
+
+Process finished with exit code 0
+</code></pre><pre><code>@Test
+public void test_Editing2Open() {
+    String activityId = &quot;100001&quot;;
+    ActivityService.init(activityId, Status.Editing);
+    StateHandler stateHandler = new StateHandler();
+    Result result = stateHandler.open(activityId, Status.Editing);
+    logger.info(&quot;测试结果(编辑中To开启活动)：{}&quot;, JSON.toJSONString(result));
+    logger.info(&quot;活动信息：{} 状态：{}&quot;, JSON.toJSONString(ActivityService.queryActivityInfo(activityId)), JSON.toJSONString(ActivityService.queryActivityInfo(activityId).getStatus()));
+}
+
+23:59:36.904 [main] INFO  org.itstack.demo.design.test.ApiTest - 测试结果(编辑中To开启活动)：{&quot;code&quot;:&quot;0001&quot;,&quot;info&quot;:&quot;非关闭活动不可开启&quot;}
+23:59:36.914 [main] INFO  org.itstack.demo.design.test.ApiTest - 活动信息：{&quot;activityId&quot;:&quot;100001&quot;,&quot;activityName&quot;:&quot;早起学习打卡领奖活动&quot;,&quot;beginTime&quot;:1593694776907,&quot;endTime&quot;:1593694776907,&quot;status&quot;:&quot;Editing&quot;} 状态：&quot;Editing&quot;
+
+Process finished with exit code 0
+
+</code></pre><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>状态模式描述的是一个行为下的多种状态变更。减少if else判断，非常容易维护。伴随着状态种类越多，会造成多个类的编写。</li>
+<li>非常适用与状态流转的场景，例如用户状态审核，订单状态流转等。</li>
+</ul>
 
             </div>
             <hr>
@@ -671,7 +890,7 @@ public void test() {
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://adbo.gitee.io/2021/04/18/2021-04-18-design-guan-cha-zhe/">http://adbo.gitee.io/2021/04/18/2021-04-18-design-guan-cha-zhe/</a>
+                    <a href="http://adbo.gitee.io/2021/04/19/2021-04-19-design-zhuang-tai/">http://adbo.gitee.io/2021/04/19/2021-04-19-design-zhuang-tai/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -881,7 +1100,7 @@ public void test() {
         repo: 'gitalk',
         owner: 'FlynnCN',
         admin: "FlynnCN",
-        id: '2021-04-18T22-43-52',
+        id: '2021-04-19T22-43-52',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -904,7 +1123,8 @@ public void test() {
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2021/04/19/2021-04-19-design-zhuang-tai/">
                     <div class="card-image">
@@ -921,9 +1141,9 @@ public void test() {
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-04-19
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-19
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -936,6 +1156,7 @@ public void test() {
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -954,12 +1175,12 @@ public void test() {
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/04/17/2021-04-17-design-bei-wang-lu/">
+                <a href="/2021/04/18/2021-04-18-design-guan-cha-zhe/">
                     <div class="card-image">
                         
-                        <img src="/medias/cover/itstack-demo-design-17-01.png" class="responsive-img" alt="备忘录模式">
+                        <img src="/medias/cover/itstack-demo-design-18-01.png" class="responsive-img" alt="观察者模式">
                         
-                        <span class="card-title">备忘录模式</span>
+                        <span class="card-title">观察者模式</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -970,7 +1191,7 @@ public void test() {
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-17
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-18
                             </span>
                         <span class="publish-author">
                             
