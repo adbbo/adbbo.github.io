@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>策略模式</title>
+      <link href="/2021/04/20/2021-04-20-design-ce-lue/"/>
+      <url>/2021/04/20/2021-04-20-design-ce-lue/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>本文章仅用于本人学习笔记记录<br>微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）</p></blockquote><h2 id="策略模式介绍"><a href="#策略模式介绍" class="headerlink" title="策略模式介绍"></a>策略模式介绍</h2><p>策略模式是一种行为模式，也是替代大量ifelse的利器。</p><h2 id="案例场景模拟"><a href="#案例场景模拟" class="headerlink" title="案例场景模拟"></a>案例场景模拟</h2><p><img src="/2021/04/20/2021-04-20-design-ce-lue/itstack-demo-design-20-03.png" alt></p><h2 id="用一坨坨代码实现"><a href="#用一坨坨代码实现" class="headerlink" title="用一坨坨代码实现"></a>用一坨坨代码实现</h2><h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><pre><code>public class CouponDiscountService {    public double discountAmount(int type, double typeContent, double skuPrice, double typeExt) {        // 1. 直减券        if (1 == type) {            return skuPrice - typeContent;        }        // 2. 满减券        if (2 == type) {            if (skuPrice &lt; typeExt) return skuPrice;            return skuPrice - typeContent;        }        // 3. 折扣券        if (3 == type) {            return skuPrice * typeContent;        }        // 4. n元购        if (4 == type) {            return typeContent;        }        return 0D;    }}</code></pre><h2 id="策略模式重构代码"><a href="#策略模式重构代码" class="headerlink" title="策略模式重构代码"></a>策略模式重构代码</h2><h3 id="策略模式模型结构"><a href="#策略模式模型结构" class="headerlink" title="策略模式模型结构"></a>策略模式模型结构</h3><p><img src="/2021/04/20/2021-04-20-design-ce-lue/itstack-demo-design-20-04.png" alt></p><h3 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h3><h4 id="优惠券接口"><a href="#优惠券接口" class="headerlink" title="优惠券接口"></a>优惠券接口</h4><pre><code>public interface ICouponDiscount&lt;T&gt; {    /**     * 优惠券金额计算     * @param couponInfo 券折扣信息；直减、满减、折扣、N元购     * @param skuPrice   sku金额     * @return           优惠后金额     */    BigDecimal discountAmount(T couponInfo, BigDecimal skuPrice);}</code></pre><ul><li>定义了优惠券折扣接口，也增加了泛型用于不同类型的接口可以传递不同的类型参数。</li><li>接口中包括商品金额以及出参返回最终折扣后的金额，这里在实际开发中会比现在的接口参数多一些，但核心逻辑是这些。</li></ul><h4 id="满减"><a href="#满减" class="headerlink" title="满减"></a>满减</h4><pre><code>public class MJCouponDiscount implements ICouponDiscount&lt;Map&lt;String,String&gt;&gt;  {    /**     * 满减计算     * 1. 判断满足x元后-n元，否则不减     * 2. 最低支付金额1元     */    public BigDecimal discountAmount(Map&lt;String,String&gt; couponInfo, BigDecimal skuPrice) {        String x = couponInfo.get(&quot;x&quot;);        String o = couponInfo.get(&quot;n&quot;);        // 小于商品金额条件的，直接返回商品原价        if (skuPrice.compareTo(new BigDecimal(x)) &lt; 0) return skuPrice;        // 减去优惠金额判断        BigDecimal discountAmount = skuPrice.subtract(new BigDecimal(o));        if (discountAmount.compareTo(BigDecimal.ZERO) &lt; 1) return BigDecimal.ONE;        return discountAmount;    }}</code></pre><h4 id="直减"><a href="#直减" class="headerlink" title="直减"></a>直减</h4><pre><code>public class ZJCouponDiscount implements ICouponDiscount&lt;Double&gt;  {    /**     * 直减计算     * 1. 使用商品价格减去优惠价格     * 2. 最低支付金额1元     */    public BigDecimal discountAmount(Double couponInfo, BigDecimal skuPrice) {        BigDecimal discountAmount = skuPrice.subtract(new BigDecimal(couponInfo));        if (discountAmount.compareTo(BigDecimal.ZERO) &lt; 1) return BigDecimal.ONE;        return discountAmount;    }}</code></pre><h4 id="折扣"><a href="#折扣" class="headerlink" title="折扣"></a>折扣</h4><pre><code>public class ZKCouponDiscount implements ICouponDiscount&lt;Double&gt; {    /**     * 折扣计算     * 1. 使用商品价格乘以折扣比例，为最后支付金额     * 2. 保留两位小数     * 3. 最低支付金额1元     */    public BigDecimal discountAmount(Double couponInfo, BigDecimal skuPrice) {        BigDecimal discountAmount = skuPrice.multiply(new BigDecimal(couponInfo)).setScale(2, BigDecimal.ROUND_HALF_UP);        if (discountAmount.compareTo(BigDecimal.ZERO) &lt; 1) return BigDecimal.ONE;        return discountAmount;    }}</code></pre><h4 id="N元购"><a href="#N元购" class="headerlink" title="N元购"></a>N元购</h4><pre><code>public class NYGCouponDiscount implements ICouponDiscount&lt;Double&gt; {    /**     * n元购购买     * 1. 无论原价多少钱都固定金额购买     */    public BigDecimal discountAmount(Double couponInfo, BigDecimal skuPrice) {        return new BigDecimal(couponInfo);    }}</code></pre><h4 id="策略控制类"><a href="#策略控制类" class="headerlink" title="策略控制类"></a>策略控制类</h4><pre><code>public class Context&lt;T&gt; {    private ICouponDiscount&lt;T&gt; couponDiscount;    public Context(ICouponDiscount&lt;T&gt; couponDiscount) {        this.couponDiscount = couponDiscount;    }    public BigDecimal discountAmount(T couponInfo, BigDecimal skuPrice) {        return couponDiscount.discountAmount(couponInfo, skuPrice);    }}</code></pre><h4 id="测试验证"><a href="#测试验证" class="headerlink" title="测试验证"></a>测试验证</h4><pre><code>@Testpublic void test_zj() {    // 直减；100-10，商品100元    Context&lt;Double&gt; context = new Context&lt;Double&gt;(new ZJCouponDiscount());    BigDecimal discountAmount = context.discountAmount(10D, new BigDecimal(100));    logger.info(&quot;测试结果：直减优惠后金额 {}&quot;, discountAmount);}</code></pre><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul><li>通过策略设计模式的使用可以把我们方法中的if语句优化掉，大量的if语句使用会让代码难以扩展，也不好维护，同时在后期遇到各种问题也很难维护。在使用这样的设计模式后可以很好的满足隔离性与和扩展性，对于不断新增的需求也非常方便承接。</li><li>按照个人风格，一般工厂和策略模式一起使用。<a href="https://adbo.gitee.io/2020/08/12/2020-08-12-ce-lue-mo-shi/"></a></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 设计模式 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 设计模式 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>状态模式</title>
       <link href="/2021/04/19/2021-04-19-design-zhuang-tai/"/>
       <url>/2021/04/19/2021-04-19-design-zhuang-tai/</url>
