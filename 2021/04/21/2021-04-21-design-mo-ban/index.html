@@ -4,7 +4,7 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="策略模式, Adbo~Blog">
+    <meta name="keywords" content="模板模式, Adbo~Blog">
     <meta name="description" content="重学 Java 设计模式">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>策略模式 | Adbo</title>
+    <title>模板模式 | Adbo</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -291,12 +291,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/cover/itstack-demo-design-20-01.png')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/cover/itstack-demo-design-21-01.png')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">策略模式</h1>
+                    <h1 class="description center-align post-title">模板模式</h1>
                 </div>
             </div>
         </div>
@@ -438,7 +438,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-04-20
+                    2021-04-21
                 </div>
                 
 
@@ -458,132 +458,107 @@
                 <blockquote>
 <p>本文章仅用于本人学习笔记记录<br>微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）</p>
 </blockquote>
-<h2 id="策略模式介绍"><a href="#策略模式介绍" class="headerlink" title="策略模式介绍"></a>策略模式介绍</h2><p>策略模式是一种行为模式，也是替代大量ifelse的利器。</p>
-<h2 id="案例场景模拟"><a href="#案例场景模拟" class="headerlink" title="案例场景模拟"></a>案例场景模拟</h2><p><img src="/2021/04/20/2021-04-20-design-ce-lue/itstack-demo-design-20-03.png" alt></p>
-<h2 id="用一坨坨代码实现"><a href="#用一坨坨代码实现" class="headerlink" title="用一坨坨代码实现"></a>用一坨坨代码实现</h2><h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><pre><code>public class CouponDiscountService {
+<h2 id="模版模式介绍"><a href="#模版模式介绍" class="headerlink" title="模版模式介绍"></a>模版模式介绍</h2><p>模板模式的核心设计思路是，通过在抽象类中定义抽象方法的执行顺序，并将抽象方法设定为只有子类实现，但不设计独立访问的方法。</p>
+<p>关于模版模式的核心点在于由抽象类定义抽象方法执行策略，也就是说父类规定了好一系列的执行标准，这些标准的串联成一整套业务流程。</p>
+<p>就像西游记的99八十一难，基本每一关都是；师傅被掳走、打妖怪、妖怪被收走，具体什么妖怪你自己定义，怎么打你想办法，最后收走还是弄死看你本事，我只定义执行顺序和基本策略，具体的每一难由观音来安排。</p>
+<h2 id="案例场景模拟"><a href="#案例场景模拟" class="headerlink" title="案例场景模拟"></a>案例场景模拟</h2><p><img src="/2021/04/21/2021-04-21-design-mo-ban/itstack-demo-design-21-03.png" alt></p>
+<p>爬取过程分为:模拟登录、爬取信息、生成海报，这三个步骤</p>
+<h2 id="模版模式搭建工程"><a href="#模版模式搭建工程" class="headerlink" title="模版模式搭建工程"></a>模版模式搭建工程</h2><h3 id="模版模式模型结构"><a href="#模版模式模型结构" class="headerlink" title="模版模式模型结构"></a>模版模式模型结构</h3><pre><code>├── group
+    │           │      ├── DangDangNetMall.java
+    │           │      ├── JDNetMall.java
+    │           │      └── TaoBaoNetMall.java
+    │           ├──  HttpClient.java
+    │           └──  NetMall.java</code></pre><p><img src="/2021/04/21/2021-04-21-design-mo-ban/itstack-demo-design-21-04.png" alt></p>
+<p>一个定义了抽象方法执行顺序的核心抽象类，以及三个模拟具体的实现(京东、淘宝、当当)的电商服务。</p>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><h4 id="定义执行顺序的抽象类"><a href="#定义执行顺序的抽象类" class="headerlink" title="定义执行顺序的抽象类"></a>定义执行顺序的抽象类</h4><pre><code>/**
+ * 基础电商推广服务
+ * 1. 生成最优价商品海报
+ * 2. 海报含带推广邀请码
+ */
+public abstract class NetMall {
 
-    public double discountAmount(int type, double typeContent, double skuPrice, double typeExt) {
-        // 1. 直减券
-        if (1 == type) {
-            return skuPrice - typeContent;
-        }
-        // 2. 满减券
-        if (2 == type) {
-            if (skuPrice &lt; typeExt) return skuPrice;
-            return skuPrice - typeContent;
-        }
-        // 3. 折扣券
-        if (3 == type) {
-            return skuPrice * typeContent;
-        }
-        // 4. n元购
-        if (4 == type) {
-            return typeContent;
-        }
-        return 0D;
+    protected Logger logger = LoggerFactory.getLogger(NetMall.class);
+
+    String uId;   // 用户ID
+    String uPwd;  // 用户密码
+
+    public NetMall(String uId, String uPwd) {
+        this.uId = uId;
+        this.uPwd = uPwd;
     }
 
-}</code></pre><h2 id="策略模式重构代码"><a href="#策略模式重构代码" class="headerlink" title="策略模式重构代码"></a>策略模式重构代码</h2><h3 id="策略模式模型结构"><a href="#策略模式模型结构" class="headerlink" title="策略模式模型结构"></a>策略模式模型结构</h3><p><img src="/2021/04/20/2021-04-20-design-ce-lue/itstack-demo-design-20-04.png" alt></p>
-<h3 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h3><h4 id="优惠券接口"><a href="#优惠券接口" class="headerlink" title="优惠券接口"></a>优惠券接口</h4><pre><code>public interface ICouponDiscount&lt;T&gt; {
-
     /**
-     * 优惠券金额计算
-     * @param couponInfo 券折扣信息；直减、满减、折扣、N元购
-     * @param skuPrice   sku金额
-     * @return           优惠后金额
+     * 生成商品推广海报
+     *
+     * @param skuUrl 商品地址(京东、淘宝、当当)
+     * @return 海报图片base64位信息
      */
-    BigDecimal discountAmount(T couponInfo, BigDecimal skuPrice);
+    public String generateGoodsPoster(String skuUrl) {
+        if (!login(uId, uPwd)) return null;             // 1. 验证登录
+        Map&lt;String, String&gt; reptile = reptile(skuUrl);  // 2. 爬虫商品
+        return createBase64(reptile);                   // 3. 组装海报
+    }
+
+    // 模拟登录
+    protected abstract Boolean login(String uId, String uPwd);
+
+    // 爬虫提取商品信息(登录后的优惠价格)
+    protected abstract Map&lt;String, String&gt; reptile(String skuUrl);
+
+    // 生成商品海报信息
+    protected abstract String createBase64(Map&lt;String, String&gt; goodsInfo);
 
 }
-
 </code></pre><ul>
-<li>定义了优惠券折扣接口，也增加了泛型用于不同类型的接口可以传递不同的类型参数。</li>
-<li>接口中包括商品金额以及出参返回最终折扣后的金额，这里在实际开发中会比现在的接口参数多一些，但核心逻辑是这些。</li>
+<li>定义可被外部访问的方法generateGoodsPoster，用于生成商品推广海报</li>
+<li>generateGoodsPoster 在方法中定义抽象方法的执行顺序 1 2 3 步</li>
+<li>提供三个具体的抽象方法，让外部继承方实现；模拟登录(login)、模拟爬取(reptile)、生成海报(createBase64)</li>
 </ul>
-<h4 id="满减"><a href="#满减" class="headerlink" title="满减"></a>满减</h4><pre><code>public class MJCouponDiscount implements ICouponDiscount&lt;Map&lt;String,String&gt;&gt;  {
+<h4 id="模拟爬虫京东"><a href="#模拟爬虫京东" class="headerlink" title="模拟爬虫京东"></a>模拟爬虫京东</h4><pre><code>public class JDNetMall extends NetMall {
 
-    /**
-     * 满减计算
-     * 1. 判断满足x元后-n元，否则不减
-     * 2. 最低支付金额1元
-     */
-    public BigDecimal discountAmount(Map&lt;String,String&gt; couponInfo, BigDecimal skuPrice) {
-        String x = couponInfo.get(&quot;x&quot;);
-        String o = couponInfo.get(&quot;n&quot;);
-
-        // 小于商品金额条件的，直接返回商品原价
-        if (skuPrice.compareTo(new BigDecimal(x)) &lt; 0) return skuPrice;
-        // 减去优惠金额判断
-        BigDecimal discountAmount = skuPrice.subtract(new BigDecimal(o));
-        if (discountAmount.compareTo(BigDecimal.ZERO) &lt; 1) return BigDecimal.ONE;
-
-        return discountAmount;
-    }
-}
-</code></pre><h4 id="直减"><a href="#直减" class="headerlink" title="直减"></a>直减</h4><pre><code>public class ZJCouponDiscount implements ICouponDiscount&lt;Double&gt;  {
-
-    /**
-     * 直减计算
-     * 1. 使用商品价格减去优惠价格
-     * 2. 最低支付金额1元
-     */
-    public BigDecimal discountAmount(Double couponInfo, BigDecimal skuPrice) {
-        BigDecimal discountAmount = skuPrice.subtract(new BigDecimal(couponInfo));
-        if (discountAmount.compareTo(BigDecimal.ZERO) &lt; 1) return BigDecimal.ONE;
-        return discountAmount;
+    public JDNetMall(String uId, String uPwd) {
+        super(uId, uPwd);
     }
 
-}
-</code></pre><h4 id="折扣"><a href="#折扣" class="headerlink" title="折扣"></a>折扣</h4><pre><code>public class ZKCouponDiscount implements ICouponDiscount&lt;Double&gt; {
-
-
-    /**
-     * 折扣计算
-     * 1. 使用商品价格乘以折扣比例，为最后支付金额
-     * 2. 保留两位小数
-     * 3. 最低支付金额1元
-     */
-    public BigDecimal discountAmount(Double couponInfo, BigDecimal skuPrice) {
-        BigDecimal discountAmount = skuPrice.multiply(new BigDecimal(couponInfo)).setScale(2, BigDecimal.ROUND_HALF_UP);
-        if (discountAmount.compareTo(BigDecimal.ZERO) &lt; 1) return BigDecimal.ONE;
-        return discountAmount;
+    public Boolean login(String uId, String uPwd) {
+        logger.info(&quot;模拟京东用户登录 uId：{} uPwd：{}&quot;, uId, uPwd);
+        return true;
     }
 
-}
-</code></pre><h4 id="N元购"><a href="#N元购" class="headerlink" title="N元购"></a>N元购</h4><pre><code>public class NYGCouponDiscount implements ICouponDiscount&lt;Double&gt; {
-
-    /**
-     * n元购购买
-     * 1. 无论原价多少钱都固定金额购买
-     */
-    public BigDecimal discountAmount(Double couponInfo, BigDecimal skuPrice) {
-        return new BigDecimal(couponInfo);
+    public Map&lt;String, String&gt; reptile(String skuUrl) {
+        String str = HttpClient.doGet(skuUrl);
+        Pattern p9 = Pattern.compile(&quot;(?&lt;=title\\&gt;).*(?=&lt;/title)&quot;);
+        Matcher m9 = p9.matcher(str);
+        Map&lt;String, String&gt; map = new ConcurrentHashMap&lt;String, String&gt;();
+        if (m9.find()) {
+            map.put(&quot;name&quot;, m9.group());
+        }
+        map.put(&quot;price&quot;, &quot;5999.00&quot;);
+        logger.info(&quot;模拟京东商品爬虫解析：{} | {} 元 {}&quot;, map.get(&quot;name&quot;), map.get(&quot;price&quot;), skuUrl);
+        return map;
     }
 
-}
-</code></pre><h4 id="策略控制类"><a href="#策略控制类" class="headerlink" title="策略控制类"></a>策略控制类</h4><pre><code>public class Context&lt;T&gt; {
-
-    private ICouponDiscount&lt;T&gt; couponDiscount;
-
-    public Context(ICouponDiscount&lt;T&gt; couponDiscount) {
-        this.couponDiscount = couponDiscount;
-    }
-
-    public BigDecimal discountAmount(T couponInfo, BigDecimal skuPrice) {
-        return couponDiscount.discountAmount(couponInfo, skuPrice);
+    public String createBase64(Map&lt;String, String&gt; goodsInfo) {
+        BASE64Encoder encoder = new BASE64Encoder();
+        logger.info(&quot;模拟生成京东商品base64海报&quot;);
+        return encoder.encode(JSON.toJSONString(goodsInfo).getBytes());
     }
 
 }
 </code></pre><h4 id="测试验证"><a href="#测试验证" class="headerlink" title="测试验证"></a>测试验证</h4><pre><code>@Test
-public void test_zj() {
-    // 直减；100-10，商品100元
-    Context&lt;Double&gt; context = new Context&lt;Double&gt;(new ZJCouponDiscount());
-    BigDecimal discountAmount = context.discountAmount(10D, new BigDecimal(100));
-    logger.info(&quot;测试结果：直减优惠后金额 {}&quot;, discountAmount);
-}
-</code></pre><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
-<li>通过策略设计模式的使用可以把我们方法中的if语句优化掉，大量的if语句使用会让代码难以扩展，也不好维护，同时在后期遇到各种问题也很难维护。在使用这样的设计模式后可以很好的满足隔离性与和扩展性，对于不断新增的需求也非常方便承接。</li>
-<li>按照个人风格，一般工厂和策略模式一起使用。<a href="https://adbo.gitee.io/2020/08/12/2020-08-12-ce-lue-mo-shi/">工作中结合Spring案例</a></li>
+public void test_NetMall() {
+    NetMall netMall = new JDNetMall(&quot;1000001&quot;,&quot;*******&quot;);
+    String base64 = netMall.generateGoodsPoster(&quot;https://item.jd.com/100008348542.html&quot;);
+    logger.info(&quot;测试结果：{}&quot;, base64);
+}</code></pre><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li><p>模版模式在定义统一结构也就是执行标准上非常方便，也就很好的控制了后续的实现者不用关心调用逻辑，按照统一方式执行。那么类的继承者只需要关心具体的业务逻辑实现即可。</p>
+</li>
+<li><p>另外模版模式也是为了解决子类通用方法，放到父类中设计的优化。让每一个子类只做子类需要完成的内容，而不需要关心其他逻辑。这样提取公用代码，行为由父类管理，扩展可变部分，也就非常有利于开发拓展和迭代。</p>
+</li>
+<li><p>模板模式的核心设计思路是，通过在抽象类中定义抽象方法的执行顺序，并将抽象方法设定为只有子类实现，但不设计独立访问的方法。</p>
+</li>
+<li><p>关于模版模式的核心点在于由抽象类定义抽象方法执行策略，也就是说父类规定了好一系列的执行标准，这些标准的串联成一整套业务流程。</p>
+</li>
 </ul>
 
             </div>
@@ -610,7 +585,7 @@ public void test_zj() {
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://adbo.gitee.io/2021/04/20/2021-04-20-design-ce-lue/">http://adbo.gitee.io/2021/04/20/2021-04-20-design-ce-lue/</a>
+                    <a href="http://adbo.gitee.io/2021/04/21/2021-04-21-design-mo-ban/">http://adbo.gitee.io/2021/04/21/2021-04-21-design-mo-ban/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -820,7 +795,7 @@ public void test_zj() {
         repo: 'gitalk',
         owner: 'FlynnCN',
         admin: "FlynnCN",
-        id: '2021-04-20T22-43-52',
+        id: '2021-04-21T22-43-52',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -843,7 +818,8 @@ public void test_zj() {
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2021/04/21/2021-04-21-design-mo-ban/">
                     <div class="card-image">
@@ -860,9 +836,9 @@ public void test_zj() {
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-04-21
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-21
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -875,6 +851,7 @@ public void test_zj() {
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -893,12 +870,12 @@ public void test_zj() {
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/04/19/2021-04-19-design-zhuang-tai/">
+                <a href="/2021/04/20/2021-04-20-design-ce-lue/">
                     <div class="card-image">
                         
-                        <img src="/medias/cover/itstack-demo-design-19-01.png" class="responsive-img" alt="状态模式">
+                        <img src="/medias/cover/itstack-demo-design-20-01.png" class="responsive-img" alt="策略模式">
                         
-                        <span class="card-title">状态模式</span>
+                        <span class="card-title">策略模式</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -909,7 +886,7 @@ public void test_zj() {
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-19
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-20
                             </span>
                         <span class="publish-author">
                             
