@@ -460,7 +460,7 @@
 </blockquote>
 <h2 id="中介者模式介绍"><a href="#中介者模式介绍" class="headerlink" title="中介者模式介绍"></a>中介者模式介绍</h2><p>中介者模式要解决的就是复杂功能应用之间的重复调用，在这中间添加一层中介者包装服务，对外提供简单、通用、易扩展的服务能力。</p>
 <p>这样的设计模式几乎在我们日常生活和实际业务开发中都会见到，例如；飞机🛬降落有小姐姐在塔台喊话、无论哪个方向来的候车都从站台上下、公司的系统中有一个中台专门为你包装所有接口和提供统一的服务等等，这些都运用了中介者模式。除此之外，你用到的一些中间件，他们包装了底层多种数据库的差异化，提供非常简单的方式进行使用。</p>
-<h2 id="案例场景模拟"><a href="#案例场景模拟" class="headerlink" title="案例场景模拟"></a>案例场景模拟</h2><p><img src="/2021/04/16/2021-04-16-design-zhong-jie-zhe/itstack-demo-design-16-02.png" alt></p>
+<h2 id="简单例子"><a href="#简单例子" class="headerlink" title="简单例子"></a>简单例子</h2><p><img src="/2021/04/16/2021-04-16-design-zhong-jie-zhe/itstack-demo-design-16-02.png" alt></p>
 <p>把jdbc层进行包装，让用户在使用数据库服务的时候，可以和使用mybatis一样简单方便，通过这样的源码方式学习中介者模式，也方便对源码知识的拓展学习，增强知识栈。</p>
 <h2 id="用一坨坨代码实现"><a href="#用一坨坨代码实现" class="headerlink" title="用一坨坨代码实现"></a>用一坨坨代码实现</h2><h3 id="工程结构"><a href="#工程结构" class="headerlink" title="工程结构"></a>工程结构</h3><pre><code>itstack-demo-design-16-01
 └── src

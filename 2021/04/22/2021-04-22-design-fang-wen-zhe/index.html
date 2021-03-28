@@ -462,9 +462,9 @@
 <p>为了通俗理解，简单来说，嘿嘿：</p>
 <p><img src="/2021/04/22/2021-04-22-design-fang-wen-zhe/itstack-demo-design-22-02.png" alt></p>
 <p>说白了访问者模式的核心在于同一个事物不同视角下的访问信息不同，比如一个美女手里拿个冰激凌。小朋友会注意冰激凌，大朋友会找自己喜欢的地方观测敌情。</p>
-<h2 id="案例场景模拟"><a href="#案例场景模拟" class="headerlink" title="案例场景模拟"></a>案例场景模拟</h2><p><img src="/2021/04/22/2021-04-22-design-fang-wen-zhe/itstack-demo-design-22-03.png" alt></p>
+<h2 id="简单例子"><a href="#简单例子" class="headerlink" title="简单例子"></a>简单例子</h2><p><img src="/2021/04/22/2021-04-22-design-fang-wen-zhe/itstack-demo-design-22-03.png" alt></p>
 <p>模拟校园中有学生和老师两种身份的用户，那么对于家长和校长关心的角度来看，他们的视角是不同的。家长更关心孩子的成绩和老师的能力，校长更关心老师所在班级学生的人数和升学率.</p>
-<h2 id="简单例子"><a href="#简单例子" class="headerlink" title="简单例子"></a>简单例子</h2><h3 id="访问者模式模型结构"><a href="#访问者模式模型结构" class="headerlink" title="访问者模式模型结构"></a>访问者模式模型结构</h3><p><img src="/2021/04/22/2021-04-22-design-fang-wen-zhe/itstack-demo-design-22-04.png" alt></p>
+<h3 id="访问者模式模型结构"><a href="#访问者模式模型结构" class="headerlink" title="访问者模式模型结构"></a>访问者模式模型结构</h3><p><img src="/2021/04/22/2021-04-22-design-fang-wen-zhe/itstack-demo-design-22-04.png" alt></p>
 <h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><h4 id="定义用户抽象类"><a href="#定义用户抽象类" class="headerlink" title="定义用户抽象类"></a>定义用户抽象类</h4><pre><code>// 基础用户信息
 public abstract class User {
 
