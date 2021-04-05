@@ -1104,7 +1104,7 @@
     
     
     <entry>
-      <title>深入并发学习</title>
+      <title>深入并发学习-volatile</title>
       <link href="/2021/01/10/2021-01-10-bing-fa-volatile/"/>
       <url>/2021/01/10/2021-01-10-bing-fa-volatile/</url>
       
@@ -1113,14 +1113,14 @@
       
       <categories>
           
-          <category> JAVA并发 </category>
+          <category> JAVA </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> JAVA </tag>
+            <tag> JAVA并发 </tag>
             
         </tags>
       
