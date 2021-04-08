@@ -455,7 +455,10 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="CAS是什么"><a href="#CAS是什么" class="headerlink" title="CAS是什么"></a>CAS是什么</h2><p>Compare And Set 比较和设置</p>
+                <h2 id="CAS是什么"><a href="#CAS是什么" class="headerlink" title="CAS是什么"></a>CAS是什么</h2><p>CAS的全称为Compare-And-Swap，它是一条CPU并发原语。</p>
+<p>它的功能是判断内存某个位置的值是否为预期值，如果是则更改为新的值，这个过程是原子的。</p>
+<p><strong>CAS并发原语体现在JAVA语言中就是sun.misc.Unsafe类中的各个方法。调用UnSafe类中的CAS方法，JVM会帮我们实现出CAS汇编指令。这是一种完全依赖于硬件的功能，通过它实现了原子操作。再次强调，由于CAS是一种系统原语，原语属于操作系统用语范畴，是由若干条指令组成的，用于完成某个功能的一个过程，并且原语的执行必须是连续的，在执行过程中不允许被中断，也就是说CAS是一条CPU的原子指令，不会造成所谓的数据不一致问题。（原子性）</strong></p>
+<h2 id="AtomicInteger"><a href="#AtomicInteger" class="headerlink" title="AtomicInteger"></a>AtomicInteger</h2><p>Compare And Set 比较和设置</p>
 <pre><code>public class CASDemo{
     public static void main(string[] args){
         AtomicInteger atomicInteger = new AtomicInteger(5);// mian do thing. . . . ..
@@ -466,10 +469,7 @@
 </code></pre><p>输出结果为</p>
 <pre><code>true    2019
 false   2019
-</code></pre><h2 id="CAS是什么-1"><a href="#CAS是什么-1" class="headerlink" title="CAS是什么"></a>CAS是什么</h2><p>CAS的全称为Compare-And-Swap，它是一条CPU并发原语。</p>
-<p>它的功能是判断内存某个位置的值是否为预期值，如果是则更改为新的值，这个过程是原子的。</p>
-<p><strong>CAS并发原语体现在JAVA语言中就是sun.misc.Unsafe类中的各个方法。调用UnSafe类中的CAS方法，JVM会帮我们实现出CAS汇编指令。这是一种完全依赖于硬件的功能，通过它实现了原子操作。再次强调，由于CAS是一种系统原语，原语属于操作系统用语范畴，是由若干条指令组成的，用于完成某个功能的一个过程，并且原语的执行必须是连续的，在执行过程中不允许被中断，也就是说CAS是一条CPU的原子指令，不会造成所谓的数据不一致问题。（原子性）</strong></p>
-<h2 id="UnSafe类"><a href="#UnSafe类" class="headerlink" title="UnSafe类"></a>UnSafe类</h2><p>atomiclnteger.getAndIncrement()源码</p>
+</code></pre><h2 id="UnSafe类"><a href="#UnSafe类" class="headerlink" title="UnSafe类"></a>UnSafe类</h2><p>atomiclnteger.getAndIncrement()源码</p>
 <pre><code>public class AtomicInteger extends Number implements java.io.Serializable {
     private static final long serialVersionUID = 6214790243416807050L;
 
