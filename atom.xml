@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://adbo.gitee.io/"/>
-  <updated>2021-03-28T03:52:27.492Z</updated>
+  <updated>2021-04-09T15:06:53.111Z</updated>
   <id>http://adbo.gitee.io/</id>
   
   <author>
@@ -15,6 +15,102 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>深入并发学习-锁</title>
+    <link href="http://adbo.gitee.io/2021/05/04/2021-05-04-bing-fa-suo/"/>
+    <id>http://adbo.gitee.io/2021/05/04/2021-05-04-bing-fa-suo/</id>
+    <published>2021-05-04T14:43:52.000Z</published>
+    <updated>2021-04-09T15:06:53.111Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+      <category term="JAVA" scheme="http://adbo.gitee.io/categories/JAVA/"/>
+    
+    
+      <category term="JAVA并发" scheme="http://adbo.gitee.io/tags/JAVA%E5%B9%B6%E5%8F%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>深入并发学习-集合类不安全</title>
+    <link href="http://adbo.gitee.io/2021/05/03/2021-05-03-bing-fa-ji-he-lei-bu-an-quan/"/>
+    <id>http://adbo.gitee.io/2021/05/03/2021-05-03-bing-fa-ji-he-lei-bu-an-quan/</id>
+    <published>2021-05-03T14:43:52.000Z</published>
+    <updated>2021-04-09T15:09:18.975Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;集合类不安全之List&quot;&gt;&lt;a href=&quot;#集合类不安全之List&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="JAVA" scheme="http://adbo.gitee.io/categories/JAVA/"/>
+    
+    
+      <category term="JAVA并发" scheme="http://adbo.gitee.io/tags/JAVA%E5%B9%B6%E5%8F%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>深入并发学习-CAS</title>
+    <link href="http://adbo.gitee.io/2021/05/02/2021-05-02-bing-fa-cas/"/>
+    <id>http://adbo.gitee.io/2021/05/02/2021-05-02-bing-fa-cas/</id>
+    <published>2021-05-02T14:43:52.000Z</published>
+    <updated>2021-04-09T15:09:02.540Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;CAS是什么&quot;&gt;&lt;a href=&quot;#CAS是什么&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="JAVA" scheme="http://adbo.gitee.io/categories/JAVA/"/>
+    
+    
+      <category term="JAVA并发" scheme="http://adbo.gitee.io/tags/JAVA%E5%B9%B6%E5%8F%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>深入并发学习-volatile</title>
+    <link href="http://adbo.gitee.io/2021/05/01/2021-05-01-bing-fa-volatile/"/>
+    <id>http://adbo.gitee.io/2021/05/01/2021-05-01-bing-fa-volatile/</id>
+    <published>2021-05-01T14:43:52.000Z</published>
+    <updated>2021-04-09T15:07:25.067Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;volatile是什么&quot;&gt;&lt;a href=&quot;#volatile是什么&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="JAVA" scheme="http://adbo.gitee.io/categories/JAVA/"/>
+    
+    
+      <category term="JAVA并发" scheme="http://adbo.gitee.io/tags/JAVA%E5%B9%B6%E5%8F%91/"/>
+    
+  </entry>
   
   <entry>
     <title>访问者模式</title>
@@ -468,122 +564,6 @@
 &lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&quot;桥接模式介绍&quot;&gt;&lt;a href=&quot;#桥接模式介绍&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="设计模式" scheme="http://adbo.gitee.io/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-    
-      <category term="设计模式" scheme="http://adbo.gitee.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>适配器模式</title>
-    <link href="http://adbo.gitee.io/2021/04/06/2021-04-06-design-gua-pei-qi/"/>
-    <id>http://adbo.gitee.io/2021/04/06/2021-04-06-design-gua-pei-qi/</id>
-    <published>2021-04-06T14:43:52.000Z</published>
-    <updated>2021-03-28T03:49:23.640Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;适配器模式介绍&quot;&gt;&lt;a href=&quot;#适配器模式介绍&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="设计模式" scheme="http://adbo.gitee.io/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-    
-      <category term="设计模式" scheme="http://adbo.gitee.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>单例模式</title>
-    <link href="http://adbo.gitee.io/2021/04/05/2021-04-05-design-dan-li/"/>
-    <id>http://adbo.gitee.io/2021/04/05/2021-04-05-design-dan-li/</id>
-    <published>2021-04-05T14:43:52.000Z</published>
-    <updated>2021-03-28T03:49:35.932Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;单例模式介绍&quot;&gt;&lt;a href=&quot;#单例模式介绍&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="设计模式" scheme="http://adbo.gitee.io/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-    
-      <category term="设计模式" scheme="http://adbo.gitee.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>原型模式</title>
-    <link href="http://adbo.gitee.io/2021/04/04/2021-04-04-design-yuan-xing/"/>
-    <id>http://adbo.gitee.io/2021/04/04/2021-04-04-design-yuan-xing/</id>
-    <published>2021-04-04T14:43:52.000Z</published>
-    <updated>2021-03-28T03:49:45.001Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;原型模式介绍&quot;&gt;&lt;a href=&quot;#原型模式介绍&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="设计模式" scheme="http://adbo.gitee.io/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-    
-      <category term="设计模式" scheme="http://adbo.gitee.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>建造者模式</title>
-    <link href="http://adbo.gitee.io/2021/04/03/2021-04-03-design-jian-zao-zhe/"/>
-    <id>http://adbo.gitee.io/2021/04/03/2021-04-03-design-jian-zao-zhe/</id>
-    <published>2021-04-03T14:43:52.000Z</published>
-    <updated>2021-03-28T03:50:02.602Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;建造者模式介绍&quot;&gt;&lt;a href=&quot;#建造者模式介绍&quot;
         
       
     
