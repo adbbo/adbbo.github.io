@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://adbo.gitee.io/"/>
-  <updated>2021-04-10T07:24:07.515Z</updated>
+  <updated>2021-04-10T08:06:36.974Z</updated>
   <id>http://adbo.gitee.io/</id>
   
   <author>
@@ -17,11 +17,37 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>深入并发学习-阻塞队列</title>
+    <link href="http://adbo.gitee.io/2021/05/05/2021-05-05-bing-fa-zu-sai-dui-lie/"/>
+    <id>http://adbo.gitee.io/2021/05/05/2021-05-05-bing-fa-zu-sai-dui-lie/</id>
+    <published>2021-05-05T14:43:52.000Z</published>
+    <updated>2021-04-10T08:06:36.974Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;阻塞队列接口结构和实现类&quot;&gt;&lt;a href=&quot;#阻塞队列接口结构和实现类&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="JAVA" scheme="http://adbo.gitee.io/categories/JAVA/"/>
+    
+    
+      <category term="JAVA并发" scheme="http://adbo.gitee.io/tags/JAVA%E5%B9%B6%E5%8F%91/"/>
+    
+  </entry>
+  
+  <entry>
     <title>深入并发学习-锁</title>
     <link href="http://adbo.gitee.io/2021/05/04/2021-05-04-bing-fa-suo/"/>
     <id>http://adbo.gitee.io/2021/05/04/2021-05-04-bing-fa-suo/</id>
     <published>2021-05-04T14:43:52.000Z</published>
-    <updated>2021-04-10T07:24:07.515Z</updated>
+    <updated>2021-04-10T08:04:49.545Z</updated>
     
     <summary type="html">
     
@@ -543,35 +569,6 @@
 &lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&quot;组合模式介绍&quot;&gt;&lt;a href=&quot;#组合模式介绍&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="设计模式" scheme="http://adbo.gitee.io/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-    
-      <category term="设计模式" scheme="http://adbo.gitee.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>桥接模式</title>
-    <link href="http://adbo.gitee.io/2021/04/07/2021-04-07-design-qiao-jie/"/>
-    <id>http://adbo.gitee.io/2021/04/07/2021-04-07-design-qiao-jie/</id>
-    <published>2021-04-07T14:43:52.000Z</published>
-    <updated>2021-03-28T03:49:16.366Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;桥接模式介绍&quot;&gt;&lt;a href=&quot;#桥接模式介绍&quot;
         
       
     
