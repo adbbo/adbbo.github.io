@@ -4,6 +4,56 @@
   
     
     <entry>
+      <title>Spring-循环依赖</title>
+      <link href="/2021/05/11/2021-05-11-spring-xun-huan-yi-lai/"/>
+      <url>/2021/05/11/2021-05-11-spring-xun-huan-yi-lai/</url>
+      
+        <content type="html"><![CDATA[<h2 id="spring循环依赖前置知识"><a href="#spring循环依赖前置知识" class="headerlink" title="spring循环依赖前置知识"></a>spring循环依赖前置知识</h2><p>3个Map和四大方法，总体相关对象</p><p><img src="/2021/05/11/2021-05-11-spring-xun-huan-yi-lai/fe2c0b589930bbf2988a374c2644d941.png" alt></p><ul><li>第一层singletonObjects存放的是已经初始化好了的Bean</li><li>第二层earlySingletonObjects存放的是实例化了，但是未初始化的Bean</li><li>第三层singletonFactories存放的是FactoryBean。假如A类实现了FactoryBean,那么依赖注入的时候不是A类，而是A类产生的Bean</li></ul><pre><code>package org.springframework.beans.factory.support;...public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements SingletonBeanRegistry {    ...    /**     单例对象的缓存:bean名称—bean实例，即:所谓的单例池。    表示已经经历了完整生命周期的Bean对象    第一级缓存    */    private final Map&lt;String, Object&gt; singletonObjects = new ConcurrentHashMap&lt;&gt;(256);    /**    早期的单例对象的高速缓存: bean名称—bean实例。    表示 Bean的生命周期还没走完（Bean的属性还未填充）就把这个 Bean存入该缓存中也就是实例化但未初始化的 bean放入该缓存里    第二级缓存    */    private final Map&lt;String, ObjectFactory&lt;?&gt;&gt; singletonFactories = new HashMap&lt;&gt;(16);    /**    单例工厂的高速缓存:bean名称—ObjectFactory    表示存放生成 bean的工厂    第三级缓存    */    private final Map&lt;String, Object&gt; earlySingletonObjects = new HashMap&lt;&gt;(16);    ...}</code></pre><p>A / B两对象在三级缓存中的迁移说明</p><ol><li>A创建过程中需要B，于是A将自己放到三级缓里面，去实例化B。</li><li>B实例化的时候发现需要A，于是B先查一级缓存，没有，再查二级缓存，还是没有，再查三级缓存，找到了A然后把三级缓存里面的这个A放到二级缓存里面，并删除三级缓存里面的A。</li><li>B顺利初始化完毕，将自己放到一级缓存里面（此时B里面的A依然是创建中状态)，然后回来接着创建A，此时B已经创建结束，直接从一级缓存里面拿到B，然后完成创建，并将A自己放到一级缓存里面。</li></ol><h2 id="Spring解决循环依赖过程："><a href="#Spring解决循环依赖过程：" class="headerlink" title="Spring解决循环依赖过程："></a>Spring解决循环依赖过程：</h2><ol><li>调用doGetBean()方法，想要获取beanA，于是调用getSingleton()方法从缓存中查找beanA</li><li>在getSingleton()方法中，从一级缓存中查找，没有，返回null</li><li>doGetBean()方法中获取到的beanA为null，于是走对应的处理逻辑，调用getSingleton()的重载方法（参数为ObjectFactory的)</li><li>在getSingleton()方法中，先将beanA_name添加到一个集合中，用于标记该bean正在创建中。然后回调匿名内部类的creatBean方法</li><li>进入AbstractAutowireCapableBeanFactory#ndoCreateBean，先反射调用构造器创建出beanA的实例，然后判断:是否为单例、是否允许提前暴露引用(对于单例一般为true)、是否正在创建中（即是否在第四步的集合中）。判断为true则将beanA添加到【三级缓存】中</li><li>对beanA进行属性填充，此时检测到beanA依赖于beanB，于是开始查找beanB</li><li>调用doGetBean()方法，和上面beanA的过程一样，到缓存中查找beanB，没有则创建，然后给beanB填充属性</li><li>此时 beanB依赖于beanA，调用getSingleton()获取beanA，依次从一级、二级、三级缓存中找，此时从三级缓存中获取到beanA的创建工厂，通过创建工厂获取到singletonObject，此时这个singletonObject指向的就是上面在doCreateBean()方法中实例化的beanA</li><li>这样beanB就获取到了beanA的依赖，于是beanB顺利完成实例化，并将beanA从三级缓存移动到二级缓存中</li><li>随后beanA继续他的属性填充工作，此时也获取到了beanB，beanA也随之完成了创建，回到getsingleton()方法中继续向下执行，将beanA从二级缓存移动到一级缓存中</li></ol><h2 id="spring循环依赖结论"><a href="#spring循环依赖结论" class="headerlink" title="spring循环依赖结论"></a>spring循环依赖结论</h2><p>Spring创建 bean主要分为两个步骤，创建原始bean对象，接着去填充对象属性和初始化</p><p>每次创建 bean之前，我们都会从缓存中查下有没有该bean，因为是单例，只能有一个</p><p>当我们创建 beanA的原始对象后，并把它放到三级缓存中，接下来就该填充对象属性了，这时候发现依赖了beanB，接着就又去创建beanB，同样的流程，创建完beanB填充属性时又发现它依赖了beanA又是同样的流程.</p><p>不同的是：这时候可以在三级缓存中查到刚放进去的原始对象beanA.所以不需要继续创建，用它注入 beanB，完成 beanB的创建</p><p>既然 beanB创建好了，所以 beanA就可以完成填充属性的步骤了，接着执行剩下的逻辑，闭环完成</p><p><img src="/2021/05/11/2021-05-11-spring-xun-huan-yi-lai/b34a877c4363380c0243acbb69b4b834.png" alt></p><p>Spring为了解决单例的循坏依赖问题，使用了三级缓存：</p><ul><li>其中一级缓存为单例池(singletonObjects)。</li><li>二级缓存为提前曝光对象(earlySingletonObjects)。</li><li>三级缓存为提前曝光对象工厂(singletonFactories) 。</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> Spring </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Spring框架 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Spring-AOP</title>
+      <link href="/2021/05/10/2021-05-10-spring-aop/"/>
+      <url>/2021/05/10/2021-05-10-spring-aop/</url>
+      
+        <content type="html"><![CDATA[<h2 id="AOP常用注解："><a href="#AOP常用注解：" class="headerlink" title="AOP常用注解："></a>AOP常用注解：</h2><ul><li>@Before 前置通知：目标方法之前执行</li><li>@After 后置通知：目标方法之后执行（始终执行)</li><li>@AfterReturning 返回后通知：执行方法结束前执行(异常不执行)</li><li>@AfterThrowing 异常通知：出现异常时候执行</li><li>@Around 环绕通知：环绕目标方法执行</li></ul><h2 id="Spring的AOP顺序"><a href="#Spring的AOP顺序" class="headerlink" title="Spring的AOP顺序"></a>Spring的AOP顺序</h2><h3 id="spring4下的aop测试案例"><a href="#spring4下的aop测试案例" class="headerlink" title="spring4下的aop测试案例"></a>spring4下的aop测试案例</h3><p>spring4的springboot版本为1.X version</p><pre><code>import org.aspectj.lang.ProceedingJoinPoint;import org.aspectj.lang.annotation.After;import org.aspectj.lang.annotation.AfterReturning;import org.aspectj.lang.annotation.AfterThrowing;import org.aspectj.lang.annotation.Around;import org.aspectj.lang.annotation.Aspect;import org.aspectj.lang.annotation.Before;import org.springframework.stereotype.Component;@Aspect@Componentpublic class MyAspect {    @Before(&quot;execution(public int com.lun.interview.service.CalcServiceImpl.*(..))&quot;)    public void beforeNotify() {        System.out.println(&quot;********@Before我是前置通知&quot;);    }    @After(&quot;execution(public int com.lun.interview.service.CalcServiceImpl.*(..))&quot;)    public void afterNotify() {        System.out.println(&quot;********@After我是后置通知&quot;);    }    @AfterReturning(&quot;execution(public int com.lun.interview.service.CalcServiceImpl.*(..))&quot;)    public void afterReturningNotify() {        System.out.println(&quot;********@AfterReturning我是返回后通知&quot;);    }    @AfterThrowing(&quot; execution(public int com.lun.interview.service.CalcServiceImpl.*(..))&quot;)    public void afterThrowingNotify() {        System.out.println(&quot;********@AfterThrowing我是异常通知&quot;);    }    @Around(&quot; execution(public int com.lun.interview.service.CalcServiceImpl.*(..))&quot;)    public Object around(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {        Object retvalue = null;        System.out.println(&quot;我是环绕通知之前AAA&quot;);        retvalue = proceedingJoinPoint.proceed();        System.out.println(&quot;我是环绕通知之后BBB&quot;);        return retvalue ;    }}</code></pre><pre><code>import org.springframework.stereotype.Service;@Servicepublic class CalcServiceImpl implements CalcService {    @Override    public int div(int x, int y) {        int result = x / y;        System.out.println(&quot;===&gt;CalcServiceImpl被调用，计算结果为：&quot; + result);        return result;    }}</code></pre><p>正常执行输出结果：</p><pre><code>Spring Verision : 4.3.13.RELEASE, Sring Boot Version : 1.5.9.RELEASE.我是环绕通知之前AAA********@Before我是前置通知===&gt;CalcServiceImpl被调用，计算结果为：5我是环绕通知之后BBB********@After我是后置通知********@AfterReturning我是返回后通知</code></pre><p>如果接口中抛出异常，输出结果：</p><pre><code>Spring Verision : 4.3.13.RELEASE, Sring Boot Version : 1.5.9.RELEASE.我是环绕通知之前AAA********@Before我是前置通知********@After我是后置通知********@AfterThrowing我是异常通知java.lang.ArithmeticException: / by zero    at com.lun.interview.service.CalcServiceImpl.div(CalcServiceImpl.java:10)    at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)    at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)    at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)    at java.lang.reflect.Method.invoke(Method.java:498)    ...</code></pre><p>AOP执行顺序：</p><ul><li>正常情况下：@Before前置通知—–&gt;@After后置通知—–&gt;@AfterRunning正常返回</li><li>异常情况下：@Before前置通知—–&gt;@After后置通知—–&gt;@AfterThrowing方法异常</li></ul><h3 id="spring5下的aop测试"><a href="#spring5下的aop测试" class="headerlink" title="spring5下的aop测试"></a>spring5下的aop测试</h3><p>spring5的springboot版本为2.X version</p><p>正常执行输出结果:</p><pre><code>Spring Verision : 5.2.8.RELEASE, Sring Boot Version : 2.3.3.RELEASE.我是环绕通知之前AAA********@Before我是前置通知===&gt;CalcServiceImpl被调用，计算结果为：5********@AfterReturning我是返回后通知********@After我是后置通知我是环绕通知之后BBB</code></pre><p>异常执行输出结果:</p><pre><code>Spring Verision : 5.2.8.RELEASE, Sring Boot Version : 2.3.3.RELEASE.我是环绕通知之前AAA********@Before我是前置通知********@AfterThrowing我是异常通知********@After我是后置通知java.lang.ArithmeticException: / by zero    at com.lun.interview.service.CalcServiceImpl.div(CalcServiceImpl.java:10)    at com.lun.interview.service.CalcServiceImpl$$FastClassBySpringCGLIB$$355acbc4.invoke(&lt;generated&gt;)    at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)    at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:771)</code></pre><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><h3 id="Spring4"><a href="#Spring4" class="headerlink" title="Spring4"></a>Spring4</h3><p>正常执行输出结果：</p><pre><code>Spring Verision : 4.3.13.RELEASE, Sring Boot Version : 1.5.9.RELEASE.我是环绕通知之前AAA********@Before我是前置通知===&gt;CalcServiceImpl被调用，计算结果为：5我是环绕通知之后BBB********@After我是后置通知********@AfterReturning我是返回后通知</code></pre><p>如果接口中抛出异常，输出结果：</p><pre><code>Spring Verision : 4.3.13.RELEASE, Sring Boot Version : 1.5.9.RELEASE.我是环绕通知之前AAA********@Before我是前置通知********@After我是后置通知********@AfterThrowing我是异常通知java.lang.ArithmeticException: / by zero    at com.lun.interview.service.CalcServiceImpl.div(CalcServiceImpl.java:10)    at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)    at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)    at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)    at java.lang.reflect.Method.invoke(Method.java:498)    ...</code></pre><h3 id="Spring5"><a href="#Spring5" class="headerlink" title="Spring5"></a>Spring5</h3><p>spring5的springboot版本为2.X version</p><p>正常执行输出结果:</p><pre><code>Spring Verision : 5.2.8.RELEASE, Sring Boot Version : 2.3.3.RELEASE.我是环绕通知之前AAA********@Before我是前置通知===&gt;CalcServiceImpl被调用，计算结果为：5********@AfterReturning我是返回后通知********@After我是后置通知我是环绕通知之后BBB</code></pre><p>异常执行输出结果:</p><pre><code>Spring Verision : 5.2.8.RELEASE, Sring Boot Version : 2.3.3.RELEASE.我是环绕通知之前AAA********@Before我是前置通知********@AfterThrowing我是异常通知********@After我是后置通知java.lang.ArithmeticException: / by zero    at com.lun.interview.service.CalcServiceImpl.div(CalcServiceImpl.java:10)    at com.lun.interview.service.CalcServiceImpl$$FastClassBySpringCGLIB$$355acbc4.invoke(&lt;generated&gt;)    at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)    at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:771)</code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> Spring </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Spring框架 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>深入并发学习-AQS</title>
       <link href="/2021/05/09/2021-05-09-bing-fa-aqs/"/>
       <url>/2021/05/09/2021-05-09-bing-fa-aqs/</url>

@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://adbo.gitee.io/"/>
-  <updated>2021-04-11T10:53:14.332Z</updated>
+  <updated>2021-04-11T13:42:52.283Z</updated>
   <id>http://adbo.gitee.io/</id>
   
   <author>
@@ -15,6 +15,60 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Spring-循环依赖</title>
+    <link href="http://adbo.gitee.io/2021/05/11/2021-05-11-spring-xun-huan-yi-lai/"/>
+    <id>http://adbo.gitee.io/2021/05/11/2021-05-11-spring-xun-huan-yi-lai/</id>
+    <published>2021-05-11T14:43:52.000Z</published>
+    <updated>2021-04-11T13:42:52.283Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;spring循环依赖前置知识&quot;&gt;&lt;a href=&quot;#spring循环依赖前置知识&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Spring" scheme="http://adbo.gitee.io/categories/Spring/"/>
+    
+    
+      <category term="Spring框架" scheme="http://adbo.gitee.io/tags/Spring%E6%A1%86%E6%9E%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring-AOP</title>
+    <link href="http://adbo.gitee.io/2021/05/10/2021-05-10-spring-aop/"/>
+    <id>http://adbo.gitee.io/2021/05/10/2021-05-10-spring-aop/</id>
+    <published>2021-05-10T14:43:52.000Z</published>
+    <updated>2021-04-11T12:54:36.113Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;AOP常用注解：&quot;&gt;&lt;a href=&quot;#AOP常用注解：&quot; class=&quot;headerlink&quot; title=&quot;AOP常用注解：&quot;&gt;&lt;/a&gt;AOP常用注解：&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;@Before 前置通知：目标方法之前执行&lt;/li&gt;
+&lt;li&gt;@After
+        
+      
+    
+    </summary>
+    
+      <category term="Spring" scheme="http://adbo.gitee.io/categories/Spring/"/>
+    
+    
+      <category term="Spring框架" scheme="http://adbo.gitee.io/tags/Spring%E6%A1%86%E6%9E%B6/"/>
+    
+  </entry>
   
   <entry>
     <title>深入并发学习-AQS</title>
@@ -500,64 +554,6 @@
 &lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&quot;命令模式介绍&quot;&gt;&lt;a href=&quot;#命令模式介绍&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="设计模式" scheme="http://adbo.gitee.io/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-    
-      <category term="设计模式" scheme="http://adbo.gitee.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>责任链模式</title>
-    <link href="http://adbo.gitee.io/2021/04/13/2021-04-13-design-ze-ren-lian/"/>
-    <id>http://adbo.gitee.io/2021/04/13/2021-04-13-design-ze-ren-lian/</id>
-    <published>2021-04-13T14:43:52.000Z</published>
-    <updated>2021-03-28T03:52:50.121Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;责任链模式介绍&quot;&gt;&lt;a href=&quot;#责任链模式介绍&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="设计模式" scheme="http://adbo.gitee.io/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-    
-      <category term="设计模式" scheme="http://adbo.gitee.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>代理模式</title>
-    <link href="http://adbo.gitee.io/2021/04/12/2021-04-12-design-dai-li/"/>
-    <id>http://adbo.gitee.io/2021/04/12/2021-04-12-design-dai-li/</id>
-    <published>2021-04-12T14:43:52.000Z</published>
-    <updated>2021-03-28T03:52:49.208Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;代理模式介绍&quot;&gt;&lt;a href=&quot;#代理模式介绍&quot;
         
       
     
