@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://adbo.gitee.io/"/>
-  <updated>2021-04-10T09:22:02.373Z</updated>
+  <updated>2021-04-11T07:49:10.051Z</updated>
   <id>http://adbo.gitee.io/</id>
   
   <author>
@@ -15,6 +15,59 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>深入并发学习-LockSupport</title>
+    <link href="http://adbo.gitee.io/2021/05/08/2021-05-08-bing-fa-locksupport/"/>
+    <id>http://adbo.gitee.io/2021/05/08/2021-05-08-bing-fa-locksupport/</id>
+    <published>2021-05-08T14:43:52.000Z</published>
+    <updated>2021-04-11T07:49:10.051Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;LockSupport&quot;&gt;&lt;a href=&quot;#LockSupport&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="JAVA" scheme="http://adbo.gitee.io/categories/JAVA/"/>
+    
+    
+      <category term="JAVA并发" scheme="http://adbo.gitee.io/tags/JAVA%E5%B9%B6%E5%8F%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>字符串-intern</title>
+    <link href="http://adbo.gitee.io/2021/05/07/2021-05-07-zi-fu-chuan-intern/"/>
+    <id>http://adbo.gitee.io/2021/05/07/2021-05-07-zi-fu-chuan-intern/</id>
+    <published>2021-05-07T14:43:52.000Z</published>
+    <updated>2021-04-11T04:08:53.780Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;String:intern()是一个本地方法，它的作用是如果字符串常量池中已经包含一个等于此String对象的字符串，则返回代表池中这个字符串的String对象的引用；否则，会将此String对象包含的字符串添加到常量池中，并且返回此String对象的引用。&lt;/p&gt;
+&lt;pr
+        
+      
+    
+    </summary>
+    
+      <category term="JAVA" scheme="http://adbo.gitee.io/categories/JAVA/"/>
+    
+    
+      <category term="JAVA基础" scheme="http://adbo.gitee.io/tags/JAVA%E5%9F%BA%E7%A1%80/"/>
+    
+  </entry>
   
   <entry>
     <title>深入并发学习-线程池</title>
@@ -73,7 +126,7 @@
     <link href="http://adbo.gitee.io/2021/05/04/2021-05-04-bing-fa-suo/"/>
     <id>http://adbo.gitee.io/2021/05/04/2021-05-04-bing-fa-suo/</id>
     <published>2021-05-04T14:43:52.000Z</published>
-    <updated>2021-04-10T09:27:23.550Z</updated>
+    <updated>2021-04-10T09:35:34.239Z</updated>
     
     <summary type="html">
     
@@ -508,64 +561,6 @@
 &lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&quot;享元模式介绍&quot;&gt;&lt;a href=&quot;#享元模式介绍&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="设计模式" scheme="http://adbo.gitee.io/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-    
-      <category term="设计模式" scheme="http://adbo.gitee.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>外观模式</title>
-    <link href="http://adbo.gitee.io/2021/04/10/2021-04-10-design-wai-guan/"/>
-    <id>http://adbo.gitee.io/2021/04/10/2021-04-10-design-wai-guan/</id>
-    <published>2021-04-10T14:43:52.000Z</published>
-    <updated>2021-03-28T03:48:50.127Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;外观模式介绍&quot;&gt;&lt;a href=&quot;#外观模式介绍&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="设计模式" scheme="http://adbo.gitee.io/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-    
-      <category term="设计模式" scheme="http://adbo.gitee.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>装饰器模式</title>
-    <link href="http://adbo.gitee.io/2021/04/09/2021-04-09-design-zhuang-shi-qi/"/>
-    <id>http://adbo.gitee.io/2021/04/09/2021-04-09-design-zhuang-shi-qi/</id>
-    <published>2021-04-09T14:43:52.000Z</published>
-    <updated>2021-03-28T03:48:54.955Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;装饰器模式介绍&quot;&gt;&lt;a href=&quot;#装饰器模式介绍&quot;
         
       
     
