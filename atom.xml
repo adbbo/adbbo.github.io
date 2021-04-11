@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://adbo.gitee.io/"/>
-  <updated>2021-04-11T07:49:10.051Z</updated>
+  <updated>2021-04-11T10:53:14.332Z</updated>
   <id>http://adbo.gitee.io/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>深入并发学习-AQS</title>
+    <link href="http://adbo.gitee.io/2021/05/09/2021-05-09-bing-fa-aqs/"/>
+    <id>http://adbo.gitee.io/2021/05/09/2021-05-09-bing-fa-aqs/</id>
+    <published>2021-05-09T14:43:52.000Z</published>
+    <updated>2021-04-11T10:53:14.332Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;AQS理论初步&quot;&gt;&lt;a href=&quot;#AQS理论初步&quot; class=&quot;headerlink&quot; title=&quot;AQS理论初步&quot;&gt;&lt;/a&gt;AQS理论初步&lt;/h2&gt;&lt;p&gt;AbstractQueuedSynchronizer
+        
+      
+    
+    </summary>
+    
+      <category term="JAVA" scheme="http://adbo.gitee.io/categories/JAVA/"/>
+    
+    
+      <category term="JAVA并发" scheme="http://adbo.gitee.io/tags/JAVA%E5%B9%B6%E5%8F%91/"/>
+    
+  </entry>
   
   <entry>
     <title>深入并发学习-LockSupport</title>
@@ -532,35 +558,6 @@
 &lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&quot;代理模式介绍&quot;&gt;&lt;a href=&quot;#代理模式介绍&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="设计模式" scheme="http://adbo.gitee.io/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-    
-      <category term="设计模式" scheme="http://adbo.gitee.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>享元模式</title>
-    <link href="http://adbo.gitee.io/2021/04/11/2021-04-11-design-xiang-yuan/"/>
-    <id>http://adbo.gitee.io/2021/04/11/2021-04-11-design-xiang-yuan/</id>
-    <published>2021-04-11T14:43:52.000Z</published>
-    <updated>2021-03-28T03:48:35.835Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;享元模式介绍&quot;&gt;&lt;a href=&quot;#享元模式介绍&quot;
         
       
     
