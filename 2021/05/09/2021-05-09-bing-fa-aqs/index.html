@@ -1348,6 +1348,13 @@ public class AQSDemo {
 <li>首先是拥有锁的线程释放锁，释放锁后会唤醒<code>head</code>节点的后置节点。</li>
 <li>首先会执行<code>tryRelease()</code>方法，执行完<code>ReentrantLock.tryRelease()</code>后，<code>state</code>被设置成0，Lock对象的独占锁被设置为null。如果<code>tryRelease</code>执行成功，则继续判断<code>head</code>节点的<code>waitStatus</code>是否为0，就会执行<code>unparkSuccessor()</code>方法来唤醒<code>head</code>的后置节点。<code>unparkSuccessor()</code>主要是将<code>head</code>节点的<code>waitStatus</code>设置为0，然后解除<code>head</code>节点<code>next</code>的指向，使<code>head</code>节点空置，等待着被垃圾回收。<code>LockSupport.unpark(傀儡节点后的下一个节点)</code>，然后唤醒的节点就可以执行加锁流程了。</li>
 </ol>
+<h3 id="总的来说"><a href="#总的来说" class="headerlink" title="总的来说"></a>总的来说</h3><ul>
+<li>CountDownLatch、CyclicBarriar、Semaphore信号量、ReentrantLock、ReentrantReadWriteLock读写锁底层都有Sync类继承AQS类，都属于AQS框架。</li>
+<li>AQS中 维护了一个volatile int state（代表共享资源）和一个FIFO双向等待CLH队列（多线程争用资源被阻塞时会进入此队列）。</li>
+<li>另外state的操作都是通过CAS来保证其并发修改的安全性。</li>
+<li>这里volatile能够保证多线程下的可见性，当state=1则代表当前对象锁已经被占有，其他线程来加锁时则会失败，加锁失败的线程会被放入一个FIFO的等待队列中，比列会被UNSAFE.park()操作挂起，等待其他获取锁的线程释放锁才能够被唤醒。</li>
+<li>当线程执行完逻辑后，会释放同步状态，释放后会唤醒其后继节点，使其再次尝试获取同步状态。</li>
+</ul>
 
             </div>
             <hr>

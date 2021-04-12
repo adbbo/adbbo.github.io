@@ -456,6 +456,7 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="AQS"><a href="#AQS" class="headerlink" title="AQS"></a>AQS</h2><h3 id="AQS实现原理："><a href="#AQS实现原理：" class="headerlink" title="AQS实现原理："></a>AQS实现原理：</h3><ul>
+<li>CountDownLatch、CyclicBarriar、Semaphore信号量、ReentrantLock、ReentrantReadWriteLock读写锁底层都有Sync类继承AQS类，都属于AQS框架。</li>
 <li>AQS中 维护了一个volatile int state（代表共享资源）和一个FIFO双向等待CLH队列（多线程争用资源被阻塞时会进入此队列）。</li>
 <li>另外state的操作都是通过CAS来保证其并发修改的安全性。</li>
 <li>这里volatile能够保证多线程下的可见性，当state=1则代表当前对象锁已经被占有，其他线程来加锁时则会失败，加锁失败的线程会被放入一个FIFO的等待队列中，比列会被UNSAFE.park()操作挂起，等待其他获取锁的线程释放锁才能够被唤醒。</li>
