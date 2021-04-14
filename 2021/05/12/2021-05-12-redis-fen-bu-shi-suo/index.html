@@ -4,8 +4,8 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="Spring-循环依赖, Adbo~Blog">
-    <meta name="description" content="一起学习并发鸭">
+    <meta name="keywords" content="Redis分布式锁, Adbo~Blog">
+    <meta name="description" content="结合例子层层分析">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Spring-循环依赖 | Adbo</title>
+    <title>Redis分布式锁 | Adbo</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -291,12 +291,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Spring-循环依赖</h1>
+                    <h1 class="description center-align post-title">Redis分布式锁</h1>
                 </div>
             </div>
         </div>
@@ -413,8 +413,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Spring框架/">
-                                <span class="chip bg-color">Spring框架</span>
+                            <a href="/tags/分布式锁/">
+                                <span class="chip bg-color">分布式锁</span>
                             </a>
                         
                     </div>
@@ -425,8 +425,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/Spring/" class="post-category">
-                                Spring
+                            <a href="/categories/中间件/" class="post-category">
+                                中间件
                             </a>
                         
                     </div>
@@ -438,7 +438,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-05-11
+                    2021-05-12
                 </div>
                 
 
@@ -455,73 +455,235 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="spring循环依赖前置知识"><a href="#spring循环依赖前置知识" class="headerlink" title="spring循环依赖前置知识"></a>spring循环依赖前置知识</h2><p>3个Map和四大方法，总体相关对象</p>
-<p><img src="/2021/05/11/2021-05-11-spring-xun-huan-yi-lai/fe2c0b589930bbf2988a374c2644d941.png" alt></p>
+                <h2 id="redis分布式锁01"><a href="#redis分布式锁01" class="headerlink" title="redis分布式锁01"></a>redis分布式锁01</h2><p>JVM层面的加锁，单机版的锁</p>
+<pre><code>class X {
+    private final ReentrantLock lock = new ReentrantLock();
+    // ...
+
+    public void m() {
+        lock.lock();  // block until condition holds//不见不散
+        try {
+            // ... method body
+        } finally {
+            lock.unlock()
+        }
+    }
+
+
+    public void m2() {
+
+           if(lock.tryLock(timeout, unit)){//过时不候
+            try {
+            // ... method body
+            } finally {
+                lock.unlock()
+            }   
+        }else{
+            // perform alternative actions
+        }
+   }
+ }
+</code></pre><h2 id="redis分布式锁02"><a href="#redis分布式锁02" class="headerlink" title="redis分布式锁02"></a>redis分布式锁02</h2><p>如果分布式部署下，会有问题。</p>
+<p>Redis具有极高的性能，且其命令对分布式锁支持友好，借助SET命令即可实现加锁处理。</p>
 <ul>
-<li>第一层singletonObjects存放的是已经初始化好了的Bean</li>
-<li>第二层earlySingletonObjects存放的是实例化了，但是未初始化的Bean</li>
-<li>第三层singletonFactories存放的是FactoryBean。假如A类实现了FactoryBean,那么依赖注入的时候不是A类，而是A类产生的Bean</li>
+<li>EX seconds – Set the specified expire time, in seconds.</li>
+<li>PX milliseconds – Set the specified expire time, in milliseconds.</li>
+<li>NX – Only set the key if it does not already exist.</li>
+<li>XX – Only set the key if it already exist.</li>
 </ul>
-<pre><code>package org.springframework.beans.factory.support;
+<pre><code>public static final String REDIS_LOCK = &quot;redis_lock&quot;;
 
-...
+@Autowired
+private StringRedisTemplate stringRedisTemplate;
 
-public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements SingletonBeanRegistry {
+public void m(){
+    String value = UUID.randomUUID().toString() + Thread.currentThread().getName();
 
-    ...
+    Boolean flag = stringRedisTemplate.opsForValue().setIfAbsent(REDIS_LOCK, value);
 
-    /** 
-    单例对象的缓存:bean名称—bean实例，即:所谓的单例池。
-    表示已经经历了完整生命周期的Bean对象
-    第一级缓存
-    */
-    private final Map&lt;String, Object&gt; singletonObjects = new ConcurrentHashMap&lt;&gt;(256);
 
-    /**
-    早期的单例对象的高速缓存: bean名称—bean实例。
-    表示 Bean的生命周期还没走完（Bean的属性还未填充）就把这个 Bean存入该缓存中也就是实例化但未初始化的 bean放入该缓存里
-    第二级缓存
-    */
-    private final Map&lt;String, ObjectFactory&lt;?&gt;&gt; singletonFactories = new HashMap&lt;&gt;(16);
+    if(!flag) {
+        return &quot;抢锁失败&quot;;
+    }
 
-    /**
-    单例工厂的高速缓存:bean名称—ObjectFactory
-    表示存放生成 bean的工厂
-    第三级缓存
-    */
-    private final Map&lt;String, Object&gt; earlySingletonObjects = new HashMap&lt;&gt;(16);
+    ...//业务逻辑
 
-    ...
+    stringRedisTemplate.delete(REDIS_LOCK);
+}</code></pre><h2 id="redis分布式锁03"><a href="#redis分布式锁03" class="headerlink" title="redis分布式锁03"></a>redis分布式锁03</h2><p>出现异常的话，可能无法释放锁，必须要在代码层面finally释放锁。</p>
+<pre><code>public static final String REDIS_LOCK = &quot;redis_lock&quot;;
 
-}</code></pre><p>A / B两对象在三级缓存中的迁移说明</p>
-<ol>
-<li>A创建过程中需要B，于是A将自己放到三级缓里面，去实例化B。</li>
-<li>B实例化的时候发现需要A，于是B先查一级缓存，没有，再查二级缓存，还是没有，再查三级缓存，找到了A然后把三级缓存里面的这个A放到二级缓存里面，并删除三级缓存里面的A。</li>
-<li>B顺利初始化完毕，将自己放到一级缓存里面（此时B里面的A依然是创建中状态)，然后回来接着创建A，此时B已经创建结束，直接从一级缓存里面拿到B，然后完成创建，并将A自己放到一级缓存里面。</li>
-</ol>
-<h2 id="Spring解决循环依赖过程："><a href="#Spring解决循环依赖过程：" class="headerlink" title="Spring解决循环依赖过程："></a>Spring解决循环依赖过程：</h2><ol>
-<li>调用doGetBean()方法，想要获取beanA，于是调用getSingleton()方法从缓存中查找beanA</li>
-<li>在getSingleton()方法中，从一级缓存中查找，没有，返回null</li>
-<li>doGetBean()方法中获取到的beanA为null，于是走对应的处理逻辑，调用getSingleton()的重载方法（参数为ObjectFactory的)</li>
-<li>在getSingleton()方法中，先将beanA_name添加到一个集合中，用于标记该bean正在创建中。然后回调匿名内部类的creatBean方法</li>
-<li>进入AbstractAutowireCapableBeanFactory#ndoCreateBean，先反射调用构造器创建出beanA的实例，然后判断:是否为单例、是否允许提前暴露引用(对于单例一般为true)、是否正在创建中（即是否在第四步的集合中）。判断为true则将beanA添加到【三级缓存】中</li>
-<li>对beanA进行属性填充，此时检测到beanA依赖于beanB，于是开始查找beanB</li>
-<li>调用doGetBean()方法，和上面beanA的过程一样，到缓存中查找beanB，没有则创建，然后给beanB填充属性</li>
-<li>此时 beanB依赖于beanA，调用getSingleton()获取beanA，依次从一级、二级、三级缓存中找，此时从三级缓存中获取到beanA的创建工厂，通过创建工厂获取到singletonObject，此时这个singletonObject指向的就是上面在doCreateBean()方法中实例化的beanA</li>
-<li>这样beanB就获取到了beanA的依赖，于是beanB顺利完成实例化，并将beanA从三级缓存移动到二级缓存中</li>
-<li>随后beanA继续他的属性填充工作，此时也获取到了beanB，beanA也随之完成了创建，回到getsingleton()方法中继续向下执行，将beanA从二级缓存移动到一级缓存中</li>
-</ol>
-<h2 id="spring循环依赖结论"><a href="#spring循环依赖结论" class="headerlink" title="spring循环依赖结论"></a>spring循环依赖结论</h2><p>Spring创建 bean主要分为两个步骤，创建原始bean对象，接着去填充对象属性和初始化</p>
-<p>每次创建 bean之前，我们都会从缓存中查下有没有该bean，因为是单例，只能有一个</p>
-<p>当我们创建 beanA的原始对象后，并把它放到三级缓存中，接下来就该填充对象属性了，这时候发现依赖了beanB，接着就又去创建beanB，同样的流程，创建完beanB填充属性时又发现它依赖了beanA又是同样的流程.</p>
-<p>不同的是：这时候可以在三级缓存中查到刚放进去的原始对象beanA.所以不需要继续创建，用它注入 beanB，完成 beanB的创建</p>
-<p>既然 beanB创建好了，所以 beanA就可以完成填充属性的步骤了，接着执行剩下的逻辑，闭环完成</p>
-<p><img src="/2021/05/11/2021-05-11-spring-xun-huan-yi-lai/b34a877c4363380c0243acbb69b4b834.png" alt></p>
-<p>Spring为了解决单例的循坏依赖问题，使用了三级缓存：</p>
+@Autowired
+private StringRedisTemplate stringRedisTemplate;
+
+public void m(){
+    String value = UUID.randomUUID().toString() + Thread.currentThread().getName();
+
+    try{
+        Boolean flag = stringRedisTemplate.opsForValue().setIfAbsent(REDIS_LOCK, value);
+
+           if(!flag) {
+            return &quot;抢锁失败&quot;;
+        }
+
+        ...//业务逻辑
+
+    }finally{
+        stringRedisTemplate.delete(REDIS_LOCK);   
+    }
+}</code></pre><p>另一个问题：分布式中获取锁的机器挂了，代码层面根本没有走到finally这块，没办法保证解锁，这个key没有被删除，需要加入一个过期时间限定key。</p>
+<pre><code>public static final String REDIS_LOCK = &quot;redis_lock&quot;;
+
+@Autowired
+private StringRedisTemplate stringRedisTemplate;
+
+public void m(){
+    String value = UUID.randomUUID().toString() + Thread.currentThread().getName();
+
+    try{
+        Boolean flag = stringRedisTemplate.opsForValue().setIfAbsent(REDIS_LOCK, value);
+        //设定时间
+        stringRedisTemplate.expire(REDIS_LOCK, 10L, TimeUnit.SECONDS);
+
+           if(!flag) {
+            return &quot;抢锁失败&quot;;
+        }
+
+        ...//业务逻辑
+
+    }finally{
+        stringRedisTemplate.delete(REDIS_LOCK);   
+    }
+}</code></pre><h2 id="redis分布式锁04"><a href="#redis分布式锁04" class="headerlink" title="redis分布式锁04"></a>redis分布式锁04</h2><p>设置key+过期时间分开了，必须要合并成一行具备原子性。</p>
+<pre><code>public static final String REDIS_LOCK = &quot;redis_lock&quot;;
+
+@Autowired
+private StringRedisTemplate stringRedisTemplate;
+
+public void m(){
+    String value = UUID.randomUUID().toString() + Thread.currentThread().getName();
+
+    try{
+        Boolean flag = stringRedisTemplate.opsForValue()//使用另一个带有设置超时操作的方法
+            .setIfAbsent(REDIS_LOCK, value, 10L, TimeUnit.SECONDS);
+        //设定时间
+        //stringRedisTemplate.expire(REDIS_LOCK, 10L, TimeUnit.SECONDS);
+
+           if(!flag) {
+            return &quot;抢锁失败&quot;;
+        }
+
+        ...//业务逻辑
+
+    }finally{
+        stringRedisTemplate.delete(REDIS_LOCK);   
+    }
+}</code></pre><p>另一个新问题：张冠李戴，删除了别人的锁。可能A线程业务复杂，耗时比较长，然后超时释放锁了，这时B线程获取到了锁，A线程执行到delete锁过程，然后把B的lock删除了，这时其他线程又可以获取锁了，B又删除其他线程的lock…炸了啊</p>
+<p><img src="/2021/05/12/2021-05-12-redis-fen-bu-shi-suo/8491f7f7a87dcc888d60141f6d662e1b.png" alt></p>
+<p>解决方法：只能自己删除自己的，不许动别人的。</p>
+<pre><code>public static final String REDIS_LOCK = &quot;redis_lock&quot;;
+
+@Autowired
+private StringRedisTemplate stringRedisTemplate;
+
+public void m(){
+    String value = UUID.randomUUID().toString() + Thread.currentThread().getName();
+
+    try{
+        Boolean flag = stringRedisTemplate.opsForValue()//使用另一个带有设置超时操作的方法
+            .setIfAbsent(REDIS_LOCK, value, 10L, TimeUnit.SECONDS);
+        //设定时间
+        //stringRedisTemplate.expire(REDIS_LOCK, 10L, TimeUnit.SECONDS);
+
+           if(!flag) {
+            return &quot;抢锁失败&quot;;
+        }
+
+        ...//业务逻辑
+
+    }finally{
+        if(stringRedisTemplate.opsForValue().get(REDIS_LOCK).equals(value)) {
+            stringRedisTemplate.delete(REDIS_LOCK);
+        }
+    }
+}</code></pre><h2 id="redis分布式锁05"><a href="#redis分布式锁05" class="headerlink" title="redis分布式锁05"></a>redis分布式锁05</h2><p>finally块的判断 + del删除操作不是原子性的</p>
+<p>解决办法：</p>
 <ul>
-<li>其中一级缓存为单例池(singletonObjects)。</li>
-<li>二级缓存为提前曝光对象(earlySingletonObjects)。</li>
-<li>三级缓存为提前曝光对象工厂(singletonFactories) 。</li>
+<li>用lua脚本</li>
+<li>用redis自身的事务</li>
+</ul>
+<p>Redis事务介绍：</p>
+<ul>
+<li>Redis的事条是通过MULTI，EXEC，DISCARD和WATCH这四个命令来完成。</li>
+<li>Redis的单个命令都是原子性的，所以这里确保事务性的对象是命令集合。</li>
+<li>Redis将命令集合序列化并确保处于一事务的命令集合连续且不被打断的执行。</li>
+<li>Redis不支持回滚的操作。</li>
+</ul>
+<p><img src="/2021/05/12/2021-05-12-redis-fen-bu-shi-suo/Image1.png" alt></p>
+<pre><code>public static final String REDIS_LOCK = &quot;redis_lock&quot;;
+
+@Autowired
+private StringRedisTemplate stringRedisTemplate;
+
+public void m(){
+    String value = UUID.randomUUID().toString() + Thread.currentThread().getName();
+
+    try{
+        Boolean flag = stringRedisTemplate.opsForValue()//使用另一个带有设置超时操作的方法
+            .setIfAbsent(REDIS_LOCK, value, 10L, TimeUnit.SECONDS);
+        //设定时间
+        //stringRedisTemplate.expire(REDIS_LOCK, 10L, TimeUnit.SECONDS);
+
+           if(!flag) {
+            return &quot;抢锁失败&quot;;
+        }
+
+        ...//业务逻辑
+
+    }finally{
+        while(true){
+            stringRedisTemplate.watch(REDIS_LOCK);
+            if(stringRedisTemplate.opsForValue().get(REDIS_LOCK).equalsIgnoreCase(value)){
+                stringRedisTemplate.setEnableTransactionSupport(true);
+                stringRedisTemplate.multi();
+                stringRedisTemplate.delete(REDIS_LOCK);
+                List&lt;Object&gt; list = stringRedisTemplate.exec();
+                if (list == null) {
+                    continue;
+                }
+            }
+            stringRedisTemplate.unwatch();
+            break;
+        } 
+    }
+}</code></pre><h2 id="redis分布式锁06"><a href="#redis分布式锁06" class="headerlink" title="redis分布式锁06"></a>redis分布式锁06</h2><p>确保RedisLock过期时间大于业务执行时间的问题</p>
+<p>Redission有看门狗机制（watch dog）,每隔10秒钟看一下，如果还持有锁，延长生存时间。</p>
+<h2 id="redis分布式锁07"><a href="#redis分布式锁07" class="headerlink" title="redis分布式锁07"></a>redis分布式锁07</h2><pre><code>public static final String REDIS_LOCK = &quot;REDIS_LOCK&quot;;
+
+@Autowired
+private Redisson redisson;
+
+@GetMapping(&quot;/doSomething&quot;)
+public String doSomething(){
+
+    RLock redissonLock = redisson.getLock(REDIS_LOCK);
+    redissonLock.lock();
+    try {
+        //doSomething
+    }finally {
+        //添加后，更保险
+        if(redissonLock.isLocked() &amp;&amp; redissonLock.isHeldByCurrentThread()) {
+            redissonLock.unlock();
+        }
+    }
+}</code></pre><h2 id="redis分布式锁总结"><a href="#redis分布式锁总结" class="headerlink" title="redis分布式锁总结"></a>redis分布式锁总结</h2><ul>
+<li>synchronized, reentranLock单机版oK，上分布式不行</li>
+<li>取消单机锁，上Redis分布式锁setnx，如果不存在才能设置</li>
+<li>只加了锁，没有释放锁，出异常的话，可能无法释放锁,必须要在代码层面finally释放锁</li>
+<li>分布式中获取锁的机器挂了，代码层面根本没有走到finally这块，没办法保证解锁，这个key没有被删除，需要加入一个过期时间限定key。</li>
+<li>设置key+过期时间分开了，必须要合并成一行具备原子性。nx ex</li>
+<li>必须规定只能自己删除自己的锁,不能把别人的锁删除了，防止张冠李戴，1删2，2删3</li>
+<li>finally块的判断 + del删除操作不是原子性的</li>
+<li>确保RedisLock过期时间大于业务执行时间的问题，看门狗机制</li>
 </ul>
 
             </div>
@@ -548,7 +710,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://adbo.gitee.io/2021/05/11/2021-05-11-spring-xun-huan-yi-lai/">http://adbo.gitee.io/2021/05/11/2021-05-11-spring-xun-huan-yi-lai/</a>
+                    <a href="http://adbo.gitee.io/2021/05/12/2021-05-12-redis-fen-bu-shi-suo/">http://adbo.gitee.io/2021/05/12/2021-05-12-redis-fen-bu-shi-suo/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -586,8 +748,8 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/Spring框架/">
-                                    <span class="chip bg-color">Spring框架</span>
+                                <a href="/tags/分布式锁/">
+                                    <span class="chip bg-color">分布式锁</span>
                                 </a>
                             
                         </div>
@@ -758,7 +920,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
         repo: 'gitalk',
         owner: 'FlynnCN',
         admin: "FlynnCN",
-        id: '2021-05-11T22-43-52',
+        id: '2021-05-12T23-45-46',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -781,7 +943,8 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2021/05/12/2021-05-12-redis-fen-bu-shi-suo/">
                     <div class="card-image">
@@ -799,9 +962,9 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-05-12
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-05-12
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -814,6 +977,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -832,13 +996,13 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/05/10/2021-05-10-spring-aop/">
+                <a href="/2021/05/11/2021-05-11-spring-xun-huan-yi-lai/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="Spring-AOP">
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="Spring-循环依赖">
                         
-                        <span class="card-title">Spring-AOP</span>
+                        <span class="card-title">Spring-循环依赖</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -849,7 +1013,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-05-10
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-05-11
                             </span>
                         <span class="publish-author">
                             
