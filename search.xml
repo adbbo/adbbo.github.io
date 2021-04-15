@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>手写LRU</title>
+      <link href="/2021/05/13/2021-5-13-shou-xie-lru/"/>
+      <url>/2021/05/13/2021-5-13-shou-xie-lru/</url>
+      
+        <content type="html"><![CDATA[<h2 id="LRU算法简介"><a href="#LRU算法简介" class="headerlink" title="LRU算法简介"></a>LRU算法简介</h2><p>LRU是Least Recently Used的缩写，即最近最少使用，是一种常用的页面置换算法，选择最近最久未使用的数据予以淘汰。</p><h2 id="LRU的思想"><a href="#LRU的思想" class="headerlink" title="LRU的思想"></a>LRU的思想</h2><ul><li>写操作+读操作时间复杂度都需要为O(1)</li><li>必须要有顺序之分，区分最近使用的和很久没有使用的数据排序</li></ul><p>查找快、插入快、删除快，（O(1)时间复杂度）且还需要先后排序———-&gt;什么样的数据结构可以满足这个问题？</p><p>LRU的算法核心是哈希链表</p><h2 id="巧用LinkedHashMap完成LRU算法"><a href="#巧用LinkedHashMap完成LRU算法" class="headerlink" title="巧用LinkedHashMap完成LRU算法"></a>巧用LinkedHashMap完成LRU算法</h2><pre><code>import java.util.LinkedHashMap;import java.util.Map;public class LRUDemo extends LinkedHashMap&lt;Integer, Integer&gt; {    private int capacity;    public LRUDemo(int initialCapacity) {        super(initialCapacity, 0.75F, true);        this.capacity = initialCapacity;    }    @Override    protected boolean removeEldestEntry(Map.Entry&lt;Integer, Integer&gt; eldest) {        return super.size() &gt; capacity;    }    public static void main(String[] args) {        LRUDemo lruDemo = new LRUDemo(3);        lruDemo.put(1, 1);        lruDemo.put(2, 2);        lruDemo.put(3, 3);        System.out.println(lruDemo.keySet());        lruDemo.put(4, 4);        System.out.println(lruDemo.keySet());        lruDemo.put(3, 3);        lruDemo.put(3, 3);        System.out.println(lruDemo.keySet());    }}</code></pre><p>输出结果：</p><pre><code>[1, 2, 3][2, 3, 4][2, 4, 3]</code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 中间件 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Redis </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Redis分布式锁</title>
       <link href="/2021/05/12/2021-05-12-redis-fen-bu-shi-suo/"/>
       <url>/2021/05/12/2021-05-12-redis-fen-bu-shi-suo/</url>
