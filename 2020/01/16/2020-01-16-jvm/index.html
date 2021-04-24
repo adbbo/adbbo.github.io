@@ -641,13 +641,16 @@
 <ul>
 <li><p>Serial收集器</p>
 <p>  Serial（串行）收集器收集器是最基本、历史最悠久的垃圾收集器了。大家看名字就知道这个收集器是一个单线程收集器了。它的 “单线程” 的意义不仅仅意味着它只会使用一条垃圾收集线程去完成垃圾收集工作，更重要的是它在进行垃圾收集工作的时候必须暂停其他所有的工作线程（ “Stop The World” ），直到它收集结束。</p>
-<p>  <img src="/2020/01/16/2020-01-16-jvm/w2jtzc95.bmp" alt><br>  <strong>新生代采用复制算法，老年代采用标记-整理算法</strong></p>
+<p>  <img src="/2020/01/16/2020-01-16-jvm/w2jtzc95.bmp" alt></p>
+<p>  <img src="/2020/01/16/2020-01-16-jvm/image7.png" alt></p>
+<p>  <strong>新生代采用复制算法，老年代采用标记-整理算法</strong></p>
 <p>  虚拟机的设计者们当然知道Stop The World带来的不良用户体验，所以在后续的垃圾收集器设计中停顿时间在不断缩短（仍然还有停顿，寻找最优秀的垃圾收集器的过程仍然在继续）。</p>
 <p>  但是Serial收集器有没有优于其他垃圾收集器的地方呢？当然有，它简单而高效（与其他收集器的单线程相比）。Serial收集器由于没有线程交互的开销，自然可以获得很高的单线程收集效率。Serial收集器对于运行在Client模式下的虚拟机来说是个不错的选择。</p>
 </li>
 <li><p>ParNew收集器</p>
 <p>  ParNew收集器其实就是Serial收集器的多线程版本，除了使用多线程进行垃圾收集外，其余行为（控制参数、收集算法、回收策略等等）和Serial收集器完全一样。</p>
 <p>  <img src="/2020/01/16/2020-01-16-jvm/ngopf1fj.bmp" alt></p>
+<p>  <img src="/2020/01/16/2020-01-16-jvm/image10.png" alt></p>
 <p>  <strong>新生代采用复制算法，老年代采用标记-整理算法。</strong></p>
 <p>  它是许多运行在Server模式下的虚拟机的首要选择，除了Serial收集器外，只有它能与CMS收集器（真正意义上的并发收集器）配合工作。</p>
 <p>  并行和并发概念补充：</p>
@@ -666,7 +669,8 @@
 
       使用Parallel收集器+ 老年代并行
 </code></pre><p>  Parallel Scavenge收集器关注点是吞吐量（高效率的利用CPU）。CMS等垃圾收集器的关注点更多的是用户线程的停顿时间（提高用户体验）。所谓吞吐量就是CPU中用于运行用户代码的时间与CPU总消耗时间的比值。 Parallel Scavenge收集器提供了很多参数供用户找到最合适的停顿时间或最大吞吐量，如果对于收集器运作不太了解的话，手工优化存在的话可以选择把内存管理优化交给虚拟机去完成也是一个不错的选择。</p>
-<p>  <img src="/2020/01/16/2020-01-16-jvm/2tlrkyi5.bmp" alt><br>  <strong>新生代采用复制算法，老年代采用标记-整理算法。</strong></p>
+<p>  <img src="/2020/01/16/2020-01-16-jvm/2tlrkyi5.bmp" alt></p>
+<p>  <strong>新生代采用复制算法，老年代采用标记-整理算法。</strong></p>
 </li>
 <li><p>Serial Old收集器</p>
 <p>  Serial收集器的老年代版本，它同样是一个单线程收集器。它主要有两大用途：一种用途是在JDK1.5以及以前的版本中与Parallel Scavenge收集器搭配使用，另一种用途是作为CMS收集器的后备方案。</p>
@@ -686,13 +690,15 @@
 <li><p>重新标记： 重新标记阶段就是为了修正并发标记期间因为用户程序继续运行而导致标记产生变动的那一部分对象的标记记录，这个阶段的停顿时间一般会比初始标记阶段的时间稍长，远远比并发标记阶段时间短</p>
 </li>
 <li><p>并发清除： 开启用户线程，同时GC线程开始对为标记的区域做清扫。</p>
-<p><img src="/2020/01/16/2020-01-16-jvm/yjdb4a3c.bmp" alt><br>从它的名字就可以看出它是一款优秀的垃圾收集器，主要优点：并发收集、低停顿。但是它有下面三个明显的缺点：</p>
+<p><img src="/2020/01/16/2020-01-16-jvm/yjdb4a3c.bmp" alt></p>
+<p>从它的名字就可以看出它是一款优秀的垃圾收集器，主要优点：并发收集、低停顿。但是它有下面三个明显的缺点：</p>
 </li>
 <li><p>对CPU资源敏感；</p>
 </li>
 <li><p>无法处理浮动垃圾；</p>
 </li>
 <li><p>它使用的回收算法-“标记-清除”算法会导致收集结束时会有大量空间碎片产生。</p>
+<p>由于 CMS 的并发标记和并发清除阶段，用户线程还在进行运行，所以也会不断产生垃圾，而 CMS 无法在当次收集中处理它们，只能等到下一次垃圾收集时再清理掉，这部分垃圾就称为浮动垃圾。</p>
 </li>
 </ul>
 </li>
@@ -823,6 +829,272 @@ protected Class&lt;?&gt; loadClass(String name, boolean resolve)
 </ul>
 </li>
 </ul>
+<h2 id="类的加载过程"><a href="#类的加载过程" class="headerlink" title="类的加载过程"></a>类的加载过程</h2><p>类的加载过程为：加载、链接和初始化，其中链接可以细分为：验证、准备和解析。</p>
+<p><img src="/2020/01/16/2020-01-16-jvm/image-20200705082601441.png" alt></p>
+<h3 id="加载阶段"><a href="#加载阶段" class="headerlink" title="加载阶段"></a>加载阶段</h3><ul>
+<li>通过类的全限定名读取此类二进制字节流。</li>
+<li>将字节流转化为方法区的运行时数据结构。</li>
+<li>在堆内存中生成该类的 Class 对象，作为该类的访问入口。</li>
+</ul>
+<h3 id="链接阶段"><a href="#链接阶段" class="headerlink" title="链接阶段"></a>链接阶段</h3><ul>
+<li>验证：确保被加载类的正确性。</li>
+<li>准备：为类变量分配内存并设置默认初始值。</li>
+<li>解析：将常量池内的符号引用转换为直接引用。(符号引用就是描述目标，直接引用就是指向目标的地址。举个例子来说，现在调用方法 hello，这个方法的地址是 1234567，那么 hello 就是符号引用，1234567 就是直接引用)</li>
+</ul>
+<h3 id="初始化阶段"><a href="#初始化阶段" class="headerlink" title="初始化阶段"></a>初始化阶段</h3><p>执行类的初始化方法 clinit，执行内容包括静态变量初始化和静态块的执行。</p>
+<h2 id="双亲委派机制"><a href="#双亲委派机制" class="headerlink" title="双亲委派机制"></a>双亲委派机制</h2><h3 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h3><ul>
+<li><p>启动类加载器属于虚拟机的一部分，是用 C++ 写的，看不到源码。</p>
+<p>  启动类加载器：加载的是 jre/lib 目录下的核心库。</p>
+</li>
+<li><p>其他类加载器是用 Java 写的。</p>
+<ul>
+<li><p>扩展类加载器：加载的是 jre/lib/ext 目录下的扩展包。</p>
+</li>
+<li><p>应用类加载器：加载的是 我们自己的 Java 代码编译成的 Class 文件的目录（ClassPath）。</p>
+</li>
+<li><p>自定义类加载器。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="双亲委派机制的工作原理"><a href="#双亲委派机制的工作原理" class="headerlink" title="双亲委派机制的工作原理"></a>双亲委派机制的工作原理</h3><ol>
+<li>当一个类加载器接收到类加载任务时，先查缓存里有没有，如果没有，将任务委托给它的父加载器去执行。</li>
+<li>父加载器也做同样的事情，一层一层往上委托，直到最顶层的启动类加载器为止。</li>
+<li>如果启动类加载器没有找到所需加载的类，便将此加载任务退回给下一级类加载器去执行，而下一级的类加载器也做同样的事情。</li>
+<li>如果最底层类加载器仍然没有找到所需要的 class 文件，则抛出异常。</li>
+</ol>
+<p><img src="/2020/01/16/2020-01-16-jvm/image-20200705105151258.png" alt></p>
+<h3 id="双亲委派机制的优势"><a href="#双亲委派机制的优势" class="headerlink" title="双亲委派机制的优势"></a>双亲委派机制的优势</h3><p>避免类被重复加载 + 避免核心 API 被篡改。</p>
+<p>如果没有双亲委托机制来确保类的全局唯一性，谁都可以编写一个 java.lang.String 类放在 classpath 下，那应用程序就乱套了。所以自定义一个与核心类库重名的类，会发现这个类可以被正常编译，但永远无法被加载运行。因为这个类不会被应用类加载器加载，而是被委托到顶层，被启动类加载器在核心类库中找到了。</p>
+<h3 id="如何破坏双亲委派模型"><a href="#如何破坏双亲委派模型" class="headerlink" title="如何破坏双亲委派模型"></a>如何破坏双亲委派模型</h3><p>自定义类加载器，重写 loadClass 方法。</p>
+<h2 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h2><p><img src="/2020/01/16/2020-01-16-jvm/20210401230845268.png" alt></p>
+<h3 id="默认新生代和老年代的占比"><a href="#默认新生代和老年代的占比" class="headerlink" title="默认新生代和老年代的占比"></a>默认新生代和老年代的占比</h3><p>默认 -XX:NewRatio=2，代表新生代占 1，老年代占 2，即新生代占整个堆的 1/3。</p>
+<h3 id="默认-Eden-和-Survivor-的占比"><a href="#默认-Eden-和-Survivor-的占比" class="headerlink" title="默认 Eden 和 Survivor 的占比"></a>默认 Eden 和 Survivor 的占比</h3><p>默认 -xx:SurvivorRatio=8，代表 Eden 和 From Survivor，To Survivor 占比是 8：1：1。</p>
+<h3 id="堆对象流转过程"><a href="#堆对象流转过程" class="headerlink" title="堆对象流转过程"></a>堆对象流转过程</h3><p><img src="/2020/01/16/2020-01-16-jvm/20210401230851499.png" alt></p>
+<ol>
+<li>创建的对象优先在 Eden 区分配（较长的字符串，数组，大对象直接进老年代）。</li>
+<li>如果发现 Eden 满了，会执行 Minor GC 回收新生代，把 Eden 和 From Survivor 存活的对象复制到 To Survivor 上（对象年龄+1），然后 To Survivor 和 From Survivor 交换身份。</li>
+<li>默认情况下如果对象经过 15 次回收还存活，则放到老年代上。</li>
+<li>当老年代内存不足时，会触发 Major GC 对老年代进行回收。</li>
+</ol>
+<h2 id="遇到过哪些-OOM-问题"><a href="#遇到过哪些-OOM-问题" class="headerlink" title="遇到过哪些 OOM 问题"></a>遇到过哪些 OOM 问题</h2><ul>
+<li>内存泄漏memory leak :是指程序在申请内存后，无法释放已申请的内存空间，一次内存泄漏似乎不会有大的影响，但内存泄漏堆积后的后果就是内存溢出。 </li>
+<li>内存溢出out of memory :指程序申请内存时，没有足够的内存供申请者使用，或者说，给了你一块存储int类型数据的存储空间，但是你却存储long类型的数据，那么结果就是内存不够用，此时就会报错OOM,即所谓的内存溢出。</li>
+</ul>
+<h3 id="解决思路"><a href="#解决思路" class="headerlink" title="解决思路"></a>解决思路</h3><ol>
+<li><p>一般首先考虑内存泄露/内存溢出的情况，需要配置 JVM 参数输出 dump 文件。</p>
+<p> -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp/heapdump.hprof。</p>
+<p> -XX:+HeapDumpOnOutOfMemoryError 设置当首次遭遇内存溢出时导出此时堆中相关信息。</p>
+<p> -XX:HeapDumpPath=/tmp/heapdump.hprof 指定导出堆信息时的路径或文件名。</p>
+</li>
+<li><p>接着通过内存映像分析工具（如 JProfiler，MAT）对 dump 出来的堆转储快照进行分析，确认内存中的对象是否是必要的，也就是要先分清楚到底是出现了内存泄漏还是内存溢出。</p>
+</li>
+<li><p>如果是内存泄漏，可进一步通过工具查看泄漏对象到 GC Roots 的引用链。于是就能找到泄漏对象是通过怎样的路径与 GCRoots 相关联并导致垃圾收集器无法自动回收它们的。掌握了泄漏对象的类型信息，以及 GCRoots 引用链的信息，就可以比较准确地定位出泄漏代码的位置。</p>
+</li>
+<li><p>如果不存在内存泄漏，换句话说就是内存中的对象确实都还必须存活着，那就应当检查虚拟机的堆参数（-Xmx与-Xms），与机器物理内存对比看是否还可以调大，从代码上检查是否存在某些对象生命周期过长、持有状态时间过长的情况，尝试减少程序运行期的内存消耗。</p>
+</li>
+</ol>
+<h3 id="溢出场景"><a href="#溢出场景" class="headerlink" title="溢出场景"></a>溢出场景</h3><h4 id="内存溢出"><a href="#内存溢出" class="headerlink" title="内存溢出"></a>内存溢出</h4><p>如突发高峰期时，内存存活对象使用空间的量超出最大堆，并且无法回收。</p>
+<ul>
+<li>小公司没这个可能，可以说是某个时间段导出特大报表导致。</li>
+<li>想下项目有哪些垃圾代码使用了大内存耗时操作，且长时间不能被回收，什么全表查数据计算，循环做 String 拼接操作等等。</li>
+</ul>
+<h4 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h4><p>重新不在使用的对象仍然存在引用导致无法回收，随着时间推移，泄漏内存对象占用了所有可用堆。</p>
+<ul>
+<li>比如 dubbo 泛化调用没缓存 ReferenceConfig 实例导致了内存泄漏。</li>
+</ul>
+<h3 id="OOM-原因"><a href="#OOM-原因" class="headerlink" title="OOM 原因"></a>OOM 原因</h3><h4 id="Java-heap-space（应用尝试从堆申请一个区域时，堆没有可分配的空间）"><a href="#Java-heap-space（应用尝试从堆申请一个区域时，堆没有可分配的空间）" class="headerlink" title="Java heap space（应用尝试从堆申请一个区域时，堆没有可分配的空间）"></a>Java heap space（应用尝试从堆申请一个区域时，堆没有可分配的空间）</h4><p>原因：内存泄漏、内存溢出</p>
+<h4 id="GC-overhead-limit-exceeded（超过-98-的时间在-GC，且回收了不到-2-的堆内存）"><a href="#GC-overhead-limit-exceeded（超过-98-的时间在-GC，且回收了不到-2-的堆内存）" class="headerlink" title="GC overhead limit exceeded（超过 98% 的时间在 GC，且回收了不到 2% 的堆内存）"></a>GC overhead limit exceeded（超过 98% 的时间在 GC，且回收了不到 2% 的堆内存）</h4><p>原因：内存泄漏、内存溢出</p>
+<h4 id="unable-to-create-new-native-thread（无法创建新的本地线程）"><a href="#unable-to-create-new-native-thread（无法创建新的本地线程）" class="headerlink" title="unable to create new native thread（无法创建新的本地线程）"></a>unable to create new native thread（无法创建新的本地线程）</h4><ul>
+<li><p>原因</p>
+<ul>
+<li>系统内存耗尽，无法为新线程分配内存</li>
+<li>创建线程数超过了操作系统的限制</li>
+</ul>
+</li>
+<li><p>解决</p>
+<ul>
+<li>排查应用线程数：通过 jstack 排查应用哪个地方创建了过多的线程。</li>
+<li>调整操作系统线程数阈值：通过 ulimit -u 查看操作系统的最大进程数是否需要修改。</li>
+<li>减小堆内存：JVM 是否占满了系统总内存，导致系统线程没有足够的内存分配，如果是这种，就考虑降低堆内存，否则就增加系统内存。</li>
+</ul>
+</li>
+</ul>
+<h4 id="Metaspace（元空间不足，加载到内存中的-class-数量太多或者体积太大）"><a href="#Metaspace（元空间不足，加载到内存中的-class-数量太多或者体积太大）" class="headerlink" title="Metaspace（元空间不足，加载到内存中的 class 数量太多或者体积太大）"></a>Metaspace（元空间不足，加载到内存中的 class 数量太多或者体积太大）</h4><p>解决：修改 -XX:MetaspaceSize 和 -XX:MaxMetaspaceSize。</p>
+<h4 id="Direct-buffer-memory（直接内存不足，通常是-NIO-引起的）"><a href="#Direct-buffer-memory（直接内存不足，通常是-NIO-引起的）" class="headerlink" title="Direct buffer memory（直接内存不足，通常是 NIO 引起的）"></a>Direct buffer memory（直接内存不足，通常是 NIO 引起的）</h4><ul>
+<li><p>原因</p>
+<p>  ByteBuffer.allocteDirect(capability) 是直接分配 OS 本地内存，如何不断分配本地内存，堆内存很少使用，那么 JVM 就不需要执行 GC，DirectByteBuffer 就不会被回收，这时候堆内存充足，但本地内存很快就给耗光了。</p>
+</li>
+<li><p>解决</p>
+<p>  加大 -XX:MaxDirectMemorySize。</p>
+</li>
+</ul>
+<h4 id="Requested-array-size-exceeds-VM-limit（数组太大，超过了平台限制值）"><a href="#Requested-array-size-exceeds-VM-limit（数组太大，超过了平台限制值）" class="headerlink" title="Requested array size exceeds VM limit（数组太大，超过了平台限制值）"></a>Requested array size exceeds VM limit（数组太大，超过了平台限制值）</h4><p>解决：减小数组长度，拆分大数组等。</p>
+<h4 id="Out-of-swap-space（交换空间空间不足，表明请求分配内存的操作失败了）"><a href="#Out-of-swap-space（交换空间空间不足，表明请求分配内存的操作失败了）" class="headerlink" title="Out of swap space（交换空间空间不足，表明请求分配内存的操作失败了）"></a>Out of swap space（交换空间空间不足，表明请求分配内存的操作失败了）</h4><p>解决：java 进程使用了虚拟内存才会发生，这时得增加虚拟内存的大小。</p>
+<h3 id="堆是分配对象的唯一选择"><a href="#堆是分配对象的唯一选择" class="headerlink" title="堆是分配对象的唯一选择"></a>堆是分配对象的唯一选择</h3><p>不一定，在 JDK 1.7 版本之后，HotSpot 中默认就已经开启了逃逸分析。</p>
+<p>如果经过逃逸分析后发现，一个对象没有逃逸出方法的话，就会被优化成栈上分配，以此达到降低 GC 的回收频率和提升 GC 的回收效率的目的。</p>
+<p>逃逸分析的基本行为就是分析对象动态作用域：</p>
+<ul>
+<li>当一个对象在方法中被定义后，对象只在方法内部使用，则认为没有发生逃逸。</li>
+<li>当一个对象在方法中被定义后，它被外部方法所引用，则认为发生逃逸。例如作为调用参数传递到其他地方中。</li>
+</ul>
+<h2 id="方法区与其他内存结构关系"><a href="#方法区与其他内存结构关系" class="headerlink" title="方法区与其他内存结构关系"></a>方法区与其他内存结构关系</h2><ul>
+<li>Person：存放在元空间，也可以说方法区。</li>
+<li>person：存放在Java栈的局部变量表中。</li>
+<li>new Person()：存放在Java堆中。</li>
+</ul>
+<p><img src="/2020/01/16/2020-01-16-jvm/image-20200708094747667.png" alt></p>
+<h2 id="垃圾回收相关"><a href="#垃圾回收相关" class="headerlink" title="垃圾回收相关"></a>垃圾回收相关</h2><h3 id="标记垃圾的算法"><a href="#标记垃圾的算法" class="headerlink" title="标记垃圾的算法"></a>标记垃圾的算法</h3><p>堆中几乎放着所有的对象实例，对堆垃圾回收前的第一步就是要判断哪些对象已经死亡（垃圾标记阶段）。</p>
+<p>判断对象存活一般有两种方式：引用计数算法和可达性分析算法。</p>
+<h4 id="引用计数法"><a href="#引用计数法" class="headerlink" title="引用计数法"></a>引用计数法</h4><p>给对象中添加一个引用计数器，每当有一个地方引用它，计数器就加 1；当引用失效，计数器就减 1；任何时候计数器为 0 的对象就是不可能再被使用的。</p>
+<ul>
+<li>优点：实现简单，垃圾对象便于辨识；判定效率高，回收没有延迟性。</li>
+<li>缺点：无法解决循环引用问题</li>
+</ul>
+<p><img src="/2020/01/16/2020-01-16-jvm/image.png" alt></p>
+<h4 id="可达性分析法"><a href="#可达性分析法" class="headerlink" title="可达性分析法"></a>可达性分析法</h4><p>这个算法的基本思想就是通过一系列的称为 “GC Roots” 的对象作为起点，从这些节点开始向下搜索，节点所走过的路径称为引用链，当一个对象到 GC Roots 没有任何引用链相连的话，则证明此对象是不可用的。</p>
+<p><img src="/2020/01/16/2020-01-16-jvm/image1.png" alt></p>
+<h2 id="并发的可达性分析（三色标记）"><a href="#并发的可达性分析（三色标记）" class="headerlink" title="并发的可达性分析（三色标记）"></a>并发的可达性分析（三色标记）</h2><p>首先需要引入三种颜色：</p>
+<ul>
+<li>白色：对象没被 GC 访问过。若分析结束还是白色的对象，则代表不可达。</li>
+<li>黑色：对象已经被 GC 访问过，且这个对象的所有引用都扫描过了，他是安全存活的。</li>
+<li>灰色：对象已经被 GC 访问过，但这个对象上还存在没有被扫描过的引用。</li>
+</ul>
+<p><img src="/2020/01/16/2020-01-16-jvm/image2.png" alt></p>
+<p>并发标记阶段，会出现两种问题：</p>
+<ul>
+<li>把白色对象错标成了黑色对象（问题不大，只是产生了浮动垃圾，下次再清理）。</li>
+<li>把黑色对象错标成白色对象（裂了啊，我的对象怎么不见了）。并发时，灰色对象的一个引用被切断，然后和已扫描过的黑色对象建立了引用关系。</li>
+</ul>
+<p>解决这个问题的方案有两个：增量更新和原始快照。</p>
+<ul>
+<li>增量更新（CMS）：当黑色对象和白色对象建立引用关系时，会记录下来黑色对象的引用，等到最终标记时，再将这些黑色对象作为根，再重新扫描。</li>
+<li>原始快照（G1）：当灰色对象删除对白色对象的引用关系时，会记录下来白色对象的引用，再以这些白色对象作为根，再重新扫描。</li>
+</ul>
+<h2 id="垃圾收集算法"><a href="#垃圾收集算法" class="headerlink" title="垃圾收集算法"></a>垃圾收集算法</h2><p>注意，这些只是基本的算法思路，实际 GC 实现过程要复杂的多，目前还在发展中的前沿 GC 都是复合算法，并且并行和并发兼备。</p>
+<h3 id="标记-复制算法（Copying）"><a href="#标记-复制算法（Copying）" class="headerlink" title="标记-复制算法（Copying）"></a>标记-复制算法（Copying）</h3><p>标记-复制算法会从根节点开始遍历，标记所有存活对象，同时将这些对象复制到一块新内存中，之后将原来那块内存全部回收掉。</p>
+<p><img src="/2020/01/16/2020-01-16-jvm/v2-1ef719211b88b62dbbc09036ec7adf09_720w.jpg" alt></p>
+<p>适用场合：</p>
+<ul>
+<li>存活对象较少的情况下比较高效（新生代）。</li>
+<li>只扫描了整个空间一次（标记存活对象并复制移动）。</li>
+</ul>
+<p>优点：</p>
+<ul>
+<li>效率高</li>
+<li>内存规整</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>需要两倍的内存空间。</li>
+<li>像老年代那种回收完还有大量的对象存活的区域，需要复制的对象将会有很多，效率会很低。</li>
+<li>对于 G1 这种分拆成为大量 Region 的 GC，复制而不是移动，意味着 GC 需要维护 Region 之间对象引用关系，不管是内存占用或者时间开销也不小。</li>
+</ul>
+<h3 id="标记-清除算法（Mark-Sweep）"><a href="#标记-清除算法（Mark-Sweep）" class="headerlink" title="标记-清除算法（Mark-Sweep）"></a>标记-清除算法（Mark-Sweep）</h3><p>标记-清除算法将垃圾回收分为两个阶段：</p>
+<ul>
+<li>标记：从根节点开始遍历，标记所有被引用的对象。一般是在对象头中记录为可达对象。</li>
+<li>清除：对堆内存从头到尾进行线性的遍历，如果发现某个对象在其对象头中没有标记为可达对象，则将其回收。</li>
+</ul>
+<p><img src="/2020/01/16/2020-01-16-jvm/v2-09e2d6d8a1bacee67fffc2f98151c184_720w.png" alt></p>
+<p>适用场景：存活对象较多的情况下比较高效（老年代）。</p>
+<p>优点：</p>
+<ul>
+<li>使用内存少</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>效率低。扫描了整个空间两次。</li>
+<li>会产生内存碎片，导致大对象无法在空闲列表找到可分配的空间。</li>
+</ul>
+<h3 id="标记-整理算法（Mark-Compact）"><a href="#标记-整理算法（Mark-Compact）" class="headerlink" title="标记-整理算法（Mark-Compact）"></a>标记-整理算法（Mark-Compact）</h3><p>标记-压缩算法是一种老年代的回收算法，它在标记-清除算法的基础上做了一些优化。</p>
+<p>首先也需要从根节点开始对所有可达对象做一次标记，但之后，它并不简单地清理未标记的对象，而是将所有的存活对象压缩到内存的一端。之后，清理边界外所有的空间。这种方法既避免了碎片的产生，又不需要两块相同的内存空间，因此，其性价比比较高。</p>
+<p><img src="/2020/01/16/2020-01-16-jvm/v2-59f55bce5abb3fc375f8e8eb9bc1a02e_720w.jpg" alt></p>
+<p>优点：</p>
+<ul>
+<li>解决了标记-复制算法当中内存减半的代价。</li>
+<li>解决了标记-清除算法当中的内存碎片问题。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>回收效率是最低的。</li>
+</ul>
+<h3 id="分代收集算法（Generational-Collection）"><a href="#分代收集算法（Generational-Collection）" class="headerlink" title="分代收集算法（Generational Collection）"></a>分代收集算法（Generational Collection）</h3><p>分代收集算法，是基于这样一个事实：不同的对象的生命周期是不一样的。因此，不同生命周期的对象可以采取不同的收集方式，以便提高回收效率。一般是把堆分为新生代和老年代，这样就可以根据各个年代的特点使用不同的回收算法，以提高垃圾回收的效率。</p>
+<p>目前几乎所有的 GC 都采用分代收集算法执行垃圾回收的。</p>
+<p>在 HotSpot 中，基于分代的概念，GC 所使用的内存回收算法必须结合年轻代和老年代各自的特点。</p>
+<p><img src="/2020/01/16/2020-01-16-jvm/v2-0b59dcdadf331d2e2bb6e1d392fa23ae_720w.jpg" alt></p>
+<ul>
+<li><p>年轻代特点：区域相对老年代较小，对象生命周期短、存活率低，回收频繁。</p>
+<p>  这种情况复制算法的回收整理，速度是最快的。复制算法的效率只和当前存活对象大小有关，因此很适用于年轻代的回收。而复制算法内存利用率不高的问题，通过 Hotspot 中的两个 Survivor 的设计得到缓解。</p>
+</li>
+<li><p>老年代特点：区域较大，对象生命周期长、存活率高，回收不及年轻代频繁。</p>
+<p>  这种情况存在大量存活率高的对象，复制算法明显变得不合适。一般是由标记-清除或者是标记-清除与标记-整理的混合实现。</p>
+</li>
+</ul>
+<h2 id="垃圾收集器"><a href="#垃圾收集器" class="headerlink" title="垃圾收集器"></a>垃圾收集器</h2><h3 id="有哪些垃圾收集器"><a href="#有哪些垃圾收集器" class="headerlink" title="有哪些垃圾收集器"></a>有哪些垃圾收集器</h3><ul>
+<li>串行回收器：Serial、Serial Old。</li>
+<li>并行回收器：ParNew、Parallel Scavenge、Parallel Old。</li>
+<li>并发回收器：CMS、G1。</li>
+</ul>
+<p>垃圾收集器与分代之间的关系：</p>
+<ul>
+<li>新生代收集器：Serial、ParNew、Parallel Scavenge。</li>
+<li>老年代收集器：Serial Old、Parallel Old、CMS。</li>
+<li>整堆收集器：G1。</li>
+</ul>
+<p><img src="/2020/01/16/2020-01-16-jvm/image-20200713093757644.png" alt></p>
+<p>垃圾收集器的组合关系：</p>
+<p><img src="/2020/01/16/2020-01-16-jvm/image-20200713094745366.png" alt></p>
+<ul>
+<li><p>Serial + Serial Old，Serial + CMS</p>
+</li>
+<li><p>ParNew + Serial Old，ParNew + CMS</p>
+</li>
+<li><p>Parallel Scavenge + Serial Old，Parallel Scavenge + Parallel Old。</p>
+</li>
+<li><p>其中 Serial Old 还会作为 CMS 出现 “Concurrent Mode Failure” 失败的后备预案。</p>
+</li>
+<li><p>红色虚线：在 JDK 8 时将 Serial + CMS，ParNew + Serial Old 声明为废弃，并在 JDK9 中彻底取消了对这些组合的支持。</p>
+</li>
+<li><p>绿色虚线：在 JDK14 中，弃用 Parallel Scavenge + Serial Old 的组合。</p>
+</li>
+<li><p>青色虚线：在 JDK14 中，删除 CMS 垃圾收集器。</p>
+</li>
+</ul>
+<h3 id="查看默认收集器"><a href="#查看默认收集器" class="headerlink" title="查看默认收集器"></a>查看默认收集器</h3><p>Java -XX:+PrintCommandLineFlags -version</p>
+<p><img src="/2020/01/16/2020-01-16-jvm/image5.png" alt></p>
+<h2 id="分析-GC-日志"><a href="#分析-GC-日志" class="headerlink" title="分析 GC 日志"></a>分析 GC 日志</h2><h3 id="Young-GC-参数图"><a href="#Young-GC-参数图" class="headerlink" title="Young GC 参数图"></a>Young GC 参数图</h3><p><img src="/2020/01/16/2020-01-16-jvm/image-20200714082555688.png" alt></p>
+<h3 id="Full-GC-参数图"><a href="#Full-GC-参数图" class="headerlink" title="Full GC 参数图"></a>Full GC 参数图</h3><p><img src="/2020/01/16/2020-01-16-jvm/image-20200714082714690.png" alt></p>
+<h2 id="JVM参数"><a href="#JVM参数" class="headerlink" title="JVM参数"></a>JVM参数</h2><h3 id="标准参数"><a href="#标准参数" class="headerlink" title="标准参数"></a>标准参数</h3><p>标准参数以-开头，比较稳定，后续版本基本不会变化。</p>
+<p>在控制台输入java -help，可以看到所有的标准参数</p>
+<h3 id="X参数"><a href="#X参数" class="headerlink" title="-X参数"></a>-X参数</h3><p>非标准化参数，功能比较稳定，后续版本可能会变更，以-X开头</p>
+<p>在控制台输入java -X，可以看到相关参数</p>
+<ul>
+<li>-Xinit：禁用JIT，所有的字节码都被解释执行，速度最慢</li>
+<li>-Xcomp，所有的字节码第一次就被编译，然后再执行</li>
+<li>-Xmixed，混合模式，默认，让JIT根据程序运行情况，动态编译</li>
+<li>-Xms，初始化java堆的大小，相当于-XX:InitialHeapSize，如-Xms2g</li>
+<li>-Xmx，设置最大java堆大小，相当于-XX:MaxHeapSize</li>
+<li>-Xss，设置java线程栈的大小，相当于-XX:ThreadStackSize</li>
+</ul>
+<h3 id="XX参数"><a href="#XX参数" class="headerlink" title="-XX参数"></a>-XX参数</h3><p>使用最多的参数类型，比较不稳定，以-XX开头</p>
+<p>-XX参数分为Boolean类型和非Boolean类型</p>
+<h4 id="Boolean类型"><a href="#Boolean类型" class="headerlink" title="Boolean类型"></a>Boolean类型</h4><p>-XX:+，表示开启option</p>
+<p>-XX:-，表示关闭option，有些参数是默认开启的，可以通过-进行关闭</p>
+<p>如，-XX:+UseParallelGC，-XX:+UseAdaptiveSizePolicy</p>
+<h4 id="非Boolean"><a href="#非Boolean" class="headerlink" title="非Boolean"></a>非Boolean</h4><p>非Boolean，分为数值类型和非数值类型，如果是数值类型，就进行赋值</p>
+<p>-XX:=<option>=<string></string></option></p>
+<p>如，-XX:NewRatio=2，-XX:NewSize=2M</p>
+<p>如果是非数值类型，则填写对应的值</p>
+<p>-XX:=<option>=<string></string></option></p>
+<p>如，-XX:HeapDumpPath=/xxx/xxx/duml.hprof</p>
+<h4 id="PrintFlagsFinal"><a href="#PrintFlagsFinal" class="headerlink" title="PrintFlagsFinal"></a>PrintFlagsFinal</h4><p>-XX:+PrintFlagsFinal，输出所有参数的名称和默认值，默认不包括诊断和实验的参数</p>
+<h2 id="大厂面试题"><a href="#大厂面试题" class="headerlink" title="大厂面试题"></a>大厂面试题</h2><h3 id="阿里"><a href="#阿里" class="headerlink" title="阿里"></a>阿里</h3><p>• 你知道哪几种垃圾回收器，各自的优缺点，重点讲一下 CMS 和 G1？<br>• JVM GC 算法有哪些，目前的 JDK 版本采用什么回收算法？可以说用的 JDK8，Parallel Scavenge（复制） + Parallel Old（标记-整理）。<br>• G1 回收器讲下回收过程？GC 是什么？为什么要有 GC？<br>• CMS 收集器与 G1 收集器的特点？<br>• CMS 特点，垃圾回收算法有哪些？各自的优缺点，他们共同的缺点是什么？<br>• JDK8 的内存分代改进？JVM 内存分哪几个区，每个区的作用是什么？<br>• JVM 内存分布/内存结构？<br>• 栈和堆的区别？<br>• 堆的结构？<br>• 为什么两个 Survivor 区？<br>• Eden 和 Survior 的比例分配？<br>• 讲一讲垃圾回收算法。<br>• 什么情况下触发垃圾回收？<br>• 如何选择合适的垃圾收集算法？<br>• JVM有哪三种垃圾回收器？</p>
+<h3 id="字节"><a href="#字节" class="headerlink" title="字节"></a>字节</h3><p>• 常见的垃圾回收器算法有哪些，各有什么优劣？<br>• System.gc() 和 Runtime.gc() 会做什么事情？<br>• Java GC 机制？GC Roots 有哪些？<br>• Java对象的回收方式，回收算法。<br>• CMS 和 G1 了解么，CMS 解决什么问题，说一下回收的过程。<br>• CMS 回收停顿了几次，为什么要停顿两次？<br>• 什么时候对象会进入老年代？</p>
+<h3 id="百度"><a href="#百度" class="headerlink" title="百度"></a>百度</h3><p>• 说一下 JVM 内存模型吧，有哪些区？分别干什么的？<br>• 说一下 GC 算法，分代回收说下。</p>
+<h3 id="京东"><a href="#京东" class="headerlink" title="京东"></a>京东</h3><p>• 你知道哪几种垃圾收集器，各自的优缺点，重点讲下 CMS 和 G1。 </p>
+<h3 id="小米"><a href="#小米" class="headerlink" title="小米"></a>小米</h3><p>• JVM 内存分区，为什么要有新生代和老年代？</p>
+<h3 id="美团"><a href="#美团" class="headerlink" title="美团"></a>美团</h3><p>•  JVM 的永久代中会发生垃圾回收吗？</p>
+<h3 id="滴滴"><a href="#滴滴" class="headerlink" title="滴滴"></a>滴滴</h3><p>• Java 的垃圾回收器都有哪些，说下 G1 的应用场景，平时你是如何搭配使用垃圾回收器的？</p>
 
             </div>
             <hr>
