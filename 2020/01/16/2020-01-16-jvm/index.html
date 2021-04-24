@@ -829,7 +829,7 @@ protected Class&lt;?&gt; loadClass(String name, boolean resolve)
 </ul>
 </li>
 </ul>
-<h2 id="类的加载过程"><a href="#类的加载过程" class="headerlink" title="类的加载过程"></a>类的加载过程</h2><p>类的加载过程为：加载、链接和初始化，其中链接可以细分为：验证、准备和解析。</p>
+<h2 id="15-类的加载过程"><a href="#15-类的加载过程" class="headerlink" title="15 类的加载过程"></a>15 类的加载过程</h2><p>类的加载过程为：加载、链接和初始化，其中链接可以细分为：验证、准备和解析。</p>
 <p><img src="/2020/01/16/2020-01-16-jvm/image-20200705082601441.png" alt></p>
 <h3 id="加载阶段"><a href="#加载阶段" class="headerlink" title="加载阶段"></a>加载阶段</h3><ul>
 <li>通过类的全限定名读取此类二进制字节流。</li>
@@ -842,7 +842,7 @@ protected Class&lt;?&gt; loadClass(String name, boolean resolve)
 <li>解析：将常量池内的符号引用转换为直接引用。(符号引用就是描述目标，直接引用就是指向目标的地址。举个例子来说，现在调用方法 hello，这个方法的地址是 1234567，那么 hello 就是符号引用，1234567 就是直接引用)</li>
 </ul>
 <h3 id="初始化阶段"><a href="#初始化阶段" class="headerlink" title="初始化阶段"></a>初始化阶段</h3><p>执行类的初始化方法 clinit，执行内容包括静态变量初始化和静态块的执行。</p>
-<h2 id="双亲委派机制"><a href="#双亲委派机制" class="headerlink" title="双亲委派机制"></a>双亲委派机制</h2><h3 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h3><ul>
+<h2 id="16-双亲委派机制"><a href="#16-双亲委派机制" class="headerlink" title="16 双亲委派机制"></a>16 双亲委派机制</h2><h3 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h3><ul>
 <li><p>启动类加载器属于虚拟机的一部分，是用 C++ 写的，看不到源码。</p>
 <p>  启动类加载器：加载的是 jre/lib 目录下的核心库。</p>
 </li>
@@ -867,7 +867,7 @@ protected Class&lt;?&gt; loadClass(String name, boolean resolve)
 <h3 id="双亲委派机制的优势"><a href="#双亲委派机制的优势" class="headerlink" title="双亲委派机制的优势"></a>双亲委派机制的优势</h3><p>避免类被重复加载 + 避免核心 API 被篡改。</p>
 <p>如果没有双亲委托机制来确保类的全局唯一性，谁都可以编写一个 java.lang.String 类放在 classpath 下，那应用程序就乱套了。所以自定义一个与核心类库重名的类，会发现这个类可以被正常编译，但永远无法被加载运行。因为这个类不会被应用类加载器加载，而是被委托到顶层，被启动类加载器在核心类库中找到了。</p>
 <h3 id="如何破坏双亲委派模型"><a href="#如何破坏双亲委派模型" class="headerlink" title="如何破坏双亲委派模型"></a>如何破坏双亲委派模型</h3><p>自定义类加载器，重写 loadClass 方法。</p>
-<h2 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h2><p><img src="/2020/01/16/2020-01-16-jvm/20210401230845268.png" alt></p>
+<h2 id="17-堆"><a href="#17-堆" class="headerlink" title="17 堆"></a>17 堆</h2><p><img src="/2020/01/16/2020-01-16-jvm/20210401230845268.png" alt></p>
 <h3 id="默认新生代和老年代的占比"><a href="#默认新生代和老年代的占比" class="headerlink" title="默认新生代和老年代的占比"></a>默认新生代和老年代的占比</h3><p>默认 -XX:NewRatio=2，代表新生代占 1，老年代占 2，即新生代占整个堆的 1/3。</p>
 <h3 id="默认-Eden-和-Survivor-的占比"><a href="#默认-Eden-和-Survivor-的占比" class="headerlink" title="默认 Eden 和 Survivor 的占比"></a>默认 Eden 和 Survivor 的占比</h3><p>默认 -xx:SurvivorRatio=8，代表 Eden 和 From Survivor，To Survivor 占比是 8：1：1。</p>
 <h3 id="堆对象流转过程"><a href="#堆对象流转过程" class="headerlink" title="堆对象流转过程"></a>堆对象流转过程</h3><p><img src="/2020/01/16/2020-01-16-jvm/20210401230851499.png" alt></p>
@@ -877,7 +877,7 @@ protected Class&lt;?&gt; loadClass(String name, boolean resolve)
 <li>默认情况下如果对象经过 15 次回收还存活，则放到老年代上。</li>
 <li>当老年代内存不足时，会触发 Major GC 对老年代进行回收。</li>
 </ol>
-<h2 id="遇到过哪些-OOM-问题"><a href="#遇到过哪些-OOM-问题" class="headerlink" title="遇到过哪些 OOM 问题"></a>遇到过哪些 OOM 问题</h2><ul>
+<h2 id="18-遇到过哪些-OOM-问题"><a href="#18-遇到过哪些-OOM-问题" class="headerlink" title="18 遇到过哪些 OOM 问题"></a>18 遇到过哪些 OOM 问题</h2><ul>
 <li>内存泄漏memory leak :是指程序在申请内存后，无法释放已申请的内存空间，一次内存泄漏似乎不会有大的影响，但内存泄漏堆积后的后果就是内存溢出。 </li>
 <li>内存溢出out of memory :指程序申请内存时，没有足够的内存供申请者使用，或者说，给了你一块存储int类型数据的存储空间，但是你却存储long类型的数据，那么结果就是内存不够用，此时就会报错OOM,即所谓的内存溢出。</li>
 </ul>
@@ -938,13 +938,13 @@ protected Class&lt;?&gt; loadClass(String name, boolean resolve)
 <li>当一个对象在方法中被定义后，对象只在方法内部使用，则认为没有发生逃逸。</li>
 <li>当一个对象在方法中被定义后，它被外部方法所引用，则认为发生逃逸。例如作为调用参数传递到其他地方中。</li>
 </ul>
-<h2 id="方法区与其他内存结构关系"><a href="#方法区与其他内存结构关系" class="headerlink" title="方法区与其他内存结构关系"></a>方法区与其他内存结构关系</h2><ul>
+<h2 id="19-方法区与其他内存结构关系"><a href="#19-方法区与其他内存结构关系" class="headerlink" title="19 方法区与其他内存结构关系"></a>19 方法区与其他内存结构关系</h2><ul>
 <li>Person：存放在元空间，也可以说方法区。</li>
 <li>person：存放在Java栈的局部变量表中。</li>
 <li>new Person()：存放在Java堆中。</li>
 </ul>
 <p><img src="/2020/01/16/2020-01-16-jvm/image-20200708094747667.png" alt></p>
-<h2 id="垃圾回收相关"><a href="#垃圾回收相关" class="headerlink" title="垃圾回收相关"></a>垃圾回收相关</h2><h3 id="标记垃圾的算法"><a href="#标记垃圾的算法" class="headerlink" title="标记垃圾的算法"></a>标记垃圾的算法</h3><p>堆中几乎放着所有的对象实例，对堆垃圾回收前的第一步就是要判断哪些对象已经死亡（垃圾标记阶段）。</p>
+<h2 id="20-垃圾回收相关"><a href="#20-垃圾回收相关" class="headerlink" title="20 垃圾回收相关"></a>20 垃圾回收相关</h2><h3 id="标记垃圾的算法"><a href="#标记垃圾的算法" class="headerlink" title="标记垃圾的算法"></a>标记垃圾的算法</h3><p>堆中几乎放着所有的对象实例，对堆垃圾回收前的第一步就是要判断哪些对象已经死亡（垃圾标记阶段）。</p>
 <p>判断对象存活一般有两种方式：引用计数算法和可达性分析算法。</p>
 <h4 id="引用计数法"><a href="#引用计数法" class="headerlink" title="引用计数法"></a>引用计数法</h4><p>给对象中添加一个引用计数器，每当有一个地方引用它，计数器就加 1；当引用失效，计数器就减 1；任何时候计数器为 0 的对象就是不可能再被使用的。</p>
 <ul>
@@ -954,7 +954,7 @@ protected Class&lt;?&gt; loadClass(String name, boolean resolve)
 <p><img src="/2020/01/16/2020-01-16-jvm/image.png" alt></p>
 <h4 id="可达性分析法"><a href="#可达性分析法" class="headerlink" title="可达性分析法"></a>可达性分析法</h4><p>这个算法的基本思想就是通过一系列的称为 “GC Roots” 的对象作为起点，从这些节点开始向下搜索，节点所走过的路径称为引用链，当一个对象到 GC Roots 没有任何引用链相连的话，则证明此对象是不可用的。</p>
 <p><img src="/2020/01/16/2020-01-16-jvm/image1.png" alt></p>
-<h2 id="并发的可达性分析（三色标记）"><a href="#并发的可达性分析（三色标记）" class="headerlink" title="并发的可达性分析（三色标记）"></a>并发的可达性分析（三色标记）</h2><p>首先需要引入三种颜色：</p>
+<h2 id="21-并发的可达性分析（三色标记）"><a href="#21-并发的可达性分析（三色标记）" class="headerlink" title="21 并发的可达性分析（三色标记）"></a>21 并发的可达性分析（三色标记）</h2><p>首先需要引入三种颜色：</p>
 <ul>
 <li>白色：对象没被 GC 访问过。若分析结束还是白色的对象，则代表不可达。</li>
 <li>黑色：对象已经被 GC 访问过，且这个对象的所有引用都扫描过了，他是安全存活的。</li>
@@ -971,7 +971,7 @@ protected Class&lt;?&gt; loadClass(String name, boolean resolve)
 <li>增量更新（CMS）：当黑色对象和白色对象建立引用关系时，会记录下来黑色对象的引用，等到最终标记时，再将这些黑色对象作为根，再重新扫描。</li>
 <li>原始快照（G1）：当灰色对象删除对白色对象的引用关系时，会记录下来白色对象的引用，再以这些白色对象作为根，再重新扫描。</li>
 </ul>
-<h2 id="垃圾收集算法"><a href="#垃圾收集算法" class="headerlink" title="垃圾收集算法"></a>垃圾收集算法</h2><p>注意，这些只是基本的算法思路，实际 GC 实现过程要复杂的多，目前还在发展中的前沿 GC 都是复合算法，并且并行和并发兼备。</p>
+<h2 id="22-垃圾收集算法"><a href="#22-垃圾收集算法" class="headerlink" title="22 垃圾收集算法"></a>22 垃圾收集算法</h2><p>注意，这些只是基本的算法思路，实际 GC 实现过程要复杂的多，目前还在发展中的前沿 GC 都是复合算法，并且并行和并发兼备。</p>
 <h3 id="标记-复制算法（Copying）"><a href="#标记-复制算法（Copying）" class="headerlink" title="标记-复制算法（Copying）"></a>标记-复制算法（Copying）</h3><p>标记-复制算法会从根节点开始遍历，标记所有存活对象，同时将这些对象复制到一块新内存中，之后将原来那块内存全部回收掉。</p>
 <p><img src="/2020/01/16/2020-01-16-jvm/v2-1ef719211b88b62dbbc09036ec7adf09_720w.jpg" alt></p>
 <p>适用场合：</p>
@@ -1030,7 +1030,7 @@ protected Class&lt;?&gt; loadClass(String name, boolean resolve)
 <p>  这种情况存在大量存活率高的对象，复制算法明显变得不合适。一般是由标记-清除或者是标记-清除与标记-整理的混合实现。</p>
 </li>
 </ul>
-<h2 id="垃圾收集器"><a href="#垃圾收集器" class="headerlink" title="垃圾收集器"></a>垃圾收集器</h2><h3 id="有哪些垃圾收集器"><a href="#有哪些垃圾收集器" class="headerlink" title="有哪些垃圾收集器"></a>有哪些垃圾收集器</h3><ul>
+<h2 id="23-垃圾收集器"><a href="#23-垃圾收集器" class="headerlink" title="23 垃圾收集器"></a>23 垃圾收集器</h2><h3 id="有哪些垃圾收集器"><a href="#有哪些垃圾收集器" class="headerlink" title="有哪些垃圾收集器"></a>有哪些垃圾收集器</h3><ul>
 <li>串行回收器：Serial、Serial Old。</li>
 <li>并行回收器：ParNew、Parallel Scavenge、Parallel Old。</li>
 <li>并发回收器：CMS、G1。</li>
@@ -1062,9 +1062,9 @@ protected Class&lt;?&gt; loadClass(String name, boolean resolve)
 </ul>
 <h3 id="查看默认收集器"><a href="#查看默认收集器" class="headerlink" title="查看默认收集器"></a>查看默认收集器</h3><p>Java -XX:+PrintCommandLineFlags -version</p>
 <p><img src="/2020/01/16/2020-01-16-jvm/image5.png" alt></p>
-<h2 id="分析-GC-日志"><a href="#分析-GC-日志" class="headerlink" title="分析 GC 日志"></a>分析 GC 日志</h2><h3 id="Young-GC-参数图"><a href="#Young-GC-参数图" class="headerlink" title="Young GC 参数图"></a>Young GC 参数图</h3><p><img src="/2020/01/16/2020-01-16-jvm/image-20200714082555688.png" alt></p>
+<h2 id="24-分析-GC-日志"><a href="#24-分析-GC-日志" class="headerlink" title="24 分析 GC 日志"></a>24 分析 GC 日志</h2><h3 id="Young-GC-参数图"><a href="#Young-GC-参数图" class="headerlink" title="Young GC 参数图"></a>Young GC 参数图</h3><p><img src="/2020/01/16/2020-01-16-jvm/image-20200714082555688.png" alt></p>
 <h3 id="Full-GC-参数图"><a href="#Full-GC-参数图" class="headerlink" title="Full GC 参数图"></a>Full GC 参数图</h3><p><img src="/2020/01/16/2020-01-16-jvm/image-20200714082714690.png" alt></p>
-<h2 id="JVM参数"><a href="#JVM参数" class="headerlink" title="JVM参数"></a>JVM参数</h2><h3 id="标准参数"><a href="#标准参数" class="headerlink" title="标准参数"></a>标准参数</h3><p>标准参数以-开头，比较稳定，后续版本基本不会变化。</p>
+<h2 id="25-JVM参数"><a href="#25-JVM参数" class="headerlink" title="25 JVM参数"></a>25 JVM参数</h2><h3 id="标准参数"><a href="#标准参数" class="headerlink" title="标准参数"></a>标准参数</h3><p>标准参数以-开头，比较稳定，后续版本基本不会变化。</p>
 <p>在控制台输入java -help，可以看到所有的标准参数</p>
 <h3 id="X参数"><a href="#X参数" class="headerlink" title="-X参数"></a>-X参数</h3><p>非标准化参数，功能比较稳定，后续版本可能会变更，以-X开头</p>
 <p>在控制台输入java -X，可以看到相关参数</p>
