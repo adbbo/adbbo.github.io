@@ -438,7 +438,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-05-20
+                    2021-05-20
                 </div>
                 
 
@@ -455,8 +455,8 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="1-Java-内存区域-运行时数据区"><a href="#1-Java-内存区域-运行时数据区" class="headerlink" title="1 Java 内存区域(运行时数据区)"></a>1 Java 内存区域(运行时数据区)</h2><h3 id="JDK-1-8之前："><a href="#JDK-1-8之前：" class="headerlink" title="JDK 1.8之前："></a>JDK 1.8之前：</h3><p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/hlwi08xk.bmp" alt></p>
-<h3 id="JDK-1-8-："><a href="#JDK-1-8-：" class="headerlink" title="JDK 1.8 ："></a>JDK 1.8 ：</h3><p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/j141wm5o.bmp" alt></p>
+                <h2 id="1-Java-内存区域-运行时数据区"><a href="#1-Java-内存区域-运行时数据区" class="headerlink" title="1 Java 内存区域(运行时数据区)"></a>1 Java 内存区域(运行时数据区)</h2><h3 id="JDK-1-8之前："><a href="#JDK-1-8之前：" class="headerlink" title="JDK 1.8之前："></a>JDK 1.8之前：</h3><p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/hlwi08xk.bmp" alt></p>
+<h3 id="JDK-1-8-："><a href="#JDK-1-8-：" class="headerlink" title="JDK 1.8 ："></a>JDK 1.8 ：</h3><p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/j141wm5o.bmp" alt></p>
 <h3 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h3><ul>
 <li>程序计数器是唯一一个不会出现 OutOfMemoryError 的内存区域，它的生命周期随着线程的创建而创建，随着线程的结束而死亡。</li>
 <li>程序计数器可以实现代码的流程控制，如：顺序执行、选择、循环、异常处理。</li>
@@ -479,7 +479,7 @@
 <p>本地方法栈也会出现 StackOverFlowError 和 OutOfMemoryError 两种异常。</p>
 <h3 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h3><p><strong>Java 虚拟机所管理的内存中最大的一块，Java 堆是所有线程共享的一块内存区域，在虚拟机启动时创建。此内存区域的唯一目的就是存放对象实例，几乎所有的对象实例以及数组都在这里分配内存。</strong></p>
 <p><strong>Java 堆是垃圾收集器管理的主要区域</strong>，因此也被称作GC堆。从垃圾回收的角度，由于现在收集器基本都采用分代垃圾收集算法，所以Java堆还可以细分为：新生代和老年代：再细致一点有：Eden空间、From Survivor、To Survivor空间等。<strong>进一步划分的目的是更好地回收内存，或者更快地分配内存。</strong></p>
-<p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/0md51ltn.bmp" alt></p>
+<p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/0md51ltn.bmp" alt></p>
 <p><strong>eden区、s0区、s1区都属于新生代，tentired 区属于老年代。大部分情况，对象都会首先在 Eden 区域分配，在一次新生代垃圾回收后，如果对象还存活，则会进入 s0 或者 s1，并且对象的年龄还会加 1(Eden区-&gt;Survivor 区后对象的初始年龄变为1)，当它的年龄增加到一定程度（默认为15岁），就会被晋升到老年代中。对象晋升到老年代的年龄阈值，可以通过参数 -XX:MaxTenuringThreshold 来设置。</strong></p>
 <h3 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h3><p>方法区与 Java 堆一样，是各个线程共享的内存区域。它用于存储已被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。虽然Java虚拟机规范把方法区描述为堆的一个逻辑部分，但是它却有一个别名叫做 Non-Heap（非堆），目的应该是与 Java 堆区分开来。</p>
 <p><strong>方法区也被称为永久代。</strong> 相对而言，垃圾收集行为在这个区域是比较少出现的，但并非数据进入方法区后就“永久存在”了。</p>
@@ -488,7 +488,7 @@
 <h3 id="运行时常量池"><a href="#运行时常量池" class="headerlink" title="运行时常量池"></a>运行时常量池</h3><p>运行时常量池是方法区的一部分。Class 文件中除了有类的版本、字段、方法、接口等描述信息外，还有常量池信息（用于存放编译期生成的各种字面量和符号引用）</p>
 <p>既然运行时常量池时方法区的一部分，自然受到方法区内存的限制，当常量池无法再申请到内存时会抛出 OutOfMemoryError 异常。</p>
 <p><strong>DK1.7及之后版本的 JVM 已经将运行时常量池从方法区中移了出来，在 Java 堆（Heap）中开辟了一块区域存放运行时常量池。</strong></p>
-<p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/7p80rev4.bmp" alt></p>
+<p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/7p80rev4.bmp" alt></p>
 <h3 id="直接内存"><a href="#直接内存" class="headerlink" title="直接内存"></a>直接内存</h3><p>直接内存并不是虚拟机运行时数据区的一部分，也不是虚拟机规范中定义的内存区域，但是这部分内存也被频繁地使用。而且也可能导致 OutOfMemoryError 异常出现。</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
 <li>线程私有的是JAVA 虚拟机栈、本地方法栈、程序计数器；线程共享的是堆和方法区。</li>
@@ -499,10 +499,10 @@
 <li>方法区：方法区主要存储加载的类信息、常量、静态变量等。方法区也被称为永久代。在JDK 1.8 的时候，方法区被取代成元空间，元空间使用的是直接内存。因为方法区受jvm的大小配置限制，而元空间直接受机器的内存管理，永远不会得到java.lang.OutOfMemoryError。</li>
 <li>运行时常量池：常量池是方法区的一部分，主要存放字面量和符号引用，会抛出 OutOfMemoryError 异常。DK1.7及之后版本的 JVM 已经将运行时常量池从方法区中移了出来，在 Java 堆（Heap）中开辟了一块区域存放运行时常量池。</li>
 </ul>
-<h2 id="2-Java对象的创建过程"><a href="#2-Java对象的创建过程" class="headerlink" title="2 Java对象的创建过程"></a>2 Java对象的创建过程</h2><p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/1rfud9wf.bmp" alt></p>
+<h2 id="2-Java对象的创建过程"><a href="#2-Java对象的创建过程" class="headerlink" title="2 Java对象的创建过程"></a>2 Java对象的创建过程</h2><p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/1rfud9wf.bmp" alt></p>
 <h3 id="类加载检查"><a href="#类加载检查" class="headerlink" title="类加载检查"></a>类加载检查</h3><p>虚拟机遇到一条 new 指令时，首先将去检查这个指令的参数是否能在常量池中定位到这个类的符号引用，并且检查这个符号引用代表的类是否已被加载过、解析和初始化过。如果没有，那必须先执行相应的类加载过程。</p>
 <h3 id="分配内存"><a href="#分配内存" class="headerlink" title="分配内存"></a>分配内存</h3><p>在类加载检查通过后，接下来虚拟机将为新生对象分配内存。对象所需的内存大小在类加载完成后便可确定，为对象分配空间的任务等同于把一块确定大小的内存从 Java 堆中划分出来。分配方式有 “指针碰撞” 和 “空闲列表” 两种，选择那种分配方式由 Java 堆是否规整决定，而Java堆是否规整又取决于 GC 收集器的算法是”标记-清除”，还是”标记-整理”（也称作”标记-压缩”），值得注意的是，复制算法内存也是规整的</p>
-<p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/y2du1php.bmp" alt></p>
+<p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/y2du1php.bmp" alt></p>
 <h3 id="初始化零值"><a href="#初始化零值" class="headerlink" title="初始化零值"></a>初始化零值</h3><p>内存分配完成后，虚拟机需要将分配到的内存空间都初始化为零值（不包括对象头），这一步操作保证了对象的实例字段在 Java 代码中可以不赋初始值就直接使用，程序能访问到这些字段的数据类型所对应的零值。</p>
 <h3 id="设置对象头"><a href="#设置对象头" class="headerlink" title="设置对象头"></a>设置对象头</h3><p>初始化零值完成之后，虚拟机要对对象进行必要的设置，例如这个对象是那个类的实例、如何才能找到类的元数据信息、对象的哈希吗、对象的 GC 分代年龄等信息存放在对象头中。另外，根据虚拟机当前运行状态的不同，如是否启用偏向锁等，对象头会有不同的设置方式。</p>
 <h3 id="执行-init-方法"><a href="#执行-init-方法" class="headerlink" title="执行 init 方法"></a>执行 init 方法</h3><p>在上面工作都完成之后，从虚拟机的视角来看，一个新的对象已经产生了，但从 Java 程序的视角来看，对象创建才刚开始，<init> 方法还没有执行，所有的字段都还为零。所以一般来说，执行 new 指令之后会接着执行 <init> 方法，把对象按照程序员的意愿进行初始化，这样一个真正可用的对象才算完全产生出来。</init></init></p>
@@ -514,16 +514,16 @@
 <li>执行init方法：把对象按照程序员的意愿进行初始化，这样一个真正可用的对象才算完全产生出来。</li>
 </ol>
 <h2 id="3-对象的访问定位两种方式"><a href="#3-对象的访问定位两种方式" class="headerlink" title="3 对象的访问定位两种方式"></a>3 对象的访问定位两种方式</h2><p>建立对象就是为了使用对象，我们的Java程序通过栈上的 reference 数据来操作堆上的具体对象。对象的访问方式有虚拟机实现而定，目前主流的访问方式有使用句柄和直接指针两种。</p>
-<h3 id="使用句柄"><a href="#使用句柄" class="headerlink" title="使用句柄"></a>使用句柄</h3><p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/dllw5s27.bmp" alt></p>
+<h3 id="使用句柄"><a href="#使用句柄" class="headerlink" title="使用句柄"></a>使用句柄</h3><p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/dllw5s27.bmp" alt></p>
 <p>如果使用句柄的话，那么Java堆中将会划分出一块内存来作为句柄池，reference 中存储的就是对象的句柄地址，而句柄中包含了对象实例数据与类型数据各自的具体地址信息。</p>
-<h3 id="直接指针"><a href="#直接指针" class="headerlink" title="直接指针"></a>直接指针</h3><p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/aqodd113.bmp" alt></p>
+<h3 id="直接指针"><a href="#直接指针" class="headerlink" title="直接指针"></a>直接指针</h3><p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/aqodd113.bmp" alt></p>
 <p>如果使用直接指针访问，那么 Java 堆对象的布局中就必须考虑如何放置访问类型数据的相关信息，而reference 中存储的直接就是对象的地址。</p>
 <h3 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h3><p>这两种对象访问方式各有优势。使用句柄来访问的最大好处是 reference 中存储的是稳定的句柄地址，在对象被移动时只会改变句柄中的实例数据指针，而 reference 本身不需要修改。使用直接指针访问方式最大的好处就是速度快，它节省了一次指针定位的时间开销。</p>
 <h2 id="4-堆内存中对象的分配的基本策略"><a href="#4-堆内存中对象的分配的基本策略" class="headerlink" title="4 堆内存中对象的分配的基本策略"></a>4 堆内存中对象的分配的基本策略</h2><p>堆空间的基本结构：</p>
-<p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/al16mkpf.bmp" alt></p>
+<p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/al16mkpf.bmp" alt></p>
 <p>eden区、s0区、s1区都属于新生代，tentired 区属于老年代。大部分情况，对象都会首先在 Eden 区域分配，在一次新生代垃圾回收后，如果对象还存活，则会进入 s0 或者 s1，并且对象的年龄还会加 1(Eden区-&gt;Survivor 区后对象的初始年龄变为1)，当它的年龄增加到一定程度（默认为15岁），就会被晋升到老年代中。对象晋升到老年代的年龄阈值，可以通过参数 -XX:MaxTenuringThreshold 来设置。</p>
 <p>另外，大对象和长期存活的对象会直接进入老年代。</p>
-<p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/40cpg52o.bmp" alt></p>
+<p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/40cpg52o.bmp" alt></p>
 <h2 id="5-Minor-Gc和Full-GC区别"><a href="#5-Minor-Gc和Full-GC区别" class="headerlink" title="5 Minor Gc和Full GC区别"></a>5 Minor Gc和Full GC区别</h2><p>大多数情况下，对象在新生代中 eden 区分配。当 eden 区没有足够空间进行分配时，虚拟机将发起一次Minor GC。</p>
 <h3 id="新生代GC（Minor-GC）"><a href="#新生代GC（Minor-GC）" class="headerlink" title="新生代GC（Minor GC）"></a>新生代GC（Minor GC）</h3><p>指发生新生代的的垃圾收集动作，Minor GC非常频繁，回收速度一般也比较快。</p>
 <h3 id="老年代GC（Major-GC-Full-GC）"><a href="#老年代GC（Major-GC-Full-GC）" class="headerlink" title="老年代GC（Major GC/Full GC）"></a>老年代GC（Major GC/Full GC）</h3><p>指发生在老年代的GC，出现了Major GC经常会伴随至少一次的Minor GC（并非绝对），Major GC的速度一般会比Minor GC的慢10倍以上。</p>
@@ -533,9 +533,9 @@
 <li>优点：实现简单，垃圾对象便于辨识；判定效率高，回收没有延迟性。</li>
 <li>缺点：无法解决循环引用问题</li>
 </ul>
-<p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/image.png" alt></p>
+<p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/image.png" alt></p>
 <h3 id="可达性分析算法"><a href="#可达性分析算法" class="headerlink" title="可达性分析算法"></a>可达性分析算法</h3><p>这个算法的基本思想就是通过一系列的称为 “GC Roots” 的对象作为起点，从这些节点开始向下搜索，节点所走过的路径称为引用链，当一个对象到 GC Roots 没有任何引用链相连的话，则证明此对象是不可用的。</p>
-<p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/image1.png" alt></p>
+<p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/image1.png" alt></p>
 <h2 id="7-强引用-软引用-弱引用-虚引用"><a href="#7-强引用-软引用-弱引用-虚引用" class="headerlink" title="7 强引用,软引用,弱引用,虚引用"></a>7 强引用,软引用,弱引用,虚引用</h2><p>无论是通过引用计数法判断对象引用数量，还是通过可达性分析法判断对象的引用链是否可达，判定对象的存活都与“引用”有关。</p>
 <h3 id="强引用-StrongReference"><a href="#强引用-StrongReference" class="headerlink" title="强引用(StrongReference)"></a>强引用(StrongReference)</h3><p>以前我们使用的大部分引用实际上都是强引用，这是使用最普遍的引用。如果一个对象具有强引用，那就类似于必不可少的生活用品，垃圾回收器绝不会回收它。当内存空 间不足，Java虚拟机宁愿抛出OutOfMemoryError错误，使程序异常终止，也不会靠随意回收具有强引用的对象来解决内存不足问题。</p>
 <h3 id="软引用-SoftReference"><a href="#软引用-SoftReference" class="headerlink" title="软引用(SoftReference)"></a>软引用(SoftReference)</h3><p>如果一个对象只具有软引用，那就类似于可有可无的生活用品。如果内存空间足够，垃圾回收器就不会回收它，如果内存空间不足了，就会回收这些对象的内存。只要垃圾回收器没有回收它，该对象就可以被程序使用。软引用可用来实现内存敏感的高速缓存。</p>
@@ -552,7 +552,7 @@
 <li>加载该类的 ClassLoader 已经被回收。</li>
 <li>该类对应的 java.lang.Class 对象没有在任何地方被引用，无法在任何地方通过反射访问该类的方法。</li>
 </ul>
-<h2 id="10-垃圾收集算法"><a href="#10-垃圾收集算法" class="headerlink" title="10 垃圾收集算法"></a>10 垃圾收集算法</h2><h3 id="标记-清除算法"><a href="#标记-清除算法" class="headerlink" title="标记-清除算法"></a>标记-清除算法</h3><p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/tpi6cpml.bmp" alt></p>
+<h2 id="10-垃圾收集算法"><a href="#10-垃圾收集算法" class="headerlink" title="10 垃圾收集算法"></a>10 垃圾收集算法</h2><h3 id="标记-清除算法"><a href="#标记-清除算法" class="headerlink" title="标记-清除算法"></a>标记-清除算法</h3><p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/tpi6cpml.bmp" alt></p>
 <p>算法分为“标记”和“清除”阶段：首先标记出所有需要回收的对象，在标记完成后统一回收所有被标记的对象。它是最基础的收集算法，后续的算法都是对其不足进行改进得到。</p>
 <h4 id="适用场景："><a href="#适用场景：" class="headerlink" title="适用场景："></a>适用场景：</h4><ul>
 <li>存活对象较多的情况下比较高效（老年代）。</li>
@@ -564,7 +564,7 @@
 <li>效率低。扫描了整个空间两次。</li>
 <li>会产生大量不连续的碎片，导致大对象无法在空闲列表找到可分配的空间。</li>
 </ul>
-<h3 id="复制算法"><a href="#复制算法" class="headerlink" title="复制算法"></a>复制算法</h3><p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/dknyft70.bmp" alt></p>
+<h3 id="复制算法"><a href="#复制算法" class="headerlink" title="复制算法"></a>复制算法</h3><p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/dknyft70.bmp" alt></p>
 <p>为了解决效率问题，“复制”收集算法出现了。它可以将内存分为大小相同的两块，每次使用其中的一块。当这一块的内存使用完后，就将还存活的对象复制到另一块去，然后再把使用的空间一次清理掉。这样就使每次的内存回收都是对内存区间的一半进行回收。</p>
 <h4 id="适用场合："><a href="#适用场合：" class="headerlink" title="适用场合："></a>适用场合：</h4><ul>
 <li>存活对象较少的情况下比较高效（新生代）。</li>
@@ -578,7 +578,7 @@
 <li>需要两倍的内存空间。</li>
 <li>像老年代那种回收完还有大量的对象存活的区域，需要复制的对象将会有很多，效率会很低。</li>
 </ul>
-<h3 id="标记-整理算法"><a href="#标记-整理算法" class="headerlink" title="标记-整理算法"></a>标记-整理算法</h3><p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/qish34yq.bmp" alt></p>
+<h3 id="标记-整理算法"><a href="#标记-整理算法" class="headerlink" title="标记-整理算法"></a>标记-整理算法</h3><p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/qish34yq.bmp" alt></p>
 <p>首先也需要从根节点开始对所有可达对象做一次标记，但之后，它并不简单地清理未标记的对象，而是将所有的存活对象压缩到内存的一端。之后，清理边界外所有的空间。这种方法既避免了碎片的产生，又不需要两块相同的内存空间，因此，其性价比比较高。</p>
 <ul>
 <li>效率最低</li>
@@ -587,19 +587,19 @@
 <p><strong>在新生代中，每次收集都会有大量对象死去，所以可以选择复制算法，只需要付出少量对象的复制成本就可以完成每次垃圾收集。而老年代的对象存活几率是比较高的，而且没有额外的空间对它进行分配担保，所以我们必须选择“标记-清除”或“标记-整理”算法进行垃圾收集。</strong></p>
 <h2 id="11-分为新生代和老年代的好处"><a href="#11-分为新生代和老年代的好处" class="headerlink" title="11 分为新生代和老年代的好处"></a>11 分为新生代和老年代的好处</h2><p>主要是为了提升GC效率。</p>
 <h2 id="12-垃圾收集器"><a href="#12-垃圾收集器" class="headerlink" title="12 垃圾收集器"></a>12 垃圾收集器</h2><h3 id="Serial收集器"><a href="#Serial收集器" class="headerlink" title="Serial收集器"></a>Serial收集器</h3><p>Serial（串行）收集器收集器是最基本、历史最悠久的垃圾收集器了。大家看名字就知道这个收集器是一个单线程收集器了。它的 “单线程” 的意义不仅仅意味着它只会使用一条垃圾收集线程去完成垃圾收集工作，更重要的是它在进行垃圾收集工作的时候必须暂停其他所有的工作线程（ “Stop The World” ），直到它收集结束。</p>
-<p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/w2jtzc95.bmp" alt></p>
-<p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/image7.png" alt></p>
+<p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/w2jtzc95.bmp" alt></p>
+<p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/image7.png" alt></p>
 <p><strong>新生代采用复制算法，老年代采用标记-整理算法</strong></p>
 <p>虚拟机的设计者们当然知道Stop The World带来的不良用户体验，所以在后续的垃圾收集器设计中停顿时间在不断缩短（仍然还有停顿，寻找最优秀的垃圾收集器的过程仍然在继续）。</p>
 <p>但是Serial收集器有没有优于其他垃圾收集器的地方呢？当然有，它简单而高效（与其他收集器的单线程相比）。Serial收集器由于没有线程交互的开销，自然可以获得很高的单线程收集效率。Serial收集器对于运行在Client模式下的虚拟机来说是个不错的选择。</p>
 <h3 id="ParNew收集器"><a href="#ParNew收集器" class="headerlink" title="ParNew收集器"></a>ParNew收集器</h3><p>ParNew收集器其实就是Serial收集器的多线程版本，除了使用多线程进行垃圾收集外，其余行为（控制参数、收集算法、回收策略等等）和Serial收集器完全一样。</p>
-<p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/ngopf1fj.bmp" alt></p>
-<p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/image10.png" alt></p>
+<p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/ngopf1fj.bmp" alt></p>
+<p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/image10.png" alt></p>
 <p><strong>新生代采用复制算法，老年代采用标记-整理算法。</strong></p>
 <p>它是许多运行在Server模式下的虚拟机的首要选择，除了Serial收集器外，只有它能与CMS收集器（真正意义上的并发收集器）配合工作。</p>
 <h3 id="Parallel-Scavenge收集器"><a href="#Parallel-Scavenge收集器" class="headerlink" title="Parallel Scavenge收集器"></a>Parallel Scavenge收集器</h3><p>Parallel Scavenge 收集器类似于ParNew 收集器。</p>
 <p>Parallel Scavenge收集器关注点是吞吐量（高效率的利用CPU）。CMS等垃圾收集器的关注点更多的是用户线程的停顿时间（提高用户体验）。所谓吞吐量就是CPU中用于运行用户代码的时间与CPU总消耗时间的比值。 Parallel Scavenge收集器提供了很多参数供用户找到最合适的停顿时间或最大吞吐量，如果对于收集器运作不太了解的话，手工优化存在的话可以选择把内存管理优化交给虚拟机去完成也是一个不错的选择。</p>
-<p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/2tlrkyi5.bmp" alt></p>
+<p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/2tlrkyi5.bmp" alt></p>
 <p><strong>新生代采用复制算法，老年代采用标记-整理算法。</strong></p>
 <h3 id="Serial-Old收集器"><a href="#Serial-Old收集器" class="headerlink" title="Serial Old收集器"></a>Serial Old收集器</h3><p>Serial收集器的老年代版本，它同样是一个单线程收集器。它主要有两大用途：一种用途是在JDK1.5以及以前的版本中与Parallel Scavenge收集器搭配使用，另一种用途是作为CMS收集器的后备方案。</p>
 <h3 id="Parallel-Old收集器"><a href="#Parallel-Old收集器" class="headerlink" title="Parallel Old收集器"></a>Parallel Old收集器</h3><p>Parallel Scavenge收集器的老年代版本。使用多线程和“标记-整理”算法。在注重吞吐量以及CPU资源的场合，都可以优先考虑 Parallel Scavenge收集器和Parallel Old收集器。</p>
@@ -612,7 +612,7 @@
 <li>重新标记： 重新标记阶段就是为了修正并发标记期间因为用户程序继续运行而导致标记产生变动的那一部分对象的标记记录，这个阶段的停顿时间一般会比初始标记阶段的时间稍长，远远比并发标记阶段时间短</li>
 <li>并发清除： 开启用户线程，同时GC线程开始对为标记的区域做清扫。</li>
 </ul>
-<p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/yjdb4a3c.bmp" alt></p>
+<p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/yjdb4a3c.bmp" alt></p>
 <p>从它的名字就可以看出它是一款优秀的垃圾收集器，主要优点：并发收集、低停顿。但是它有下面三个明显的缺点：</p>
 <ul>
 <li>对CPU资源敏感；</li>
@@ -636,7 +636,7 @@
 <li>筛选回收</li>
 </ul>
 <p>G1收集器在后台维护了一个优先列表，每次根据允许的收集时间，优先选择回收价值最大的Region(这也就是它的名字Garbage-First的由来)。这种使用Region划分内存空间以及有优先级的区域回收方式，保证了GF收集器在有限时间内可以尽可能高的收集效率（把内存化整为零）。</p>
-<p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/r0psxic5.bmp" alt></p>
+<p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/r0psxic5.bmp" alt></p>
 <h3 id="垃圾收集器分类"><a href="#垃圾收集器分类" class="headerlink" title="垃圾收集器分类"></a>垃圾收集器分类</h3><ul>
 <li>串行回收器：Serial、Serial Old。</li>
 <li>并行回收器：ParNew、Parallel Scavenge、Parallel Old。</li>
@@ -647,8 +647,8 @@
 <li>老年代收集器：Serial Old、Parallel Old、CMS。</li>
 <li>整堆收集器：G1。</li>
 </ul>
-<p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/image-20200713093757644.png" alt></p>
-<h3 id="垃圾收集器的组合关系："><a href="#垃圾收集器的组合关系：" class="headerlink" title="垃圾收集器的组合关系："></a>垃圾收集器的组合关系：</h3><p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/image-20200713094745366.png" alt></p>
+<p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/image-20200713093757644.png" alt></p>
+<h3 id="垃圾收集器的组合关系："><a href="#垃圾收集器的组合关系：" class="headerlink" title="垃圾收集器的组合关系："></a>垃圾收集器的组合关系：</h3><p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/image-20200713094745366.png" alt></p>
 <ul>
 <li><p>Serial + Serial Old，Serial + CMS</p>
 </li>
@@ -666,7 +666,7 @@
 </li>
 </ul>
 <h3 id="查看默认收集器"><a href="#查看默认收集器" class="headerlink" title="查看默认收集器"></a>查看默认收集器</h3><p>Java -XX:+PrintCommandLineFlags -version</p>
-<p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/image5.png" alt></p>
+<p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/image5.png" alt></p>
 <h2 id="13-类文件结构"><a href="#13-类文件结构" class="headerlink" title="13 类文件结构"></a>13 类文件结构</h2><p>根据 Java 虚拟机规范，类文件由单个 ClassFile 结构组成：</p>
 <pre><code>ClassFile {
     u4             magic; //Class 文件的标志
@@ -686,9 +686,9 @@
     u2             attributes_count;//此类的属性表中的属性数
     attribute_info attributes[attributes_count];//属性表集合
 }</code></pre><p>Class文件字节码结构组织示意图</p>
-<p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/n30hvpi9.bmp" alt></p>
+<p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/n30hvpi9.bmp" alt></p>
 <h2 id="14-类的加载过程"><a href="#14-类的加载过程" class="headerlink" title="14 类的加载过程"></a>14 类的加载过程</h2><p>类的加载过程为：加载、链接和初始化，其中链接可以细分为：验证、准备和解析。</p>
-<p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/image-20200705082601441.png" alt></p>
+<p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/image-20200705082601441.png" alt></p>
 <h3 id="加载阶段"><a href="#加载阶段" class="headerlink" title="加载阶段"></a>加载阶段</h3><ul>
 <li>通过类的全限定名读取此类二进制字节流。</li>
 <li>将字节流转化为方法区的运行时数据结构。</li>
@@ -721,14 +721,14 @@
 <li>如果启动类加载器没有找到所需加载的类，便将此加载任务退回给下一级类加载器去执行，而下一级的类加载器也做同样的事情。</li>
 <li>如果最底层类加载器仍然没有找到所需要的 class 文件，则抛出异常。</li>
 </ol>
-<p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/image-20200705105151258.png" alt></p>
+<p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/image-20200705105151258.png" alt></p>
 <h3 id="双亲委派机制的优势"><a href="#双亲委派机制的优势" class="headerlink" title="双亲委派机制的优势"></a>双亲委派机制的优势</h3><p>避免类被重复加载 + 避免核心 API 被篡改。</p>
 <p>如果没有双亲委托机制来确保类的全局唯一性，谁都可以编写一个 java.lang.String 类放在 classpath 下，那应用程序就乱套了。所以自定义一个与核心类库重名的类，会发现这个类可以被正常编译，但永远无法被加载运行。因为这个类不会被应用类加载器加载，而是被委托到顶层，被启动类加载器在核心类库中找到了。</p>
 <h3 id="如何破坏双亲委派模型"><a href="#如何破坏双亲委派模型" class="headerlink" title="如何破坏双亲委派模型"></a>如何破坏双亲委派模型</h3><p>自定义类加载器，重写 loadClass 方法。</p>
-<h2 id="16-堆"><a href="#16-堆" class="headerlink" title="16 堆"></a>16 堆</h2><p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/20210401230845268.png" alt></p>
+<h2 id="16-堆"><a href="#16-堆" class="headerlink" title="16 堆"></a>16 堆</h2><p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/20210401230845268.png" alt></p>
 <h3 id="默认新生代和老年代的占比"><a href="#默认新生代和老年代的占比" class="headerlink" title="默认新生代和老年代的占比"></a>默认新生代和老年代的占比</h3><p>默认 -XX:NewRatio=2，代表新生代占 1，老年代占 2，即新生代占整个堆的 1/3。</p>
 <h3 id="默认-Eden-和-Survivor-的占比"><a href="#默认-Eden-和-Survivor-的占比" class="headerlink" title="默认 Eden 和 Survivor 的占比"></a>默认 Eden 和 Survivor 的占比</h3><p>默认 -xx:SurvivorRatio=8，代表 Eden 和 From Survivor，To Survivor 占比是 8：1：1。</p>
-<h3 id="堆对象流转过程"><a href="#堆对象流转过程" class="headerlink" title="堆对象流转过程"></a>堆对象流转过程</h3><p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/20210401230851499.png" alt></p>
+<h3 id="堆对象流转过程"><a href="#堆对象流转过程" class="headerlink" title="堆对象流转过程"></a>堆对象流转过程</h3><p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/20210401230851499.png" alt></p>
 <ol>
 <li>创建的对象优先在 Eden 区分配（较长的字符串，数组，大对象直接进老年代）。</li>
 <li>如果发现 Eden 满了，会执行 Minor GC 回收新生代，把 Eden 和 From Survivor 存活的对象复制到 To Survivor 上（对象年龄+1），然后 To Survivor 和 From Survivor 交换身份。</li>
@@ -801,14 +801,14 @@
 <li>person：存放在Java栈的局部变量表中。</li>
 <li>new Person()：存放在Java堆中。</li>
 </ul>
-<p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/image-20200708094747667.png" alt></p>
+<p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/image-20200708094747667.png" alt></p>
 <h2 id="19-并发的可达性分析（三色标记）"><a href="#19-并发的可达性分析（三色标记）" class="headerlink" title="19 并发的可达性分析（三色标记）"></a>19 并发的可达性分析（三色标记）</h2><p>首先需要引入三种颜色：</p>
 <ul>
 <li>白色：对象没被 GC 访问过。若分析结束还是白色的对象，则代表不可达。</li>
 <li>黑色：对象已经被 GC 访问过，且这个对象的所有引用都扫描过了，他是安全存活的。</li>
 <li>灰色：对象已经被 GC 访问过，但这个对象上还存在没有被扫描过的引用。</li>
 </ul>
-<p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/image2.png" alt></p>
+<p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/image2.png" alt></p>
 <p>并发标记阶段，会出现两种问题：</p>
 <ul>
 <li>把白色对象错标成了黑色对象（问题不大，只是产生了浮动垃圾，下次再清理）。</li>
@@ -819,8 +819,8 @@
 <li>增量更新（CMS）：当黑色对象和白色对象建立引用关系时，会记录下来黑色对象的引用，等到最终标记时，再将这些黑色对象作为根，再重新扫描。</li>
 <li>原始快照（G1）：当灰色对象删除对白色对象的引用关系时，会记录下来白色对象的引用，再以这些白色对象作为根，再重新扫描。</li>
 </ul>
-<h2 id="20-分析-GC-日志"><a href="#20-分析-GC-日志" class="headerlink" title="20 分析 GC 日志"></a>20 分析 GC 日志</h2><h3 id="Young-GC-参数图"><a href="#Young-GC-参数图" class="headerlink" title="Young GC 参数图"></a>Young GC 参数图</h3><p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/image-20200714082555688.png" alt></p>
-<h3 id="Full-GC-参数图"><a href="#Full-GC-参数图" class="headerlink" title="Full GC 参数图"></a>Full GC 参数图</h3><p><img src="/2020/05/20/2021-05-20-chong-xue-jvm/image-20200714082714690.png" alt></p>
+<h2 id="20-分析-GC-日志"><a href="#20-分析-GC-日志" class="headerlink" title="20 分析 GC 日志"></a>20 分析 GC 日志</h2><h3 id="Young-GC-参数图"><a href="#Young-GC-参数图" class="headerlink" title="Young GC 参数图"></a>Young GC 参数图</h3><p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/image-20200714082555688.png" alt></p>
+<h3 id="Full-GC-参数图"><a href="#Full-GC-参数图" class="headerlink" title="Full GC 参数图"></a>Full GC 参数图</h3><p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/image-20200714082714690.png" alt></p>
 <h2 id="21-JVM参数"><a href="#21-JVM参数" class="headerlink" title="21 JVM参数"></a>21 JVM参数</h2><h3 id="标准参数"><a href="#标准参数" class="headerlink" title="标准参数"></a>标准参数</h3><p>标准参数以-开头，比较稳定，后续版本基本不会变化。</p>
 <p>在控制台输入java -help，可以看到所有的标准参数</p>
 <h3 id="X参数"><a href="#X参数" class="headerlink" title="-X参数"></a>-X参数</h3><p>非标准化参数，功能比较稳定，后续版本可能会变更，以-X开头</p>
@@ -912,7 +912,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://adbo.gitee.io/2020/05/20/2021-05-20-chong-xue-jvm/">http://adbo.gitee.io/2020/05/20/2021-05-20-chong-xue-jvm/</a>
+                    <a href="http://adbo.gitee.io/2021/05/20/2021-05-20-chong-xue-jvm/">http://adbo.gitee.io/2021/05/20/2021-05-20-chong-xue-jvm/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -1122,7 +1122,7 @@
         repo: 'gitalk',
         owner: 'FlynnCN',
         admin: "FlynnCN",
-        id: '2020-05-20T23-45-46',
+        id: '2021-05-20T23-45-46',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -1145,43 +1145,46 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2020/06/01/2020-06-01-mysql-01/">
+                <a href="/2021/05/20/2021-05-20-chong-xue-jvm/">
                     <div class="card-image">
                         
-                        <img src="/medias/cover/MySQL.jpg" class="responsive-img" alt="基础架构">
                         
-                        <span class="card-title">基础架构</span>
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="JVM">
+                        
+                        <span class="card-title">JVM</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            基础架构：一条SQL查询语句是如何执行的？
+                            JVM思路清晰版~
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-06-01
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-05-20
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/SQL/" class="post-category">
-                                    SQL
+                            <a href="/categories/JAVA/" class="post-category">
+                                    JAVA
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/MySQL/">
-                        <span class="chip bg-color">MySQL</span>
+                    <a href="/tags/JVM/">
+                        <span class="chip bg-color">JVM</span>
                     </a>
                     
                 </div>
@@ -1195,31 +1198,31 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/05/19/2020-05-19-oauth2-0/">
+                <a href="/2021/05/13/2021-5-13-shou-xie-lru/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="OAuth2.0">
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="手写LRU">
                         
-                        <span class="card-title">OAuth2.0</span>
+                        <span class="card-title">手写LRU</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            OAuth2.0授权
+                            手写LRU算法
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-05-19
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-05-13
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Work/" class="post-category">
-                                    Work
+                            <a href="/categories/中间件/" class="post-category">
+                                    中间件
                                 </a>
                             
                             
@@ -1229,8 +1232,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/OAuth2/">
-                        <span class="chip bg-color">OAuth2</span>
+                    <a href="/tags/Redis/">
+                        <span class="chip bg-color">Redis</span>
                     </a>
                     
                 </div>

@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://adbo.gitee.io/"/>
-  <updated>2021-04-15T13:23:24.055Z</updated>
+  <updated>2021-04-25T09:16:40.261Z</updated>
   <id>http://adbo.gitee.io/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>JVM</title>
+    <link href="http://adbo.gitee.io/2021/05/20/2021-05-20-chong-xue-jvm/"/>
+    <id>http://adbo.gitee.io/2021/05/20/2021-05-20-chong-xue-jvm/</id>
+    <published>2021-05-20T15:45:46.000Z</published>
+    <updated>2021-04-25T09:16:40.261Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;1-Java-内存区域-运行时数据区&quot;&gt;&lt;a href=&quot;#1-Java-内存区域-运行时数据区&quot; class=&quot;headerlink&quot; title=&quot;1 Java 内存区域(运行时数据区)&quot;&gt;&lt;/a&gt;1 Java 内存区域(运行时数据区)&lt;/h2&gt;&lt;h3
+        
+      
+    
+    </summary>
+    
+      <category term="JAVA" scheme="http://adbo.gitee.io/categories/JAVA/"/>
+    
+    
+      <category term="JVM" scheme="http://adbo.gitee.io/tags/JVM/"/>
+    
+  </entry>
   
   <entry>
     <title>手写LRU</title>
@@ -519,35 +545,6 @@
 &lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&quot;备忘录模式介绍&quot;&gt;&lt;a href=&quot;#备忘录模式介绍&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="设计模式" scheme="http://adbo.gitee.io/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-    
-      <category term="设计模式" scheme="http://adbo.gitee.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>中介者模式</title>
-    <link href="http://adbo.gitee.io/2021/04/16/2021-04-16-design-zhong-jie-zhe/"/>
-    <id>http://adbo.gitee.io/2021/04/16/2021-04-16-design-zhong-jie-zhe/</id>
-    <published>2021-04-16T14:43:52.000Z</published>
-    <updated>2021-03-28T03:46:29.786Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;中介者模式介绍&quot;&gt;&lt;a href=&quot;#中介者模式介绍&quot;
         
       
     
