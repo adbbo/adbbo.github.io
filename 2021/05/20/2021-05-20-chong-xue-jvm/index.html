@@ -558,7 +558,17 @@
 <li>new Person()：存放在Java堆中。</li>
 </ul>
 <p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/image-20200708094747667.png" alt></p>
-<h2 id="11-类文件结构"><a href="#11-类文件结构" class="headerlink" title="11 类文件结构"></a>11 类文件结构</h2><p>根据 Java 虚拟机规范，类文件由单个 ClassFile 结构组成：</p>
+<h2 id="11-堆"><a href="#11-堆" class="headerlink" title="11 堆"></a>11 堆</h2><p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/20210401230845268.png" alt></p>
+<h3 id="默认新生代和老年代的占比"><a href="#默认新生代和老年代的占比" class="headerlink" title="默认新生代和老年代的占比"></a>默认新生代和老年代的占比</h3><p>默认 -XX:NewRatio=2，代表新生代占 1，老年代占 2，即新生代占整个堆的 1/3。</p>
+<h3 id="默认-Eden-和-Survivor-的占比"><a href="#默认-Eden-和-Survivor-的占比" class="headerlink" title="默认 Eden 和 Survivor 的占比"></a>默认 Eden 和 Survivor 的占比</h3><p>默认 -xx:SurvivorRatio=8，代表 Eden 和 From Survivor，To Survivor 占比是 8：1：1。</p>
+<h3 id="堆对象流转过程"><a href="#堆对象流转过程" class="headerlink" title="堆对象流转过程"></a>堆对象流转过程</h3><p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/20210401230851499.png" alt></p>
+<ol>
+<li>创建的对象优先在 Eden 区分配（较长的字符串，数组，大对象直接进老年代）。</li>
+<li>如果发现 Eden 满了，会执行 Minor GC 回收新生代，把 Eden 和 From Survivor 存活的对象复制到 To Survivor 上（对象年龄+1），然后 To Survivor 和 From Survivor 交换身份。</li>
+<li>默认情况下如果对象经过 15 次回收还存活，则放到老年代上。</li>
+<li>当老年代内存不足时，会触发 Major GC 对老年代进行回收。</li>
+</ol>
+<h2 id="12-类文件结构"><a href="#12-类文件结构" class="headerlink" title="12 类文件结构"></a>12 类文件结构</h2><p>根据 Java 虚拟机规范，类文件由单个 ClassFile 结构组成：</p>
 <pre><code>ClassFile {
     u4             magic; //Class 文件的标志
     u2             minor_version;//Class 的小版本号
@@ -578,7 +588,7 @@
     attribute_info attributes[attributes_count];//属性表集合
 }</code></pre><p>Class文件字节码结构组织示意图</p>
 <p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/n30hvpi9.bmp" alt></p>
-<h2 id="12-类的加载过程"><a href="#12-类的加载过程" class="headerlink" title="12 类的加载过程"></a>12 类的加载过程</h2><p>类的加载过程为：加载、链接和初始化，其中链接可以细分为：验证、准备和解析。</p>
+<h2 id="13-类的加载过程"><a href="#13-类的加载过程" class="headerlink" title="13 类的加载过程"></a>13 类的加载过程</h2><p>类的加载过程为：加载、链接和初始化，其中链接可以细分为：验证、准备和解析。</p>
 <p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/image-20200705082601441.png" alt></p>
 <h3 id="加载阶段"><a href="#加载阶段" class="headerlink" title="加载阶段"></a>加载阶段</h3><ul>
 <li>通过类的全限定名读取此类二进制字节流。</li>
@@ -591,7 +601,7 @@
 <li>解析：将常量池内的符号引用转换为直接引用。(符号引用就是描述目标，直接引用就是指向目标的地址。举个例子来说，现在调用方法 hello，这个方法的地址是 1234567，那么 hello 就是符号引用，1234567 就是直接引用)</li>
 </ul>
 <h3 id="初始化阶段"><a href="#初始化阶段" class="headerlink" title="初始化阶段"></a>初始化阶段</h3><p>执行类的初始化方法 clinit，执行内容包括静态变量初始化和静态块的执行。</p>
-<h2 id="13-双亲委派机制"><a href="#13-双亲委派机制" class="headerlink" title="13 双亲委派机制"></a>13 双亲委派机制</h2><h3 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h3><ul>
+<h2 id="14-双亲委派机制"><a href="#14-双亲委派机制" class="headerlink" title="14 双亲委派机制"></a>14 双亲委派机制</h2><h3 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h3><ul>
 <li><p>启动类加载器属于虚拟机的一部分，是用 C++ 写的，看不到源码。</p>
 <p>  启动类加载器：加载的是 jre/lib 目录下的核心库。</p>
 </li>
@@ -616,16 +626,6 @@
 <h3 id="双亲委派机制的优势"><a href="#双亲委派机制的优势" class="headerlink" title="双亲委派机制的优势"></a>双亲委派机制的优势</h3><p>避免类被重复加载 + 避免核心 API 被篡改。</p>
 <p>如果没有双亲委托机制来确保类的全局唯一性，谁都可以编写一个 java.lang.String 类放在 classpath 下，那应用程序就乱套了。所以自定义一个与核心类库重名的类，会发现这个类可以被正常编译，但永远无法被加载运行。因为这个类不会被应用类加载器加载，而是被委托到顶层，被启动类加载器在核心类库中找到了。</p>
 <h3 id="如何破坏双亲委派模型"><a href="#如何破坏双亲委派模型" class="headerlink" title="如何破坏双亲委派模型"></a>如何破坏双亲委派模型</h3><p>自定义类加载器，重写 loadClass 方法。</p>
-<h2 id="14-堆"><a href="#14-堆" class="headerlink" title="14 堆"></a>14 堆</h2><p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/20210401230845268.png" alt></p>
-<h3 id="默认新生代和老年代的占比"><a href="#默认新生代和老年代的占比" class="headerlink" title="默认新生代和老年代的占比"></a>默认新生代和老年代的占比</h3><p>默认 -XX:NewRatio=2，代表新生代占 1，老年代占 2，即新生代占整个堆的 1/3。</p>
-<h3 id="默认-Eden-和-Survivor-的占比"><a href="#默认-Eden-和-Survivor-的占比" class="headerlink" title="默认 Eden 和 Survivor 的占比"></a>默认 Eden 和 Survivor 的占比</h3><p>默认 -xx:SurvivorRatio=8，代表 Eden 和 From Survivor，To Survivor 占比是 8：1：1。</p>
-<h3 id="堆对象流转过程"><a href="#堆对象流转过程" class="headerlink" title="堆对象流转过程"></a>堆对象流转过程</h3><p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/20210401230851499.png" alt></p>
-<ol>
-<li>创建的对象优先在 Eden 区分配（较长的字符串，数组，大对象直接进老年代）。</li>
-<li>如果发现 Eden 满了，会执行 Minor GC 回收新生代，把 Eden 和 From Survivor 存活的对象复制到 To Survivor 上（对象年龄+1），然后 To Survivor 和 From Survivor 交换身份。</li>
-<li>默认情况下如果对象经过 15 次回收还存活，则放到老年代上。</li>
-<li>当老年代内存不足时，会触发 Major GC 对老年代进行回收。</li>
-</ol>
 <h2 id="15-并发的可达性分析（三色标记）"><a href="#15-并发的可达性分析（三色标记）" class="headerlink" title="15 并发的可达性分析（三色标记）"></a>15 并发的可达性分析（三色标记）</h2><p>首先需要引入三种颜色：</p>
 <ul>
 <li>白色：对象没被 GC 访问过。若分析结束还是白色的对象，则代表不可达。</li>
