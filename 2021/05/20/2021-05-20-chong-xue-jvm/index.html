@@ -564,8 +564,8 @@
 <h3 id="堆对象流转过程"><a href="#堆对象流转过程" class="headerlink" title="堆对象流转过程"></a>堆对象流转过程</h3><p><img src="/2021/05/20/2021-05-20-chong-xue-jvm/20210401230851499.png" alt></p>
 <ol>
 <li>创建的对象优先在 Eden 区分配（较长的字符串，数组，大对象直接进老年代）。</li>
-<li>如果发现 Eden 满了，会执行 Minor GC 回收新生代，把 Eden 和 From Survivor 存活的对象复制到 To Survivor 上（对象年龄+1），然后 To Survivor 和 From Survivor 交换身份。</li>
-<li>默认情况下如果对象经过 15 次回收还存活，则放到老年代上。</li>
+<li>如果发现 Eden 满了，会触发第一次GC，把还活着的对象拷贝到from区。而当Eden Space再次触发GC时，会扫描Eden Space和from，对这两个区进行垃圾回收，经过此次回收后依旧存活的对象，则直接复制到to区（如果对象的年龄已经达到老年的标准，则移动至老年代区），同时把这些对象的年龄+1。然后，清空Eden Space和from中的对象，此时的from是空的。最后，from和to进行互换，原from成为下一次GC时的to，原to成为下一次GC时的from。</li>
+<li>部分对象会在from和to中来回进行交换复制，如果交换15次（由JVM参数MaxTenuringThreshold决定，默认15），最终依旧存活的对象就会移动至老年代。</li>
 <li>当老年代内存不足时，会触发 Major GC 对老年代进行回收。</li>
 </ol>
 <h2 id="12-类文件结构"><a href="#12-类文件结构" class="headerlink" title="12 类文件结构"></a>12 类文件结构</h2><p>根据 Java 虚拟机规范，类文件由单个 ClassFile 结构组成：</p>
@@ -845,6 +845,15 @@
 <p>-XX:=<option>=<string></string></option></p>
 <p>如，-XX:HeapDumpPath=/xxx/xxx/duml.hprof</p>
 <h4 id="PrintFlagsFinal"><a href="#PrintFlagsFinal" class="headerlink" title="PrintFlagsFinal"></a>PrintFlagsFinal</h4><p>-XX:+PrintFlagsFinal，输出所有参数的名称和默认值，默认不包括诊断和实验的参数</p>
+<h2 id="生产配置垃圾回收器"><a href="#生产配置垃圾回收器" class="headerlink" title="生产配置垃圾回收器"></a>生产配置垃圾回收器</h2><p>JDK8默认的是Parallel Scavenge（复制） + Parallel Old（标记-整理）。</p>
+<p>但我们的是金融支付系统，如果垃圾回收的可能会造成用户线程较长停顿，进而可能造成一些订单超时。</p>
+<p>所以我们线上配置的是ParNew(复制) + CMS(标志清除)。CMS是并发收集器，可以进一步缩短回收的停顿时间。</p>
+<ul>
+<li>初始标记： 暂停所有的其他线程，并记录下直接与root相连的对象，速度很快 ；</li>
+<li>并发标记： 同时开启GC和用户线程，用一个闭包结构去记录可达对象。但在这个阶段结束，这个闭包结构并不能保证包含当前所有的可达对象。因为用户线程可能会不断的更新引用域，所以GC线程无法保证可达性分析的实时性。所以这个算法里会跟踪记录这些发生引用更新的地方。</li>
+<li>重新标记： 重新标记阶段就是为了修正并发标记期间因为用户程序继续运行而导致标记产生变动的那一部分对象的标记记录，这个阶段的停顿时间一般会比初始标记阶段的时间稍长，远远比并发标记阶段时间短</li>
+<li>并发清除： 开启用户线程，同时GC线程开始对为标记的区域做清扫。</li>
+</ul>
 <h2 id="大厂面试题"><a href="#大厂面试题" class="headerlink" title="大厂面试题"></a>大厂面试题</h2><h3 id="阿里"><a href="#阿里" class="headerlink" title="阿里"></a>阿里</h3><ul>
 <li>你知道哪几种垃圾回收器，各自的优缺点，重点讲一下 CMS 和 G1？</li>
 <li>JVM GC 算法有哪些，目前的 JDK 版本采用什么回收算法？可以说用的 JDK8，Parallel Scavenge（复制） + Parallel Old（标记-整理）。</li>
