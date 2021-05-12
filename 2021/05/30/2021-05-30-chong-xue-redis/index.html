@@ -425,8 +425,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/中间件/" class="post-category">
-                                中间件
+                            <a href="/categories/重学/" class="post-category">
+                                重学
                             </a>
                         
                     </div>
@@ -643,6 +643,24 @@ min-slaves-max-lag 10</code></pre><ul>
 <p>  如果一个 master 出现了脑裂，跟其他 slave 丢了连接，那么上面两个配置可以确保说，如果不能继续给指定数量的 slave 发送数据，而且 slave 超过 10 秒没有给自己 ack 消息，那么就直接拒绝客户端的写请求。因此在脑裂场景下，最多就丢失 10 秒的数据。</p>
 </li>
 </ul>
+<h3 id="sdown-和-odown-转换机制"><a href="#sdown-和-odown-转换机制" class="headerlink" title="sdown 和 odown 转换机制"></a>sdown 和 odown 转换机制</h3><ul>
+<li>sdown 是主观宕机，就一个哨兵如果自己觉得一个 master 宕机了，那么就是主观宕机</li>
+<li>odown 是客观宕机，如果 quorum 数量的哨兵都觉得一个 master 宕机了，那么就是客观宕机</li>
+</ul>
+<h3 id="slave-gt-master-选举算法"><a href="#slave-gt-master-选举算法" class="headerlink" title="slave-&gt;master 选举算法"></a>slave-&gt;master 选举算法</h3><p>如果一个 master 被认为 odown 了，而且 majority 数量的哨兵都允许主备切换，那么某个哨兵就会执行主备切换操作，此时首先要选举一个 slave 来，会考虑 slave 的一些信息：</p>
+<ul>
+<li>跟 master 断开连接的时长</li>
+<li>slave 优先级</li>
+<li>复制 offset</li>
+<li>run id</li>
+</ul>
+<p>如果一个 slave 跟 master 断开连接的时间已经超过了 down-after-milliseconds 的 10 倍，外加 master 宕机的时长，那么 slave 就被认为不适合选举为 master。</p>
+<p>接下来会对 slave 进行排序：</p>
+<ul>
+<li>按照 slave 优先级进行排序，slave priority 越低，优先级就越高。</li>
+<li>如果 slave priority 相同，那么看 replica offset，哪个 slave 复制了越多的数据，offset 越靠后，优先级就越高。</li>
+<li>如果上面两个条件都相同，那么选择一个 run id 比较小的那个 slave。</li>
+</ul>
 <h2 id="集群架构"><a href="#集群架构" class="headerlink" title="集群架构"></a>集群架构</h2><p>Redis-cluster 是官方 3.0 版本后的集群方案，它具有以下特点：</p>
 <ul>
 <li>多主多从：能支撑多个 master，且每个 master 都可以挂载多个 slave。</li>
@@ -686,8 +704,15 @@ min-slaves-max-lag 10</code></pre><ul>
 <ul>
 <li>同一个主键操作放到RocketMQ的同一队列中，一个队列对应一个消费者，可以保证顺序性</li>
 </ul>
-<h2 id="Redisson"><a href="#Redisson" class="headerlink" title="Redisson"></a>Redisson</h2><p>set 指令有非常复杂的参数，可以同时把 setnx 和 expire 合成一条指令来用：<br>set key value [ex seconds] [px milliseconds] [nx|xx]<br>nx： 键必须不存在， 才可以设置成功， 用于添加。<br>xx： 与nx相反， 键必须存在， 才可以设置成功， 用于更新。</p>
-<p>主从锁失效的原因是：在 master 节点上拿到了锁，但是这个加锁的 key 还没有同步到 slave 节点，master 故障，发生故障转移，slave 节点升级为 master 节点，导致锁丢失。我们需要基于分布式环境下使用一种更高级的分布式锁的实现方式：Redlock 算法，这个算法其实就是向多个实例获取锁。</p>
+<h2 id="Redis分布式锁"><a href="#Redis分布式锁" class="headerlink" title="Redis分布式锁"></a>Redis分布式锁</h2><p>redis支持nx和ex操作是同一原子操作。</p>
+<pre><code>set resourceName value ex 5 nx</code></pre><ul>
+<li>NX：表示只有 key 不存在的时候才会设置成功，如果此时 redis 中存在这个 key，那么设置失败，返回 nil。</li>
+<li>expire()，设置过期时间，防止死锁，假设，如果一个锁set后，一直不删掉，那这个锁相当于一直存在，产生死锁。</li>
+<li>value要唯一，防止删了其他线程的锁</li>
+</ul>
+<p>删除锁的时候，先要判断是否是当前锁，再删除，这两个过程涉及原子性问题，所以也只能使用lua脚本</p>
+<p>当机器A申请到一把锁之后，如果Redis主宕机了，这个时候从机并没有同步到这一把锁，那么机器B再次申请的时候就会再次申请到这把锁，为了解决这个问题Redis作者提出了RedLock红锁的算法,在Redission中也对RedLock进行了实现。</p>
+<p>RedLock基本原理是利用多个Redis集群，用多数的集群加锁成功，减少Redis某个集群出故障，造成分布式锁出现问题的概率。</p>
 
             </div>
             <hr>
@@ -972,8 +997,8 @@ min-slaves-max-lag 10</code></pre><ul>
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/中间件/" class="post-category">
-                                    中间件
+                            <a href="/categories/重学/" class="post-category">
+                                    重学
                                 </a>
                             
                             
@@ -1022,8 +1047,8 @@ min-slaves-max-lag 10</code></pre><ul>
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/中间件/" class="post-category">
-                                    中间件
+                            <a href="/categories/重学/" class="post-category">
+                                    重学
                                 </a>
                             
                             
