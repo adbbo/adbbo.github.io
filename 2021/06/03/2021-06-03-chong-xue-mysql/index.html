@@ -531,6 +531,11 @@
 <li>最左前缀原则：在MySQL建立联合索引时会遵守最左前缀匹配原则，即最左优先，在检索数据时从联合索引的最左边开始匹配。例如已经有了联合索引（a,b），如果既有联合查询，又有基于 a、b 各自的查询，那么当查询条件里面只有 b 的语句，是无法使用 (a,b) 这个联合索引的，这时候需要同时维护 (a,b)、(b) 这两个索引。</li>
 <li>索引下推：在MySQL5.6之前，只能从根据最左前缀查询，查到主键后到主键索引上找出数据行，再对比条件字段值。MySQL5.6引入的索引下推优化，可以在索引遍历过程中，对索引中包含的字段先做判断，直接过滤掉不满足条件的记录，减少回表次数。例如mysql&gt; select * from tuser where name like ‘张%’ and age=10 and ismale=1; 在此之前已经建立（name, age）联合索引，此SQL明显可知只用到了name索引，age索引用不到。当没有用到索引下推时，只根据name索引查找出主键，再回表查询数据判断age和ismale条件字段是否符合。当用到索引下推时，会对索引中包含的字段先做判断，判断联合索引值的age=10，只有当索引值name like ‘张%’ &amp;&amp; age=10，才找出主键回表查找数据，再判断ismale条件字段是否符合。</li>
 </ul>
+<h2 id="什么情况下应不建或少建索引"><a href="#什么情况下应不建或少建索引" class="headerlink" title="什么情况下应不建或少建索引"></a>什么情况下应不建或少建索引</h2><ul>
+<li>表记录太少，因为索引也要存储空间</li>
+<li>经常插入、删除、修改的表，因为更新表时，不仅要保存数据，还要保存索引文件</li>
+<li>数据重复且分布平均的表字段，假如一个表有10万行记录，有一个字段A只有T和F两种值，且每个值的分布概率大约为50%，那么对这种表A字段建索引一般不会提高数据库的查询速度。</li>
+</ul>
 <h2 id="普通索引和唯一索引选择"><a href="#普通索引和唯一索引选择" class="headerlink" title="普通索引和唯一索引选择"></a>普通索引和唯一索引选择</h2><h3 id="选择普通索引还是唯一索引"><a href="#选择普通索引还是唯一索引" class="headerlink" title="选择普通索引还是唯一索引"></a>选择普通索引还是唯一索引</h3><ul>
 <li>对于查询过程来说：<br>a、普通索引，查到满足条件的第一个记录后，继续查找下一个记录，直到第一个不满足条件的记录<br>b、唯一索引，由于索引唯一性，查到第一个满足条件的记录后，停止检索<br>但是，两者的性能差距微乎其微。因为InnoDB根据数据页来读写的。</li>
 <li>对于更新过程来说：<br>引入概念：change buffer<br>当需要更新一个数据页，如果数据页在内存中就直接更新，如果不在内存中，在不影响数据一致性的前提下，InnoDB会将这些更新操作缓存在change buffer中。下次查询需要访问这个数据页的时候，将数据页读入内存，然后执行change buffer中的与这个页有关的操作。<br>change buffer是可以持久化的数据。在内存中有拷贝，也会被写入到磁盘上。<br>merge:将change buffer中的操作应用到原数据页上，得到最新结果的过程，访问这个数据页会触发merge，系统有后台线程定期merge，在数据库正常关闭的过程中，也会执行merge。<br>唯一索引的更新不能使用change buffer。对于唯一索引来说，例如插入一条数据，需要将数据页读入内存，判断到没有冲突，插入这个值，都已经读入到内存了，那直接更新内存会更快，就没必要使用 change buffer 了。<br>change buffer用的是buffer pool里的内存，change buffer的大小，可以通过参数innodb_change_buffer_max_size来动态设置。这个参数设置为50的时候，表示change buffer的大小最多只能占用buffer pool的50%。<br>将数据从磁盘读入内存涉及随机IO的访问，是数据库里面成本最高的操作之一。<br>change buffer 因为减少了随机磁盘访问，所以对更新性能的提升很明显。</li>
@@ -679,6 +684,7 @@
 <li>select tables optimized away:在没有GROUPBY子句的情况下，基于索引优化MIN/MAX操作或者对于MyISAM存储引擎优化COUNT(*)操作，不必等到执行阶段再进行计算，查询执行计划生成的阶段即完成优化。</li>
 <li>distinct:优化distinct操作，在找到第一匹配的元组后即停止找同样值的动作</li>
 </ul>
+<h2 id="sql的执行顺序"><a href="#sql的执行顺序" class="headerlink" title="sql的执行顺序"></a>sql的执行顺序</h2><p><img src="/2021/06/03/2021-06-03-chong-xue-mysql/1066538-20191005155410162-1650888418.png" alt></p>
 <h2 id="查询性能不稳定"><a href="#查询性能不稳定" class="headerlink" title="查询性能不稳定"></a>查询性能不稳定</h2><h3 id="MySQL为什么会查询不稳定"><a href="#MySQL为什么会查询不稳定" class="headerlink" title="MySQL为什么会查询不稳定"></a>MySQL为什么会查询不稳定</h3><p>因为运行的不正常，或者不稳定，需要花费更多的资源处理别的事情，会使SQL语句的执行效率明显变慢。</p>
 <p>针对innoDB导致MySQL查询性能不稳定的原因，主要是InnoDB 会在后台刷脏页，而刷脏页的过程是要将内存页写入磁盘。所以，无论是你的查询语句在需要内存的时候可能要求淘汰一个脏页，还是由于刷脏页的逻辑会占用 IO 资源并可能影响到了你的更新语句，都可能是造成你从业务端感知MySQL突然慢的原因。</p>
 <h3 id="什么是脏页"><a href="#什么是脏页" class="headerlink" title="什么是脏页"></a>什么是脏页</h3><p>当内存数据页跟磁盘数据页内容不一致的时候，我们称这个内存页为“脏页”。</p>
@@ -691,6 +697,26 @@
 <li><p>如果要收缩一个表，只是 delete 掉表里面不用的数据的话，表文件的大小是不会变的，你还要通过 alter table A engine=InnoDB 命令重建表，才能达到表文件变小的目的。</p>
 </li>
 </ul>
+<h2 id="join语法"><a href="#join语法" class="headerlink" title="join语法"></a>join语法</h2><p><img src="/2021/06/03/2021-06-03-chong-xue-mysql/Image231.png" alt></p>
+<h2 id="join"><a href="#join" class="headerlink" title="join"></a>join</h2><h3 id="NLJ（Index-Nested-Loop-Join）"><a href="#NLJ（Index-Nested-Loop-Join）" class="headerlink" title="NLJ（Index Nested-Loop Join）"></a>NLJ（Index Nested-Loop Join）</h3><p>驱动表选出一行行数据到被驱动表中查找（被驱动表上有可用的索引）</p>
+<h3 id="BNL（Block-Nested-Loop-Join）"><a href="#BNL（Block-Nested-Loop-Join）" class="headerlink" title="BNL（Block Nested-Loop Join）"></a>BNL（Block Nested-Loop Join）</h3><p>把驱动表的数据分段读入join buffer中，然后和被驱动表join（被驱动表上没有可用的索引）</p>
+<h3 id="能不能使用-join-语句？"><a href="#能不能使用-join-语句？" class="headerlink" title="能不能使用 join 语句？"></a>能不能使用 join 语句？</h3><ul>
+<li>如果可以使用 Index Nested-Loop Join 算法，也就是说可以用上被驱动表上的索引，其实是没问题的；</li>
+<li>如果使用 Block Nested-Loop Join 算法，扫描行数就会过多。尤其是在大表上的 join 操作，这样可能要扫描被驱动表很多次，会占用大量的系统资源。所以这种 join 尽量不要用。</li>
+</ul>
+<h3 id="应该选择大表做驱动表还是选择小表做驱动表？"><a href="#应该选择大表做驱动表还是选择小表做驱动表？" class="headerlink" title="应该选择大表做驱动表还是选择小表做驱动表？"></a>应该选择大表做驱动表还是选择小表做驱动表？</h3><ul>
+<li><p>如果是 Index Nested-Loop Join 算法，应该选择小表做驱动表；</p>
+</li>
+<li><p>如果是 Block Nested-Loop Join 算法：</p>
+<ul>
+<li>在 join_buffer_size 足够大的时候，是一样的；</li>
+<li>在 join_buffer_size 不够大的时候（这种情况更常见），应该选择小表做驱动表。</li>
+</ul>
+</li>
+</ul>
+<h2 id="drop、delete与truncate的区别"><a href="#drop、delete与truncate的区别" class="headerlink" title="drop、delete与truncate的区别"></a>drop、delete与truncate的区别</h2><p>delete和truncate只删除表的数据不删除表的结构</p>
+<p>速度,一般来说: drop&gt; truncate &gt;delete </p>
+<p>delete语句是dml,这个操作会放到rollback segement中,事务提交之后才生效;</p>
 <h2 id="count"><a href="#count" class="headerlink" title="count()"></a>count()</h2><ul>
 <li><p>按照效率排序的话，count(字段)&lt;count(主键 id)&lt;count(1)≈count(<em>)，建议尽量使用 count(</em>)</p>
 </li>
@@ -792,25 +818,6 @@
 <h3 id="可用性策略"><a href="#可用性策略" class="headerlink" title="可用性策略"></a>可用性策略</h3><p>出现的问题：在双m，且binlog_format=mixed，会导致主备数据不一致。使用使用 row 格式的 binlog 时，数据不一致的问题更容易发现，因为binlog row会记录字段的所有值。</p>
 <p>使用 row 格式的 binlog 时，数据不一致的问题更容易被发现。而使用 mixed 或者 statement 格式的 binlog 时，数据很可能悄悄地就不一致了。如果你过了很久才发现数据不一致的问题，很可能这时的数据不一致已经不可查，或者连带造成了更多的数据逻辑不一致。</p>
 <h3 id="用哪个策略"><a href="#用哪个策略" class="headerlink" title="用哪个策略"></a>用哪个策略</h3><p>主备切换的可用性优先策略会导致数据不一致。因此，大多数情况下，我都建议你使用可靠性优先策略。毕竟对数据服务来说的话，数据的可靠性一般还是要优于可用性的。</p>
-<h2 id="join"><a href="#join" class="headerlink" title="join"></a>join</h2><h3 id="NLJ（Index-Nested-Loop-Join）"><a href="#NLJ（Index-Nested-Loop-Join）" class="headerlink" title="NLJ（Index Nested-Loop Join）"></a>NLJ（Index Nested-Loop Join）</h3><p>驱动表选出一行行数据到被驱动表中查找（被驱动表上有可用的索引）</p>
-<h3 id="BNL（Block-Nested-Loop-Join）"><a href="#BNL（Block-Nested-Loop-Join）" class="headerlink" title="BNL（Block Nested-Loop Join）"></a>BNL（Block Nested-Loop Join）</h3><p>把驱动表的数据分段读入join buffer中，然后和被驱动表join（被驱动表上没有可用的索引）</p>
-<h3 id="能不能使用-join-语句？"><a href="#能不能使用-join-语句？" class="headerlink" title="能不能使用 join 语句？"></a>能不能使用 join 语句？</h3><ul>
-<li>如果可以使用 Index Nested-Loop Join 算法，也就是说可以用上被驱动表上的索引，其实是没问题的；</li>
-<li>如果使用 Block Nested-Loop Join 算法，扫描行数就会过多。尤其是在大表上的 join 操作，这样可能要扫描被驱动表很多次，会占用大量的系统资源。所以这种 join 尽量不要用。</li>
-</ul>
-<h3 id="应该选择大表做驱动表还是选择小表做驱动表？"><a href="#应该选择大表做驱动表还是选择小表做驱动表？" class="headerlink" title="应该选择大表做驱动表还是选择小表做驱动表？"></a>应该选择大表做驱动表还是选择小表做驱动表？</h3><ul>
-<li><p>如果是 Index Nested-Loop Join 算法，应该选择小表做驱动表；</p>
-</li>
-<li><p>如果是 Block Nested-Loop Join 算法：</p>
-<ul>
-<li>在 join_buffer_size 足够大的时候，是一样的；</li>
-<li>在 join_buffer_size 不够大的时候（这种情况更常见），应该选择小表做驱动表。</li>
-</ul>
-</li>
-</ul>
-<h2 id="drop、delete与truncate的区别"><a href="#drop、delete与truncate的区别" class="headerlink" title="drop、delete与truncate的区别"></a>drop、delete与truncate的区别</h2><p>delete和truncate只删除表的数据不删除表的结构</p>
-<p>速度,一般来说: drop&gt; truncate &gt;delete </p>
-<p>delete语句是dml,这个操作会放到rollback segement中,事务提交之后才生效;</p>
 <h2 id="大表优化"><a href="#大表优化" class="headerlink" title="大表优化"></a>大表优化</h2><h3 id="限定数据的范围"><a href="#限定数据的范围" class="headerlink" title="限定数据的范围"></a>限定数据的范围</h3><p>添加查询条件或者范围查询。</p>
 <h3 id="垂直分区"><a href="#垂直分区" class="headerlink" title="垂直分区"></a>垂直分区</h3><p>根据数据库里面数据表的相关性进行拆分。 例如，用户表中既有用户的登录信息又有用户的基本信息，可以将用户表拆分成两个单独的表，甚至放到单独的库做分库。</p>
 <p><img src="/2021/06/03/2021-06-03-chong-xue-mysql/w1pft649.bmp" alt></p>
@@ -827,7 +834,7 @@
 <li>中间件代理： 在应用和数据中间加了一个代理层。分片逻辑统一维护在中间件服务中。 我们现在谈的 <strong>Mycat</strong> 、360的Atlas、网易的DDB等等都是这种架构的实现。</li>
 </ul>
 <h3 id="分库分表之后-id-主键如何处理"><a href="#分库分表之后-id-主键如何处理" class="headerlink" title="分库分表之后,id 主键如何处理"></a>分库分表之后,id 主键如何处理</h3><p>雪花算法</p>
-<h2 id="sql优化"><a href="#sql优化" class="headerlink" title="sql优化"></a>sql优化</h2>
+
             </div>
             <hr>
 
