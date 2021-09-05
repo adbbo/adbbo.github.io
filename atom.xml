@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://adbo.gitee.io/"/>
-  <updated>2021-09-05T06:37:37.501Z</updated>
+  <updated>2021-09-05T07:31:54.011Z</updated>
   <id>http://adbo.gitee.io/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Redis</title>
+    <link href="http://adbo.gitee.io/2021/07/07/2021-07-07-redis-duo-xian-cheng-mo-xing/"/>
+    <id>http://adbo.gitee.io/2021/07/07/2021-07-07-redis-duo-xian-cheng-mo-xing/</id>
+    <published>2021-07-07T11:05:31.000Z</published>
+    <updated>2021-09-05T07:31:54.011Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;Redis-6-0-之前为什么不使用多线程？&quot;&gt;&lt;a href=&quot;#Redis-6-0-之前为什么不使用多线程？&quot; class=&quot;headerlink&quot; title=&quot;Redis 6.0 之前为什么不使用多线程？&quot;&gt;&lt;/a&gt;Redis 6.0
+        
+      
+    
+    </summary>
+    
+      <category term="中间件" scheme="http://adbo.gitee.io/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/"/>
+    
+    
+      <category term="Redis" scheme="http://adbo.gitee.io/tags/Redis/"/>
+    
+  </entry>
   
   <entry>
     <title>对象类型</title>
@@ -513,35 +539,6 @@
     
     
       <category term="JAVA并发" scheme="http://adbo.gitee.io/tags/JAVA%E5%B9%B6%E5%8F%91/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>访问者模式</title>
-    <link href="http://adbo.gitee.io/2021/04/22/2021-04-22-design-fang-wen-zhe/"/>
-    <id>http://adbo.gitee.io/2021/04/22/2021-04-22-design-fang-wen-zhe/</id>
-    <published>2021-04-22T14:43:52.000Z</published>
-    <updated>2021-03-28T03:52:27.492Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;访问者模式介绍&quot;&gt;&lt;a href=&quot;#访问者模式介绍&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="设计模式" scheme="http://adbo.gitee.io/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    
-    
-      <category term="设计模式" scheme="http://adbo.gitee.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
     
   </entry>
   
