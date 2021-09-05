@@ -4,8 +4,8 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="发布博客, Adbo~Blog">
-    <meta name="description" content="个人备忘录，需密码">
+    <meta name="keywords" content="对象类型, Adbo~Blog">
+    <meta name="description" content="浅析 VO、DTO、DO、PO 的概念、区别和用处">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -13,7 +13,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>发布博客 | Adbo</title>
+    <title>对象类型 | Adbo</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -278,7 +278,7 @@
 <script src="/libs/cryptojs/crypto-js.min.js"></script>
 <script>
     (function() {
-        let pwd = '384b7beaa046dce4ac43fb4621a3f6b1efae220d34c3659fb8de8eece36f7864';
+        let pwd = '';
         if (pwd && pwd.length > 0) {
             if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
                 alert('密码错误，将返回主页！');
@@ -291,12 +291,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/cover/source.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">发布博客</h1>
+                    <h1 class="description center-align post-title">对象类型</h1>
                 </div>
             </div>
         </div>
@@ -413,8 +413,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/发布博客/">
-                                <span class="chip bg-color">发布博客</span>
+                            <a href="/tags/JAVA基础/">
+                                <span class="chip bg-color">JAVA基础</span>
                             </a>
                         
                     </div>
@@ -425,8 +425,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/备忘录/" class="post-category">
-                                备忘录
+                            <a href="/categories/JAVA/" class="post-category">
+                                JAVA
                             </a>
                         
                     </div>
@@ -438,7 +438,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-04-01
+                    2021-09-05
                 </div>
                 
 
@@ -455,22 +455,20 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="发布博客"><a href="#发布博客" class="headerlink" title="发布博客"></a>发布博客</h2><pre><code>title: JAVA基础
-date: 2020-01-13 23:45:46
-author: Adbo
-summary: 理论知识总结
-categories: JAVA
-tags:
-- JAVA基础</code></pre><pre><code>0. 配置公钥相关
-1. git clone 博客（BlogBackups） project
-2. import code（导入代码）
-3. npm install(执行这个命令，前提是安装nodejs，尽量是低版本，目测v12.16.3是可以的，https://nodejs.org/download/release/v12.16.3/)
-npm install -g cnpm --registry==https://registry.npm.taobao.org(如何执行上面的命令错误)
-cnpm install -g hexo-cli</code></pre><pre><code>hexo new &quot;2020-01-16-JVM&quot;
-git commit -am &quot;udpate&quot;
-git push</code></pre><pre><code>hexo clean
-hexo generate
-hexo deploy</code></pre>
+                <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><ul>
+<li>VO（View Object）：视图对象，用于展示层，它的作用是把某个指定页面（或组件）的所有数据封装起来。</li>
+<li>DTO（Data Transfer Object）：数据传输对象，泛指用于展示层与服务层之间的数据传输对象。</li>
+<li>DO（Domain Object）：<strong>领域对象</strong>，就是从现实世界中抽象出来的有形或无形的业务实体。</li>
+<li>PO（Persistent Object）：持久化对象，它跟持久层（通常是关系型数据库）的数据结构形成一一对应的映射关系，如果持久层是关系型数据库，那么，数据表中的每个字段（或若干个）就对应PO的一个（或若干个）属性。</li>
+</ul>
+<h2 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h2><p><img src="/2021/09/05/2021-09-05-qian-xi-vo-dto-do-po/640.webp" alt></p>
+<ol>
+<li>用户发出请求（可能是填写表单），表单的数据在展示层被匹配为VO。</li>
+<li>展示层把VO转换为服务层对应方法所要求的DTO，传送给服务层。</li>
+<li>服务层首先根据DTO的数据构造（或重建）一个DO，调用DO的业务方法完成具体业务。</li>
+<li>服务层把DO转换为持久层对应的PO（可以使用ORM工具，也可以不用），调用持久层的持久化方法，把PO传递给它，完成持久化操作。</li>
+</ol>
+
             </div>
             <hr>
 
@@ -495,7 +493,7 @@ hexo deploy</code></pre>
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://adbo.gitee.io/2020/04/01/hello-world/">http://adbo.gitee.io/2020/04/01/hello-world/</a>
+                    <a href="http://adbo.gitee.io/2021/09/05/2021-09-05-qian-xi-vo-dto-do-po/">http://adbo.gitee.io/2021/09/05/2021-09-05-qian-xi-vo-dto-do-po/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -533,8 +531,8 @@ hexo deploy</code></pre>
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/发布博客/">
-                                    <span class="chip bg-color">发布博客</span>
+                                <a href="/tags/JAVA基础/">
+                                    <span class="chip bg-color">JAVA基础</span>
                                 </a>
                             
                         </div>
@@ -705,7 +703,7 @@ hexo deploy</code></pre>
         repo: 'gitalk',
         owner: 'FlynnCN',
         admin: "FlynnCN",
-        id: '2020-04-01T23-45-46',
+        id: '2021-09-05T14-13-57',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -728,74 +726,27 @@ hexo deploy</code></pre>
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2020/04/10/2020-04-10-kui-hua-bao-dian-java-ji-he/">
+                <a href="/2021/09/05/2021-09-05-qian-xi-vo-dto-do-po/">
                     <div class="card-image">
                         
-                        <img src="/medias/cover/kuihuabaodian.png" class="responsive-img" alt="葵花宝典-JAVA集合">
                         
-                        <span class="card-title">葵花宝典-JAVA集合</span>
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="对象类型">
+                        
+                        <span class="card-title">对象类型</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            终于翻烂啦
-                        
-                    </div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-04-10
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/葵花宝典/" class="post-category">
-                                    葵花宝典
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/集合/">
-                        <span class="chip bg-color">集合</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2020/03/18/2020-03-18-bing-fa-aqs-shen-ru-li-jie/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="深入理解AQS">
-                        
-                        <span class="card-title">深入理解AQS</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            多张图结合实例，让你深入理解 AQS
+                            浅析 VO、DTO、DO、PO 的概念、区别和用处
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-03-18
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-09-05
                             </span>
                         <span class="publish-author">
                             
@@ -809,11 +760,61 @@ hexo deploy</code></pre>
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/JAVA并发/">
-                        <span class="chip bg-color">JAVA并发</span>
+                    <a href="/tags/JAVA基础/">
+                        <span class="chip bg-color">JAVA基础</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/06/03/2021-06-03-chong-xue-mysql/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="MySQL">
+                        
+                        <span class="card-title">MySQL</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            MySQL思路清晰版~
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-06-03
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/重学/" class="post-category">
+                                    重学
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/MySQL/">
+                        <span class="chip bg-color">MySQL</span>
                     </a>
                     
                 </div>
