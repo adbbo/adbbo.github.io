@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://adbo.gitee.io/"/>
-  <updated>2022-10-20T14:52:34.845Z</updated>
+  <updated>2022-10-22T14:11:46.594Z</updated>
   <id>http://adbo.gitee.io/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>模板模式 + 策略模式</title>
+    <link href="http://adbo.gitee.io/2022/10/19/2022-10-19-mo-ban-mo-shi/"/>
+    <id>http://adbo.gitee.io/2022/10/19/2022-10-19-mo-ban-mo-shi/</id>
+    <published>2022-10-19T15:45:46.000Z</published>
+    <updated>2022-10-22T14:11:46.594Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;本篇主要记录和总结工作中用到模板 + 策略 + 工厂模式的一种实现方式&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&quot;先抽象公共的方法模板&quot;&gt;&lt;a href=&quot;#先抽象公共的方法模板&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="复习PLUS" scheme="http://adbo.gitee.io/categories/%E5%A4%8D%E4%B9%A0PLUS/"/>
+    
+    
+      <category term="设计模式" scheme="http://adbo.gitee.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+  </entry>
   
   <entry>
     <title>线程池</title>
@@ -555,32 +584,6 @@
     
     
       <category term="SpringCloud" scheme="http://adbo.gitee.io/tags/SpringCloud/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>springboot自动装配</title>
-    <link href="http://adbo.gitee.io/2021/10/15/2021-10-15-springboot-zi-dong-zhuang-pei/"/>
-    <id>http://adbo.gitee.io/2021/10/15/2021-10-15-springboot-zi-dong-zhuang-pei/</id>
-    <published>2021-10-15T14:30:22.000Z</published>
-    <updated>2022-10-20T14:52:34.679Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;自动装配是什么&quot;&gt;&lt;a href=&quot;#自动装配是什么&quot; class=&quot;headerlink&quot; title=&quot;自动装配是什么&quot;&gt;&lt;/a&gt;自动装配是什么&lt;/h2&gt;&lt;p&gt;SpringBoot 定义了一套接口规范，这套规范规定：SpringBoot
-        
-      
-    
-    </summary>
-    
-      <category term="复习PLUS" scheme="http://adbo.gitee.io/categories/%E5%A4%8D%E4%B9%A0PLUS/"/>
-    
-    
-      <category term="Spring框架" scheme="http://adbo.gitee.io/tags/Spring%E6%A1%86%E6%9E%B6/"/>
     
   </entry>
   
