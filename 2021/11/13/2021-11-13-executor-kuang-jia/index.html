@@ -456,7 +456,7 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <blockquote>
-<p>本文章仅用于本人学习笔记记录<br>来源《Java并发编程的艺术》<br>微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）</p>
+<p>本文章仅用于本人学习笔记记录<br>来源《Java并发编程的艺术》<br>微信：A20991212A（如本文档内容侵权了您的权益，请您通过微信联系到我）</p>
 </blockquote>
 <h2 id="Executor框架简介"><a href="#Executor框架简介" class="headerlink" title="Executor框架简介"></a>Executor框架简介</h2><h3 id="Executor框架的两级调度模型"><a href="#Executor框架的两级调度模型" class="headerlink" title="Executor框架的两级调度模型"></a>Executor框架的两级调度模型</h3><p>在HotSpot VM的线程模型中，Java线程（java.lang.Thread）被一对一映射为本地操作系统线程。Java线程启动时会创建一个本地操作系统线程；当该Java线程终止时，这个操作系统线程也会被回收。操作系统会调度所有线程并将它们分配给可用的CPU。</p>
 <p>在上层，Java多线程程序通常把应用分解为若干个任务，然后使用用户级的调度器（Executor框架）将这些任务映射为固定数量的线程；在底层，操作系统内核将这些线程映射到硬件处理器上。</p>

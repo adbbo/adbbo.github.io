@@ -456,7 +456,7 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <blockquote>
-<p>本文章仅用于本人学习笔记记录<br>来源《MySQL实战45课》<br>微信：wxid_ygj58saenbjh22（如本文档内容侵权了您的权益，请您通过微信联系到我）</p>
+<p>本文章仅用于本人学习笔记记录<br>来源《MySQL实战45课》<br>微信：A20991212A（如本文档内容侵权了您的权益，请您通过微信联系到我）</p>
 </blockquote>
 <p>这里，我们还是针对 MySQL 中应用最广泛的 InnoDB 引擎展开讨论。一个 InnoDB 表包含两部分，即：表结构定义和数据。在 MySQL 8.0 版本以前，表结构是存在以.frm 为后缀的文件里。而 MySQL 8.0 版本，则已经允许把表结构定义放在系统数据表中了。因为表结构定义占用的空间很小，所以我们今天主要讨论的是表数据。</p>
 <h2 id="参数-innodb-file-per-table"><a href="#参数-innodb-file-per-table" class="headerlink" title="参数 innodb_file_per_table"></a>参数 innodb_file_per_table</h2><p>表数据既可以存在共享表空间里，也可以是单独的文件。这个行为是由参数 innodb_file_per_table 控制的：</p>
