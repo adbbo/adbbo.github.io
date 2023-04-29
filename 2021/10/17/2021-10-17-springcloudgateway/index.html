@@ -1,0 +1,2188 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="SpringCloudGateway, Adbo~Blog">
+    <meta name="description" content="如果有人问你gateway，你就把这篇文章扔给他">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>SpringCloudGateway | Adbo</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Adbo</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-at" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Adbo</div>
+        <div class="logo-desc">
+            
+            沉淀、分享、成长，让自己和他人都能有所收获
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-at"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://adbo.gitee.io/javaify" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://adbo.gitee.io/javaify" class="github-corner tooltipped hide-on-med-and-down" target="_blank" data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewbox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">SpringCloudGateway</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/SpringCloud/">
+                                <span class="chip bg-color">SpringCloud</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/复习PLUS/" class="post-category">
+                                复习PLUS
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-10-17
+                </div>
+                
+
+                
+
+                
+
+                
+				
+                
+            </div>
+            
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>SpringCloud Gateway 是 Spring Cloud 的一个全新项目，该项目是基于 Spring 5.0，Spring Boot 2.0 和 Project Reactor 等技术开发的网关，它旨在为微服务架构提供一种简单有效的统一的 API 路由管理方式。</p>
+<p>SpringCloud Gateway 作为 Spring Cloud 生态系统中的网关，目标是替代 Zuul，在Spring Cloud 2.0以上版本中，没有对新版本的Zuul 2.0以上最新高性能版本进行集成，仍然还是使用的Zuul 2.0之前的非Reactor模式的老版本。而为了提升网关的性能，SpringCloud Gateway是基于WebFlux框架实现的，而WebFlux框架底层则使用了高性能的Reactor模式通信框架Netty。</p>
+<p>Spring Cloud Gateway 的目标，不仅提供统一的路由方式，并且基于 Filter 链的方式提供了网关基本的功能，例如：安全，监控/指标，和限流。</p>
+<h2 id="特征"><a href="#特征" class="headerlink" title="特征"></a>特征</h2><p>SpringCloud官方，对SpringCloud Gateway 特征介绍如下：</p>
+<ol>
+<li>基于 Spring Framework 5，Project Reactor 和 Spring Boot 2.0</li>
+<li>集成 Hystrix 断路器</li>
+<li>集成 Spring Cloud DiscoveryClient</li>
+<li>Predicates 和 Filters 作用于特定路由，易于编写的 Predicates 和 Filters</li>
+<li>具备一些网关的高级功能：动态路由、限流、路径重写</li>
+</ol>
+<p>从以上的特征来说，和Zuul的特征差别不大。SpringCloud Gateway和Zuul主要的区别，还是在底层的通信框架上。</p>
+<h3 id="Filter（过滤器）"><a href="#Filter（过滤器）" class="headerlink" title="Filter（过滤器）"></a>Filter（过滤器）</h3><p>和Zuul的过滤器在概念上类似，可以使用它拦截和修改请求，并且对上游的响应，进行二次处理。过滤器为org.springframework.cloud.gateway.filter.GatewayFilter类的实例。</p>
+<h3 id="Route（路由）"><a href="#Route（路由）" class="headerlink" title="Route（路由）"></a>Route（路由）</h3><p>网关配置的基本组成模块，和Zuul的路由配置模块类似。一个Route模块由一个 ID，一个目标 URI，一组断言和一组过滤器定义。如果断言为真，则路由匹配，目标URI会被访问。</p>
+<h3 id="Predicate（断言）"><a href="#Predicate（断言）" class="headerlink" title="Predicate（断言）"></a>Predicate（断言）</h3><p>这是一个 Java 8 的 Predicate，可以使用它来匹配来自 HTTP 请求的任何内容，例如 headers 或参数。断言的输入类型是一个 ServerWebExchange。</p>
+<h2 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h2><p>Spring在2017年下半年迎来了Webflux，Webflux的出现填补了Spring在响应式编程上的空白，Webflux的响应式编程不仅仅是编程风格的改变，而且对于一系列的著名框架，都提供了响应式访问的开发包，比如Netty、Redis等等。</p>
+<p>SpringCloud Gateway 使用的Webflux中的reactor-netty响应式编程组件，底层使用了Netty通讯框架。</p>
+<p><img src="/2021/10/17/2021-10-17-springcloudgateway/19816137-8758f092be21e6f7.gif" alt></p>
+<h3 id="Zuul的IO模型"><a href="#Zuul的IO模型" class="headerlink" title="Zuul的IO模型"></a>Zuul的IO模型</h3><p>Springcloud中所集成的Zuul版本，采用的是Tomcat容器，使用的是传统的Servlet IO处理模型。</p>
+<p>servlet由servlet container进行生命周期管理。container启动时构造servlet对象并调用servlet init()进行初始化；container关闭时调用servlet destory()销毁servlet；container运行时接受请求，并为每个请求分配一个线程（一般从线程池中获取空闲线程）然后调用service()。</p>
+<p>弊端：servlet是一个简单的网络IO模型，当请求进入servlet container时，servlet container就会为其绑定一个线程，在并发不高的场景下这种模型是适用的，但是一旦并发上升，线程数量就会上涨，而线程资源代价是昂贵的（上线文切换，内存消耗大）严重影响请求的处理时间。在一些简单的业务场景下，不希望为每个request分配一个线程，只需要1个或几个线程就能应对极大并发的请求，这种业务场景下servlet模型没有优势。</p>
+<p><img src="/2021/10/17/2021-10-17-springcloudgateway/19816137-bb466f6b0135bb71.jpg" alt></p>
+<p>所以Springcloud Zuul 是基于servlet之上的一个阻塞式处理模型，即spring实现了处理所有request请求的一个servlet（DispatcherServlet），并由该servlet阻塞式处理处理。所以Springcloud Zuul无法摆脱servlet模型的弊端。虽然Zuul 2.0开始，使用了Netty，并且已经有了大规模Zuul 2.0集群部署的成熟案例，但是，Springcloud官方已经没有集成改版本的计划了。</p>
+<h3 id="Webflux-服务器"><a href="#Webflux-服务器" class="headerlink" title="Webflux 服务器"></a>Webflux 服务器</h3><p>Webflux模式替换了旧的Servlet线程模型。用少量的线程处理request和response io操作，这些线程称为Loop线程，而业务交给响应式编程框架处理，响应式编程是非常灵活的，用户可以将业务中阻塞的操作提交到响应式框架的work线程中执行，而不阻塞的操作依然可以在Loop线程中进行处理，大大提高了Loop线程的利用率。官方结构图：</p>
+<p><img src="/2021/10/17/2021-10-17-springcloudgateway/19816137-dad0e43fc31f4536.jpg" alt></p>
+<p>Webflux虽然可以兼容多个底层的通信框架，但是一般情况下，底层使用的还是Netty，毕竟，Netty是目前业界认可的最高性能的通信框架。而Webflux的Loop线程，正好就是著名的Reactor 模式IO处理模型的Reactor线程，如果使用的是高性能的通信框架Netty，这就是Netty的EventLoop线程。</p>
+<h3 id="Spring-Cloud-Gateway的处理流程"><a href="#Spring-Cloud-Gateway的处理流程" class="headerlink" title="Spring Cloud Gateway的处理流程"></a>Spring Cloud Gateway的处理流程</h3><p>客户端向 Spring Cloud Gateway 发出请求。然后在 Gateway Handler Mapping 中找到与请求相匹配的路由，将其发送到 Gateway Web Handler。Handler 再通过指定的过滤器链来将请求发送到我们实际的服务执行业务逻辑，然后返回。过滤器之间用虚线分开是因为过滤器可能会在发送代理请求之前（“pre”）或之后（“post”）执行业务逻辑。</p>
+<p><img src="/2021/10/17/2021-10-17-springcloudgateway/19816137-eeedbd49be096c05.jpg" alt></p>
+<h2 id="路由配置方式"><a href="#路由配置方式" class="headerlink" title="路由配置方式"></a>路由配置方式</h2><h3 id="基础URI路由配置方式"><a href="#基础URI路由配置方式" class="headerlink" title="基础URI路由配置方式"></a>基础URI路由配置方式</h3><p>如果请求的目标地址，是单个的URI资源路径，配置文件示例如下：</p>
+<pre><code>server:
+  port: 8080
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: url-proxy-1
+          uri: https://blog.csdn.net
+          predicates:
+            - Path=/csdn</code></pre><ul>
+<li>id：我们自定义的路由 ID，保持唯一</li>
+<li>uri：目标服务地址</li>
+<li>predicates：路由条件，Predicate 接受一个输入参数，返回一个布尔值结果。该接口包含多种默认方法来将 Predicate 组合成其他复杂的逻辑（比如：与，或，非）。</li>
+</ul>
+<p>上面这段配置的意思是，配置了一个 id 为 url-proxy-1的URI代理规则，路由的规则为：</p>
+<p>当访问地址<a href="http://localhost:8080/csdn/1.jsp时，会路由到上游地址https://blog.csdn.net/1.jsp。" target="_blank" rel="noopener">http://localhost:8080/csdn/1.jsp时，会路由到上游地址https://blog.csdn.net/1.jsp。</a></p>
+<h3 id="基于代码的路由配置方式"><a href="#基于代码的路由配置方式" class="headerlink" title="基于代码的路由配置方式"></a>基于代码的路由配置方式</h3><p>转发功能同样可以通过代码来实现，我们可以在启动类 GateWayApplication 中添加方法 customRouteLocator() 来定制转发规则。</p>
+<pre><code>@SpringBootApplication
+public class GatewayApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(GatewayApplication.class, args);
+    }
+
+    @Bean
+    public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
+        return builder.routes()
+                .route(&quot;path_route&quot;, r -&gt; r.path(&quot;/csdn&quot;)
+                        .uri(&quot;https://blog.csdn.net&quot;))
+                .build();
+    }
+}</code></pre><p>我们在yaml配置文件中注销掉相关路由的配置，重启服务，访问链接：<a href="http://localhost:8080/" target="_blank" rel="noopener">http://localhost:8080/</a> csdn， 可以看到和上面一样的页面，证明我们测试成功。</p>
+<h3 id="和注册中心相结合的路由配置方式"><a href="#和注册中心相结合的路由配置方式" class="headerlink" title="和注册中心相结合的路由配置方式"></a>和注册中心相结合的路由配置方式</h3><p>在uri的schema协议部分为自定义的lb:类型，表示从微服务注册中心（如Eureka）订阅服务，并且进行服务的路由。</p>
+<pre><code>server:
+  port: 8084
+spring:
+  cloud:
+    gateway:
+      routes:
+      -id: seckill-provider-route
+        uri: lb://seckill-provider
+        predicates:
+        - Path=/seckill-provider/**
+
+      -id: message-provider-route
+        uri: lb://message-provider
+        predicates:
+        -Path=/message-provider/**
+
+application:
+  name: cloud-gateway
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:8888/eureka/</code></pre><p>注册中心相结合的路由配置方式，与单个URI的路由配置，区别其实很小，仅仅在于URI的schema协议不同。单个URI的地址的schema协议，一般为http或者https协议。</p>
+<h2 id="路由匹配规则"><a href="#路由匹配规则" class="headerlink" title="路由匹配规则"></a>路由匹配规则</h2><p>Spring Cloud Gateway 的功能很强大，我们仅仅通过 Predicates 的设计就可以看出来，前面我们只是使用了 predicates 进行了简单的条件匹配，其实 Spring Cloud Gataway 帮我们内置了很多 Predicates 功能。</p>
+<p>Spring Cloud Gateway 是通过 Spring WebFlux 的 HandlerMapping 做为底层支持来匹配到转发路由，Spring Cloud Gateway 内置了很多 Predicates 工厂，这些 Predicates 工厂通过不同的 HTTP 请求参数来匹配，多个 Predicates 工厂可以组合使用。</p>
+<p><img src="/2021/10/17/2021-10-17-springcloudgateway/20200527213652534.png" alt></p>
+<p>gateWay的主要功能之一是转发请求，转发规则的定义主要包含三个部分</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Route（路由）</td>
+<td>路由是网关的基本单元，由ID、URI、一组Predicate、一组Filter组成，根据Predicate进行匹配转发。</td>
+</tr>
+<tr>
+<td>Predicate（谓语、断言）</td>
+<td>路由转发的判断条件，目前SpringCloud Gateway支持多种方式，常见如：Path、Query、Method、Header等，写法必须遵循 key=vlue的形式</td>
+</tr>
+<tr>
+<td>Filter（过滤器）</td>
+<td>过滤器是路由转发请求时所经过的过滤逻辑，可用于修改请求、响应内容</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>其中Route和Predicate必须同时申明</p>
+</blockquote>
+<pre><code>//通过配置文件配置
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: gate_route
+          uri: http://localhost:9023
+          predicates:
+          ## 当请求的路径为gate、rule开头的时，转发到http://localhost:9023服务器上
+            - Path=/gate/**,/rule/**
+        ### 请求路径前加上/app
+          filters:
+          - PrefixPath=/app</code></pre><h3 id="Predicate-断言条件-转发规则-介绍"><a href="#Predicate-断言条件-转发规则-介绍" class="headerlink" title="Predicate 断言条件(转发规则)介绍"></a>Predicate 断言条件(转发规则)介绍</h3><p>Predicate 来源于 Java 8，是 Java 8 中引入的一个函数，Predicate 接受一个输入参数，返回一个布尔值结果。该接口包含多种默认方法来将 Predicate 组合成其他复杂的逻辑（比如：与，或，非）。可以用于接口请求参数校验、判断新老数据是否有变化需要进行更新操作。</p>
+<p>在 Spring Cloud Gateway 中 Spring 利用 Predicate 的特性实现了各种路由匹配规则，有通过 Header、请求参数等不同的条件来进行作为条件匹配到对应的路由。网上有一张图总结了 Spring Cloud 内置的几种 Predicate 的实现。</p>
+<p><img src="/2021/10/17/2021-10-17-springcloudgateway/19816137-bb046dbf19bee1b4.gif" alt></p>
+<p>说白了 Predicate 就是为了实现一组匹配规则，方便让请求过来找到对应的 Route 进行处理，接下来我们接下 Spring Cloud GateWay 内置几种 Predicate 的使用。</p>
+<h4 id="转发规则（predicates）"><a href="#转发规则（predicates）" class="headerlink" title="转发规则（predicates）"></a>转发规则（predicates）</h4><table>
+<thead>
+<tr>
+<th>规则</th>
+<th>实例</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Path</td>
+<td>- Path=/gate/<strong>,/rule/</strong></td>
+<td>## 当请求的路径为gate、rule开头的时，转发到<a href="http://localhost:9023服务器上" target="_blank" rel="noopener">http://localhost:9023服务器上</a></td>
+</tr>
+<tr>
+<td>Before</td>
+<td>- Before=2017-01-20T17:42:47.789-07:00[America/Denver]</td>
+<td>在某个时间之前的请求才会被转发到 <a href="http://localhost:9023服务器上" target="_blank" rel="noopener">http://localhost:9023服务器上</a></td>
+</tr>
+<tr>
+<td>After</td>
+<td>- After=2017-01-20T17:42:47.789-07:00[America/Denver]</td>
+<td>在某个时间之后的请求才会被转发</td>
+</tr>
+<tr>
+<td>Between</td>
+<td>- Between=2017-01-20T17:42:47.789-07:00[America/Denver],2017-01-21T17:42:47.789-07:00[America/Denver]</td>
+<td>在某个时间段之间的才会被转发</td>
+</tr>
+<tr>
+<td>Cookie</td>
+<td>- Cookie=chocolate, ch.p</td>
+<td>名为chocolate的表单或者满足正则ch.p的表单才会被匹配到进行请求转发</td>
+</tr>
+<tr>
+<td>Header</td>
+<td>- Header=X-Request-Id, \d+</td>
+<td>携带参数X-Request-Id或者满足\d+的请求头才会匹配</td>
+</tr>
+<tr>
+<td>Host</td>
+<td>- Host=<a href="http://www.hd123.com" target="_blank" rel="noopener">www.hd123.com</a></td>
+<td>当主机名为<a href="http://www.hd123.com的时候直接转发到http://localhost:9023服务器上" target="_blank" rel="noopener">www.hd123.com的时候直接转发到http://localhost:9023服务器上</a></td>
+</tr>
+<tr>
+<td>Method</td>
+<td>- Method=GET</td>
+<td>只有GET方法才会匹配转发请求，还可以限定POST、PUT等请求方式</td>
+</tr>
+</tbody></table>
+<h4 id="通过请求参数匹配"><a href="#通过请求参数匹配" class="headerlink" title="通过请求参数匹配"></a>通过请求参数匹配</h4><p>Query Route Predicate 支持传入两个参数，一个是属性名一个为属性值，属性值可以是正则表达式。</p>
+<pre><code>server:
+  port: 8080
+spring:
+  application:
+       name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        -id: gateway-service
+          uri: https://www.baidu.com
+          order: 0
+          predicates:
+            -Query=smile</code></pre><p>这样配置，只要请求中包含 smile 属性的参数即可匹配路由。</p>
+<p>localhost:8080?smile=x&amp;id=2</p>
+<p>经过测试发现只要请求汇总带有 smile 参数即会匹配路由，不带 smile 参数则不会匹配。</p>
+<p>还可以将 Query 的值以键值对的方式进行配置，这样在请求过来时会对属性值和正则进行匹配，匹配上才会走路由。</p>
+<pre><code>server:
+  port: 8080
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        -id: gateway-service
+          uri: https://www.baidu.com
+          order: 0
+          predicates:
+            -Query=keep, pu.</code></pre><h4 id="通过-Header-属性匹配"><a href="#通过-Header-属性匹配" class="headerlink" title="通过 Header 属性匹配"></a>通过 Header 属性匹配</h4><pre><code>server:
+  port: 8080
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        -id: gateway-service
+          uri: https://www.baidu.com
+          order: 0
+          predicates:
+            - Header=X-Request-Id, \d+</code></pre><p>curl <a href="http://localhost:8080" target="_blank" rel="noopener">http://localhost:8080</a> -H “X-Request-Id:88”</p>
+<p>则返回页面代码证明匹配成功。将参数-H “X-Request-Id:88”改为-H “X-Request-Id:spring”再次执行时返回404证明没有匹配。</p>
+<h4 id="通过-Cookie-匹配"><a href="#通过-Cookie-匹配" class="headerlink" title="通过 Cookie 匹配"></a>通过 Cookie 匹配</h4><p>Cookie Route Predicate 可以接收两个参数，一个是 Cookie name ,一个是正则表达式，路由规则会通过获取对应的 Cookie name 值和正则表达式去匹配，如果匹配上就会执行路由，如果没有匹配上则不执行。</p>
+<pre><code>server:
+  port: 8080
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        -id: gateway-service
+          uri: https://www.baidu.com
+          order: 0
+          predicates:
+            - Cookie=sessionId, test</code></pre><p>curl <a href="http://localhost:8080" target="_blank" rel="noopener">http://localhost:8080</a> –cookie “sessionId=test”</p>
+<p>则会返回页面代码，如果去掉–cookie “sessionId=test”，后台汇报 404 错误。</p>
+<h4 id="通过-Host-匹配"><a href="#通过-Host-匹配" class="headerlink" title="通过 Host 匹配"></a>通过 Host 匹配</h4><p>Host Route Predicate 接收一组参数，一组匹配的域名列表，这个模板是一个 ant 分隔的模板，用.号作为分隔符。它通过参数中的主机地址作为匹配规则。</p>
+<pre><code>server:
+  port: 8080
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        -id: gateway-service
+          uri: https://www.baidu.com
+          order: 0
+          predicates:
+            - Host=**.baidu.com</code></pre><p>curl <a href="http://localhost:8080" target="_blank" rel="noopener">http://localhost:8080</a> -H “Host: <a href="http://www.baidu.com&quot;" target="_blank" rel="noopener">www.baidu.com&quot;</a></p>
+<p>经测试以上可匹配到 host_route 路由，去掉 host 参数则会报 404 错误。</p>
+<h4 id="通过请求方式匹配"><a href="#通过请求方式匹配" class="headerlink" title="通过请求方式匹配"></a>通过请求方式匹配</h4><p>可以通过是 POST、GET、PUT、DELETE 等不同的请求方式来进行路由。</p>
+<pre><code>server:
+  port: 8080
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        -id: gateway-service
+          uri: https://www.baidu.com
+          order: 0
+          predicates:
+            - Method=GET</code></pre><p>curl -X POST <a href="http://localhost:8080" target="_blank" rel="noopener">http://localhost:8080</a></p>
+<p>返回 404 没有找到，证明没有匹配上路由</p>
+<h4 id="通过请求路径匹配"><a href="#通过请求路径匹配" class="headerlink" title="通过请求路径匹配"></a>通过请求路径匹配</h4><p>Path Route Predicate 接收一个匹配路径的参数来判断是否走路由。</p>
+<pre><code>server:
+  port: 8080
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        -id: gateway-service
+          uri: http://ityouknow.com
+          order: 0
+          predicates:
+            -Path=/foo/{segment}</code></pre><p>curl <a href="http://localhost:8080/foo/xx" target="_blank" rel="noopener">http://localhost:8080/foo/xx</a></p>
+<p>经过测试命令可以正常获取到页面返回值</p>
+<h4 id="通过请求-ip-地址进行匹配"><a href="#通过请求-ip-地址进行匹配" class="headerlink" title="通过请求 ip 地址进行匹配"></a>通过请求 ip 地址进行匹配</h4><p>Predicate 也支持通过设置某个 ip 区间号段的请求才会路由，RemoteAddr Route Predicate 接受 cidr 符号(IPv4 或 IPv6 )字符串的列表(最小大小为1)，例如 192.168.0.1/16 (其中 192.168.0.1 是 IP 地址，16 是子网掩码)。</p>
+<pre><code>server:
+  port: 8080
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: gateway-service
+          uri: https://www.baidu.com
+          order: 0
+          predicates:
+            - RemoteAddr=192.168.1.1/24</code></pre><p>如果请求的远程地址是 192.168.1.10，则此路由将匹配。</p>
+<h4 id="组合使用"><a href="#组合使用" class="headerlink" title="组合使用"></a>组合使用</h4><pre><code>server:
+  port: 8080
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: gateway-service
+          uri: https://www.baidu.com
+          order: 0
+          predicates:
+            - Host=**.foo.org
+            - Path=/headers
+            - Method=GET
+            - Header=X-Request-Id, \d+
+            - Query=foo, ba.
+            - Query=baz
+            - Cookie=chocolate, ch.p</code></pre><p>各种 Predicates 同时存在于同一个路由时，请求必须同时满足所有的条件才被这个路由匹配。</p>
+<p>一个请求满足多个路由的断言条件时，请求只会被首个成功匹配的路由转发</p>
+<h3 id="过滤器规则（Filter）"><a href="#过滤器规则（Filter）" class="headerlink" title="过滤器规则（Filter）"></a>过滤器规则（Filter）</h3><table>
+<thead>
+<tr>
+<th>过滤规则</th>
+<th>实例</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PrefixPath</td>
+<td>- PrefixPath=/app</td>
+<td>在请求路径前加上app</td>
+</tr>
+<tr>
+<td>RewritePath</td>
+<td>- RewritePath=/test, /app/test</td>
+<td>访问localhost:9022/test,请求会转发到localhost:8001/app/test</td>
+</tr>
+<tr>
+<td>SetPath</td>
+<td>SetPath=/app/{path}</td>
+<td>通过模板设置路径，转发的规则时会在路径前增加app，{path}表示原请求路径</td>
+</tr>
+<tr>
+<td>RedirectTo</td>
+<td></td>
+<td>重定向</td>
+</tr>
+<tr>
+<td>RemoveRequestHeader</td>
+<td></td>
+<td>去掉某个请求头信息</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>当配置多个filter时，优先定义的会被调用，剩余的filter将不会生效</p>
+</blockquote>
+<h4 id="PrefixPath"><a href="#PrefixPath" class="headerlink" title="PrefixPath"></a>PrefixPath</h4><p>对所有的请求路径添加前缀：</p>
+<pre><code>spring:
+  cloud:
+    gateway:
+      routes:
+      - id: prefixpath_route
+        uri: https://example.org
+        filters:
+        - PrefixPath=/mypath</code></pre><p>访问/hello的请求被发送到<a href="https://example.org/mypath/hello。" target="_blank" rel="noopener">https://example.org/mypath/hello。</a></p>
+<h4 id="RedirectTo"><a href="#RedirectTo" class="headerlink" title="RedirectTo"></a>RedirectTo</h4><p>重定向，配置包含重定向的返回码和地址：</p>
+<pre><code>spring:
+  cloud:
+    gateway:
+      routes:
+      - id: prefixpath_route
+        uri: https://example.org
+        filters:
+        - RedirectTo=302, https://acme.org</code></pre><h4 id="RemoveRequestHeader"><a href="#RemoveRequestHeader" class="headerlink" title="RemoveRequestHeader"></a>RemoveRequestHeader</h4><p>去掉某个请求头信息：</p>
+<pre><code>spring:
+  cloud:
+    gateway:
+      routes:
+      - id: removerequestheader_route
+        uri: https://example.org
+        filters:
+        - RemoveRequestHeader=X-Request-Foo</code></pre><h4 id="RemoveRequestParameter"><a href="#RemoveRequestParameter" class="headerlink" title="RemoveRequestParameter"></a>RemoveRequestParameter</h4><p>去掉某个请求参数信息：</p>
+<pre><code>spring:
+  cloud:
+    gateway:
+      routes:
+      - id: removerequestparameter_route
+        uri: https://example.org
+        filters:
+        - RemoveRequestParameter=red</code></pre><h4 id="RewritePath"><a href="#RewritePath" class="headerlink" title="RewritePath"></a>RewritePath</h4><p>改写路径：</p>
+<pre><code>spring:
+  cloud:
+    gateway:
+      routes:
+      - id: rewrite_filter
+        uri: http://localhost:8081
+        predicates:
+        - Path=/test/**
+        filters:
+        - RewritePath=/where(?&lt;segment&gt;/?.*), /test(?&lt;segment&gt;/?.*)</code></pre><h4 id="SetPath"><a href="#SetPath" class="headerlink" title="SetPath"></a>SetPath</h4><p>设置请求路径，与RewritePath类似。</p>
+<pre><code>spring:
+  cloud:
+    gateway:
+      routes:
+      - id: setpath_route
+        uri: https://example.org
+        predicates:
+        - Path=/red/{segment}
+        filters:
+        - SetPath=/{segment}</code></pre><p>如/red/blue的请求被转发到/blue。</p>
+<h4 id="SetRequestHeader"><a href="#SetRequestHeader" class="headerlink" title="SetRequestHeader"></a>SetRequestHeader</h4><p>设置请求头信息。</p>
+<pre><code>spring:
+  cloud:
+    gateway:
+      routes:
+      - id: setrequestheader_route
+        uri: https://example.org
+        filters:
+        - SetRequestHeader=X-Request-Red, Blue</code></pre><h4 id="SetStatus"><a href="#SetStatus" class="headerlink" title="SetStatus"></a>SetStatus</h4><p>设置回执状态码。</p>
+<pre><code>spring:
+  cloud:
+    gateway:
+      routes:
+      - id: setstatusint_route
+        uri: https://example.org
+        filters:
+        - SetStatus=401</code></pre><h4 id="StripPrefix"><a href="#StripPrefix" class="headerlink" title="StripPrefix"></a>StripPrefix</h4><pre><code>spring:
+  cloud:
+    gateway:
+      routes:
+      - id: nameRoot
+        uri: https://nameservice
+        predicates:
+        - Path=/name/**
+        filters:
+        - StripPrefix=2</code></pre><p>请求/name/blue/red会转发到/red。</p>
+<h4 id="RequestSize"><a href="#RequestSize" class="headerlink" title="RequestSize"></a>RequestSize</h4><pre><code>spring:
+  cloud:
+    gateway:
+      routes:
+      - id: request_size_route
+        uri: http://localhost:8080/upload
+        predicates:
+        - Path=/upload
+        filters:
+        - name: RequestSize
+          args:
+            maxSize: 5000000</code></pre><p>超过5M的请求会返回413错误。</p>
+<h4 id="Default-filters"><a href="#Default-filters" class="headerlink" title="Default-filters"></a>Default-filters</h4><p>对所有请求添加过滤器。</p>
+<pre><code>spring:
+  cloud:
+    gateway:
+      default-filters:
+      - AddResponseHeader=X-Response-Default-Red, Default-Blue
+      - PrefixPath=/httpbin</code></pre><h2 id="实现熔断降级"><a href="#实现熔断降级" class="headerlink" title="实现熔断降级"></a>实现熔断降级</h2><p>在分布式系统中，网关作为流量的入口，因此会有大量的请求进入网关，向其他服务发起调用，其他服务不可避免的会出现调用失败（超时、异常），失败时不能让请求堆积在网关上，需要快速失败并返回给客户端，想要实现这个要求，就必须在网关上做熔断、降级操作。</p>
+<pre><code>server.port: 8082
+
+spring:
+  application:
+    name: gateway
+  redis:
+      host: localhost
+      port: 6379
+      password: 123456
+  cloud:
+    gateway:
+      routes:
+        - id: rateLimit_route
+          uri: http://localhost:8000
+          order: 0
+          predicates:
+            - Path=/test/**
+          filters:
+            - StripPrefix=1
+            - name: Hystrix
+              args:
+                name: fallbackCmdA
+                fallbackUri: forward:/fallbackA
+
+  hystrix.command.fallbackCmdA.execution.isolation.thread.timeoutInMilliseconds: 5000
+</code></pre><p>这里的配置，使用了两个过滤器：</p>
+<ol>
+<li>过滤器StripPrefix，作用是去掉请求路径的最前面n个部分截取掉。</li>
+</ol>
+<p>StripPrefix=1就代表截取路径的个数为1，比如前端过来请求/test/good/1/view，匹配成功后，路由到后端的请求路径就会变成<a href="http://localhost:8888/good/1/view。" target="_blank" rel="noopener">http://localhost:8888/good/1/view。</a></p>
+<ol start="2">
+<li>过滤器Hystrix，作用是通过Hystrix进行熔断降级</li>
+</ol>
+<p>当上游的请求，进入了Hystrix熔断降级机制时，就会调用fallbackUri配置的降级地址。需要注意的是，还需要单独设置Hystrix的commandKey的超时时间</p>
+<p>fallbackUri配置的降级地址的代码如下：</p>
+<pre><code>@RestController
+public class FallbackController {
+
+    @GetMapping(&quot;/fallbackA&quot;)
+    public Response fallbackA() {
+        Response response = new Response();
+        response.setCode(&quot;100&quot;);
+        response.setMessage(&quot;服务暂时不可用&quot;);
+        return response;
+    }
+}</code></pre><h2 id="分布式限流"><a href="#分布式限流" class="headerlink" title="分布式限流"></a>分布式限流</h2><p>从某种意义上讲，令牌桶算法是对漏桶算法的一种改进，桶算法能够限制请求调用的速率，而令牌桶算法能够在限制调用的平均速率的同时还允许一定程度的突发调用。在令牌桶算法中，存在一个桶，用来存放固定数量的令牌。算法中存在一种机制，以一定的速率往桶中放令牌。每次请求调用需要先获取令牌，只有拿到令牌，才有机会继续执行，否则选择选择等待可用的令牌、或者直接拒绝。放令牌这个动作是持续不断的进行，如果桶中令牌数达到上限，就丢弃令牌，所以就存在这种情况，桶中一直有大量的可用令牌，这时进来的请求就可以直接拿到令牌执行，比如设置qps为100，那么限流器初始化完成一秒后，桶中就已经有100个令牌了，这时服务还没完全启动好，等启动完成对外提供服务时，该限流器可以抵挡瞬时的100个请求。所以，只有桶中没有令牌时，请求才会进行等待，最后相当于以一定的速率执行。</p>
+<p><img src="/2021/10/17/2021-10-17-springcloudgateway/19816137-89297e59a487540d.jpg" alt></p>
+<p>在Spring Cloud Gateway中，有Filter过滤器，因此可以在“pre”类型的Filter中自行实现上述三种过滤器。但是限流作为网关最基本的功能，Spring Cloud Gateway官方就提供了RequestRateLimiterGatewayFilterFactory这个类，适用在Redis内的通过执行Lua脚本实现了令牌桶的方式。具体实现逻辑在RequestRateLimiterGatewayFilterFactory类中，lua脚本在如下图所示的文件夹中：</p>
+<p>首先在工程的pom文件中引入gateway的起步依赖和redis的reactive依赖，代码如下：</p>
+<pre><code>server:
+  port: 8081
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: limit_route
+        uri: http://httpbin.org:80/get
+        predicates:
+        - After=2017-01-20T17:42:47.789-07:00[America/Denver]
+        filters:
+        - name: RequestRateLimiter
+          args:
+            key-resolver: &#39;#{@userKeyResolver}&#39;
+            redis-rate-limiter.replenishRate: 1
+            redis-rate-limiter.burstCapacity: 3
+  application:
+    name: cloud-gateway
+  redis:
+    host: localhost
+    port: 6379
+    database: 0</code></pre><p>在上面的配置文件，指定程序的端口为8081，配置了 redis的信息，并配置了RequestRateLimiter的限流过滤器，该过滤器需要配置三个参数：</p>
+<ul>
+<li>burstCapacity，令牌桶总容量。</li>
+<li>replenishRate，令牌桶每秒填充平均速率。</li>
+<li>key-resolver，用于限流的键的解析器的 Bean 对象的名字。它使用 SpEL 表达式根据#{@beanName}从 Spring 容器中获取 Bean 对象。</li>
+</ul>
+<p>这里根据用户ID限流，请求路径中必须携带userId参数</p>
+<pre><code>@Bean
+
+KeyResolver userKeyResolver() {
+  return exchange -&gt; Mono.just(exchange.getRequest().getQueryParams().getFirst(&quot;user&quot;));
+}</code></pre><p>KeyResolver需要实现resolve方法，比如根据userid进行限流，则需要用userid去判断。实现完KeyResolver之后，需要将这个类的Bean注册到Ioc容器中。</p>
+<p>如果需要根据IP限流，定义的获取限流Key的bean为：</p>
+<pre><code>@Bean
+public KeyResolver ipKeyResolver() {
+  return exchange -&gt; Mono.just(exchange.getRequest().getRemoteAddress().getHostName());
+}</code></pre><p>通过exchange对象可以获取到请求信息，这边用了HostName，如果你想根据用户来做限流的话这边可以获取当前请求的用户ID或者用户名就可以了，比如：</p>
+<p>如果需要根据接口的URI进行限流，则需要获取请求地址的uri作为限流key，定义的Bean对象为：</p>
+<pre><code>@Bean
+KeyResolver apiKeyResolver() {
+  return exchange -&gt; Mono.just(exchange.getRequest().getPath().value());
+}</code></pre><h2 id="健康检查配置"><a href="#健康检查配置" class="headerlink" title="健康检查配置"></a>健康检查配置</h2><p>admin-client、actuator健康检查配置，为之后的功能提供支持，此部分比较简单，不再赘述，加入以下maven依赖和配置</p>
+<pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+ &lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;de.codecentric&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-admin-starter-client&lt;/artifactId&gt;
+    &lt;version&gt;2.1.0&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre><p>配置文件</p>
+<pre><code>spring:
+  application:
+    name: mas-cloud-gateway
+  boot:
+    admin:
+      client:
+      ### 本地搭建的admin-server
+        url: http://localhost:8011
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    healthcheck:
+      enabled: true
+    serviceUrl:
+      defaultZone: http://localhost:6887/eureka/
+    enabled: true
+feign:
+  sentinel:
+    enabled: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: &#39;*&#39;
+  endpoint:
+    health:
+      show-details: ALWAYS</code></pre><p>若转发的目标地址为微服务中组件，不为具体ip:port形式的，应写成lb://mas-openapi-service形式，目标地址会从注册中心直接拉取</p>
+<h2 id="统一配置跨域请求"><a href="#统一配置跨域请求" class="headerlink" title="统一配置跨域请求"></a>统一配置跨域请求</h2><p>现在的请求通过经过gateWay网关时，需要在网关统一配置跨域请求，需求所有请求通过</p>
+<pre><code>spring:
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          &#39;[/**]&#39;:
+            allowed-origins: &quot;*&quot;
+            allowed-headers: &quot;*&quot;
+            allow-credentials: true
+            allowed-methods:
+              - GET
+              - POST
+              - DELETE
+              - PUT
+              - OPTION</code></pre><h2 id="整合Nacos"><a href="#整合Nacos" class="headerlink" title="整合Nacos"></a>整合Nacos</h2><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;parent&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+        &lt;version&gt;2.1.9.RELEASE&lt;/version&gt;
+        &lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;
+    &lt;/parent&gt;
+    &lt;groupId&gt;com.example&lt;/groupId&gt;
+    &lt;artifactId&gt;nacos_gateway&lt;/artifactId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;name&gt;nacos_gateway&lt;/name&gt;
+    &lt;description&gt;Demo project for Spring Boot&lt;/description&gt;
+
+    &lt;properties&gt;
+        &lt;java.version&gt;1.8&lt;/java.version&gt;
+        &lt;spring-cloud.version&gt;Greenwich.SR3&lt;/spring-cloud.version&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;!--gateway--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-gateway&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;!--nacos dicovery--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-discovery&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+    &lt;dependencyManagement&gt;
+        &lt;dependencies&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-cloud-dependencies&lt;/artifactId&gt;
+                &lt;version&gt;${spring-cloud.version}&lt;/version&gt;
+                &lt;type&gt;pom&lt;/type&gt;
+                &lt;scope&gt;import&lt;/scope&gt;
+            &lt;/dependency&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-cloud-alibaba-dependencies&lt;/artifactId&gt;
+                &lt;version&gt;0.2.2.RELEASE&lt;/version&gt;
+                &lt;type&gt;pom&lt;/type&gt;
+                &lt;scope&gt;import&lt;/scope&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+    &lt;/dependencyManagement&gt;
+
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+
+&lt;/project&gt;</code></pre><p>需要注意在Gateway服务中的pom.xml文件中不要存在这个jar</p>
+<pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-tomcat&lt;/artifactId&gt;
+    &lt;scope&gt;provided&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre><p>否则调用接口时会报以下错误因为gateway使用的是webflux,默认使用netty,所以从依赖中排除 tomcat相关的依赖</p>
+<pre><code>java.lang.ClassCastException: org.springframework.core.io.buffer.DefaultDataBufferFactory cannot be cast to org.springframework.core.io.buffer.NettyDataBufferFactory
+    at org.springframework.cloud.gateway.filter.NettyWriteResponseFilter.lambda$filter$1(NettyWriteResponseFilter.java:82) ~[spring-cloud-gateway-core-2.1.3.RELEASE.jar:2.1.3.RELEASE]
+    at reactor.core.publisher.MonoDefer.subscribe(MonoDefer.java:44) [reactor-core-3.2.12.RELEASE.jar:3.2.12.RELEASE]
+</code></pre><p>错误2 是由于 spring-boot-starter-web 引起</p>
+<h3 id="服务发现配置：从Nacos获取微服务提供者清单"><a href="#服务发现配置：从Nacos获取微服务提供者清单" class="headerlink" title="服务发现配置：从Nacos获取微服务提供者清单"></a>服务发现配置：从Nacos获取微服务提供者清单</h3><pre><code>server:
+  port: 8087
+spring:
+  application:
+    name: nacos_gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    gateway:
+      discovery:
+        locator:
+          enabled: true  #表明gateway开启服务注册和发现的功能，并且spring cloud gateway自动根据服务发现为每一个服务创建了一个router，这个router将以服务名开头的请求路径转发到对应的服务
+          lower-case-service-id: true  #是将请求路径上的服务名配置为小写（因为服务注册的时候，向注册中心注册时将服务名转成大写的了
+      routes:
+          -id: apiuser
+          #
+          uri: lb://nacos-consumer-user
+          predicates:
+          # http://localhost:6601/user/user/users/2, 必须加上StripPrefix=1，否则访问服务时会带上user
+          - Path=/user/** # 转发该路径
+           #以下是配置例子
+            # - id: 163                     #网关路由到网易官网
+            #  uri: http://www.163.com/
+            #  predicates:
+                - Path=/163/**
+        #      - id: ORDER-SERVICE           #网关路由到订单服务order-service
+        #        uri: lb://ORDER-SERVICE
+        #        predicates:
+        #          - Path=/ORDER-SERVICE/**
+        #      - id: USER-SERVICE            #网关路由到用户服务user-service
+        #        uri: lb://USER-SERVICE
+        #        predicates:
+        #          - Pach=/USER-SERVICE/**</code></pre><h2 id="整合Swagger"><a href="#整合Swagger" class="headerlink" title="整合Swagger"></a>整合Swagger</h2><p>整合Swagger聚合微服务系统API文档</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;parent&gt;
+        &lt;artifactId&gt;cloud-center-alibaba&lt;/artifactId&gt;
+        &lt;groupId&gt;com.crazymaker.springcloud&lt;/groupId&gt;
+        &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;/parent&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;com.crazymaker.springcloud&lt;/groupId&gt;
+    &lt;artifactId&gt;springcloud-gateway-demo&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;name&gt;springcloud-gateway-demo&lt;/name&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+
+
+    &lt;dependencies&gt;
+        &lt;!--gateway 网关依赖,内置webflux 依赖 --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-gateway&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;!--新增sentinel--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.alibaba.csp&lt;/groupId&gt;
+            &lt;artifactId&gt;sentinel-spring-cloud-gateway-adapter&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.alibaba.csp&lt;/groupId&gt;
+            &lt;artifactId&gt;sentinel-transport-simple-http&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- nacos服务注册发现依赖--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-discovery&lt;/artifactId&gt;
+            &lt;exclusions&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;com.google.guava&lt;/groupId&gt;
+                    &lt;artifactId&gt;guava&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+            &lt;/exclusions&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;mysql&lt;/groupId&gt;
+            &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+            &lt;version&gt;${mysql.connector.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!-- nacos配置服务依赖--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.alibaba.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-config&lt;/artifactId&gt;
+            &lt;exclusions&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;com.google.guava&lt;/groupId&gt;
+                    &lt;artifactId&gt;guava&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+            &lt;/exclusions&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-netflix-hystrix&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+            &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+            &lt;optional&gt;true&lt;/optional&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+            &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+            &lt;optional&gt;true&lt;/optional&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;cn.hutool&lt;/groupId&gt;
+            &lt;artifactId&gt;hutool-all&lt;/artifactId&gt;
+            &lt;version&gt;${hutool.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;io.springfox&lt;/groupId&gt;
+            &lt;artifactId&gt;springfox-swagger2&lt;/artifactId&gt;
+            &lt;version&gt;${swagger.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;io.springfox&lt;/groupId&gt;
+            &lt;artifactId&gt;springfox-swagger-common&lt;/artifactId&gt;
+            &lt;version&gt;${swagger.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.github.xiaoymin&lt;/groupId&gt;
+            &lt;artifactId&gt;swagger-bootstrap-ui&lt;/artifactId&gt;
+            &lt;version&gt;${swagger-ui.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-commons&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+    &lt;build&gt;
+        &lt;plugins&gt;
+
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+                &lt;configuration&gt;
+                    &lt;mainClass&gt;com.crazymaker.cloud.nacos.demo.gateway.starter.GatewayProviderApplication&lt;/mainClass&gt;
+                &lt;/configuration&gt;
+                &lt;executions&gt;
+                    &lt;execution&gt;
+                        &lt;goals&gt;
+                            &lt;goal&gt;repackage&lt;/goal&gt;
+                        &lt;/goals&gt;
+                    &lt;/execution&gt;
+                &lt;/executions&gt;
+            &lt;/plugin&gt;
+
+
+            &lt;plugin&gt;
+                &lt;artifactId&gt;maven-assembly-plugin&lt;/artifactId&gt;
+                &lt;version&gt;2.4.1&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;descriptors&gt;
+                        &lt;descriptor&gt;src/main/assembly/assembly.xml&lt;/descriptor&gt;
+                    &lt;/descriptors&gt;
+                &lt;/configuration&gt;
+                &lt;executions&gt;
+                    &lt;execution&gt;
+                        &lt;id&gt;make-assembly&lt;/id&gt;
+                        &lt;phase&gt;package&lt;/phase&gt;
+                        &lt;goals&gt;
+                            &lt;goal&gt;single&lt;/goal&gt;
+                        &lt;/goals&gt;
+                    &lt;/execution&gt;
+                &lt;/executions&gt;
+            &lt;/plugin&gt;
+
+            &lt;!-- 添加docker-maven插件 --&gt;
+
+            &lt;plugin&gt;
+                &lt;groupId&gt;com.spotify&lt;/groupId&gt;
+                &lt;artifactId&gt;docker-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;1.1.1&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;imageName&gt;dockerlocal:5000/${project.artifactId}:${project.version}&lt;/imageName&gt;
+                    &lt;baseImage&gt;dockerlocal:5000/java&lt;/baseImage&gt;
+                    &lt;entryPoint&gt;[&quot;java&quot;, &quot;-jar&quot;, &quot;/${project.build.finalName}.jar&quot;]&lt;/entryPoint&gt;
+                    &lt;dockerDirectory&gt;docker&lt;/dockerDirectory&gt;
+                    &lt;resources&gt;
+                        &lt;resource&gt;
+                            &lt;targetPath&gt;/&lt;/targetPath&gt;
+                            &lt;directory&gt;${project.build.directory}&lt;/directory&gt;
+                            &lt;include&gt;${project.build.finalName}.jar&lt;/include&gt;
+                        &lt;/resource&gt;
+                    &lt;/resources&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;</code></pre><p>配置文件</p>
+<pre><code>@Component
+@Primary
+@AllArgsConstructor
+public class SwaggerConfig implements SwaggerResourcesProvider
+{
+    public static final String API_URI = &quot;/v2/api-docs&quot;;
+
+    private final RouteLocator routeLocator;
+
+    private final GatewayProperties gatewayProperties;
+
+    @Override
+    public List&lt;SwaggerResource&gt; get()
+    {
+        /**
+         * 网关应用名称,不需要在网关的swagger 上展示
+         */
+        String appName = &quot;springcloud-gateway&quot;;
+
+        List&lt;SwaggerResource&gt; resources = new ArrayList&lt;&gt;();
+        List&lt;String&gt; routes = new ArrayList&lt;&gt;();
+        // 取出gateway的route
+        routeLocator.getRoutes().subscribe(route -&gt; routes.add(route.getId()));
+        // 结合配置的route-路径(Path)，和route过滤，只获取有效的route节点
+        // 打开下面注释可以自动扫描接入gateway的服务，为了演示，只扫描system
+        // gatewayProperties.getRoutes().stream().filter(routeDefinition -&gt;
+        // routes.contains(routeDefinition.getId()))
+        gatewayProperties.getRoutes().stream()
+                .filter(route -&gt; route.getUri().getHost() != null)
+                .filter(route -&gt; !appName.equals(route.getUri().getHost()))
+                .forEach(routeDefinition -&gt; routeDefinition.getPredicates().stream()
+                        .filter(predicateDefinition -&gt; (&quot;Path&quot;).equalsIgnoreCase(predicateDefinition.getName()))
+                        .forEach(predicateDefinition -&gt; resources
+                                .add(swaggerResource(routeDefinition.getId(), predicateDefinition.getArgs()
+                                        .get(NameUtils.GENERATED_NAME_PREFIX + &quot;0&quot;).replace(&quot;/**&quot;, API_URI)))));
+        return resources;
+    }
+
+    private SwaggerResource swaggerResource(String name, String location)
+    {
+        SwaggerResource swaggerResource = new SwaggerResource();
+        swaggerResource.setName(name);
+        swaggerResource.setLocation(location);
+        swaggerResource.setSwaggerVersion(&quot;2.0&quot;);
+        return swaggerResource;
+    }
+}</code></pre><h2 id="Gatway-网关的过滤器开发"><a href="#Gatway-网关的过滤器开发" class="headerlink" title="Gatway 网关的过滤器开发"></a>Gatway 网关的过滤器开发</h2><h3 id="过滤器的执行次序"><a href="#过滤器的执行次序" class="headerlink" title="过滤器的执行次序"></a>过滤器的执行次序</h3><p>Spring-Cloud-Gateway 基于过滤器实现，同 zuul 类似，有pre和post两种方式的 filter,分别处理前置逻辑和后置逻辑。客户端的请求先经过pre类型的 filter，然后将请求转发到具体的业务服务，收到业务服务的响应之后，再经过post类型的 filter 处理，最后返回响应到客户端。</p>
+<p>过滤器执行流程如下，order 越大，优先级越低</p>
+<p><img src="/2021/10/17/2021-10-17-springcloudgateway/spring-cloud-gateway-fliter-order.png" alt></p>
+<p>分为全局过滤器和局部过滤器</p>
+<h4 id="全局过滤器："><a href="#全局过滤器：" class="headerlink" title="全局过滤器："></a>全局过滤器：</h4><ul>
+<li>对所有路由生效</li>
+<li>接口用时统计</li>
+</ul>
+<h4 id="局部过滤器："><a href="#局部过滤器：" class="headerlink" title="局部过滤器："></a>局部过滤器：</h4><ul>
+<li>对指定路由生效</li>
+</ul>
+<h3 id="定义全局过滤器"><a href="#定义全局过滤器" class="headerlink" title="定义全局过滤器"></a>定义全局过滤器</h3><p>实现 GlobalFilter 和 Ordered，重写相关方法，加入到spring容器管理即可，无需配置，全局过滤器对所有的路由都有效。</p>
+<pre><code>@Configuration
+public class FilterConfig
+{
+
+    @Bean
+    @Order(-1)
+    public GlobalFilter a()
+    {
+        return new AFilter();
+    }
+
+    @Bean
+    @Order(0)
+    public GlobalFilter b()
+    {
+        return new BFilter();
+    }
+
+    @Bean
+    @Order(1)
+    public GlobalFilter c()
+    {
+        return new CFilter();
+    }
+
+
+    @Slf4j
+    public class AFilter implements GlobalFilter, Ordered
+    {
+
+        @Override
+        public Mono&lt;Void&gt; filter(ServerWebExchange exchange, GatewayFilterChain chain)
+        {
+            log.info(&quot;AFilter前置逻辑&quot;);
+            return chain.filter(exchange).then(Mono.fromRunnable(() -&gt;
+            {
+                log.info(&quot;AFilter后置逻辑&quot;);
+            }));
+        }
+
+        //   值越小，优先级越高
+//    int HIGHEST_PRECEDENCE = -2147483648;
+//    int LOWEST_PRECEDENCE = 2147483647;
+        @Override
+        public int getOrder()
+        {
+            return HIGHEST_PRECEDENCE + 100;
+        }
+    }
+
+    @Slf4j
+    public class BFilter implements GlobalFilter, Ordered
+    {
+        @Override
+        public Mono&lt;Void&gt; filter(ServerWebExchange exchange, GatewayFilterChain chain)
+        {
+            log.info(&quot;BFilter前置逻辑&quot;);
+            return chain.filter(exchange).then(Mono.fromRunnable(() -&gt;
+            {
+                log.info(&quot;BFilter后置逻辑&quot;);
+            }));
+        }
+
+
+        //   值越小，优先级越高
+//    int HIGHEST_PRECEDENCE = -2147483648;
+//    int LOWEST_PRECEDENCE = 2147483647;
+        @Override
+        public int getOrder()
+        {
+            return HIGHEST_PRECEDENCE + 200;
+        }
+    }
+
+    @Slf4j
+    public class CFilter implements GlobalFilter, Ordered
+    {
+
+        @Override
+        public Mono&lt;Void&gt; filter(ServerWebExchange exchange, GatewayFilterChain chain)
+        {
+            log.info(&quot;CFilter前置逻辑&quot;);
+            return chain.filter(exchange).then(Mono.fromRunnable(() -&gt;
+            {
+                log.info(&quot;CFilter后置逻辑&quot;);
+            }));
+        }
+
+        //   值越小，优先级越高
+//    int HIGHEST_PRECEDENCE = -2147483648;
+//    int LOWEST_PRECEDENCE = 2147483647;
+        @Override
+        public int getOrder()
+        {
+            return HIGHEST_PRECEDENCE + 300;
+        }
+    }
+}</code></pre><h3 id="定义局部过滤器"><a href="#定义局部过滤器" class="headerlink" title="定义局部过滤器"></a>定义局部过滤器</h3><ol>
+<li>需要实现GatewayFilter, Ordered，实现相关的方法</li>
+<li>加入到过滤器工厂，并且注册到spring容器中。</li>
+<li>在配置文件中进行配置，如果不配置则不启用此过滤器规则。</li>
+</ol>
+<p>局部过滤器举例, 对请求头部的 user-id 进行校验，代码如下：</p>
+<h4 id="需要实现GatewayFilter-Ordered，实现相关的方法"><a href="#需要实现GatewayFilter-Ordered，实现相关的方法" class="headerlink" title="需要实现GatewayFilter, Ordered，实现相关的方法"></a>需要实现GatewayFilter, Ordered，实现相关的方法</h4><pre><code>//@Component
+@Slf4j
+public class UserIdCheckGateWayFilter implements GatewayFilter, Ordered
+{
+    @Override
+    public Mono&lt;Void&gt; filter(ServerWebExchange exchange, GatewayFilterChain chain)
+    {
+        String url = exchange.getRequest().getPath().pathWithinApplication().value();
+        log.info(&quot;请求URL:&quot; + url);
+        log.info(&quot;method:&quot; + exchange.getRequest().getMethod());
+       /*   String secret = exchange.getRequest().getHeaders().getFirst(&quot;secret&quot;);
+        if (StringUtils.isBlank(secret))
+        {
+            return chain.filter(exchange);
+        }*/
+         //获取param 请求参数
+        String uname = exchange.getRequest().getQueryParams().getFirst(&quot;uname&quot;);
+        //获取header
+        String userId = exchange.getRequest().getHeaders().getFirst(&quot;user-id&quot;);
+        log.info(&quot;userId：&quot; + userId);
+
+        if (StringUtils.isBlank(userId))
+        {
+            log.info(&quot;*****头部验证不通过，请在头部输入  user-id&quot;);
+            //终止请求，直接回应
+            exchange.getResponse().setStatusCode(HttpStatus.NOT_ACCEPTABLE);
+            return exchange.getResponse().setComplete();
+        }
+        return chain.filter(exchange);
+    }
+
+    //   值越小，优先级越高
+//    int HIGHEST_PRECEDENCE = -2147483648;
+//    int LOWEST_PRECEDENCE = 2147483647;
+    @Override
+    public int getOrder()
+    {
+        return HIGHEST_PRECEDENCE;
+    }
+}</code></pre><h4 id="加入到过滤器工厂，并且注册到spring容器中。"><a href="#加入到过滤器工厂，并且注册到spring容器中。" class="headerlink" title="加入到过滤器工厂，并且注册到spring容器中。"></a>加入到过滤器工厂，并且注册到spring容器中。</h4><pre><code>@Component
+public class UserIdCheckGatewayFilterFactory extends AbstractGatewayFilterFactory&lt;Object&gt;
+{
+    @Override
+    public GatewayFilter apply(Object config)
+    {
+        return new UserIdCheckGateWayFilter();
+    }
+}</code></pre><h4 id="在配置文件中进行配置，如果不配置则不启用此过滤器规则。"><a href="#在配置文件中进行配置，如果不配置则不启用此过滤器规则。" class="headerlink" title="在配置文件中进行配置，如果不配置则不启用此过滤器规则。"></a>在配置文件中进行配置，如果不配置则不启用此过滤器规则。</h4><pre><code>- id: service_provider_demo_route_filter
+    uri: lb://service-provider-demo
+    predicates:
+    - Path=/filter/**
+    filters:
+    - RewritePath=/filter/(?&lt;segment&gt;.*), /provider/$\{segment}
+    - UserIdCheckGateWayFilter</code></pre>
+            </div>
+            <hr>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://adbo.gitee.io" rel="external nofollow noreferrer">Adbo</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://adbo.gitee.io/2021/10/17/2021-10-17-springcloudgateway/">http://adbo.gitee.io/2021/10/17/2021-10-17-springcloudgateway/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="http://adbo.gitee.io" target="_blank">Adbo</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/SpringCloud/">
+                                    <span class="chip bg-color">SpringCloud</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">充点钱我更猛</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+            
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '9150c7c4b90b14e0cd58',
+        clientSecret: '9666f231bec8dfe9335833e3684d57d2fcf8da6b',
+        repo: 'gitalk',
+        owner: 'adbbo',
+        admin: "adbbo",
+        id: '2021-10-17T22-30-22',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/10/19/2021-10-19-hashmap/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="hashmap核心知识">
+                        
+                        <span class="card-title">hashmap核心知识</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            深度学习
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-10-19
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/复习PLUS/" class="post-category">
+                                    复习PLUS
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/集合/">
+                        <span class="chip bg-color">集合</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/10/15/2021-10-15-springboot-zi-dong-zhuang-pei/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="springboot自动装配">
+                        
+                        <span class="card-title">springboot自动装配</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            SpringBoot 自动装配与实践
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-10-15
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/复习PLUS/" class="post-category">
+                                    复习PLUS
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Spring框架/">
+                        <span class="chip bg-color">Spring框架</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+    
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2020</span>
+            <a href="http://adbo.gitee.io" target="_blank">Adbo</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv" class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv" class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/adbbo" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1309338083@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1309338083" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 1309338083" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字" class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

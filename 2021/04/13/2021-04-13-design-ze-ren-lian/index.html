@@ -1,0 +1,1353 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="责任链模式, Adbo~Blog">
+    <meta name="description" content="重学 Java 设计模式">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>责任链模式 | Adbo</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Adbo</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-at" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Adbo</div>
+        <div class="logo-desc">
+            
+            沉淀、分享、成长，让自己和他人都能有所收获
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-at"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://adbo.gitee.io/javaify" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://adbo.gitee.io/javaify" class="github-corner tooltipped hide-on-med-and-down" target="_blank" data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewbox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/cover/itstack-demo-design-13-01.png')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">责任链模式</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/设计模式/">
+                                <span class="chip bg-color">设计模式</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/设计模式/" class="post-category">
+                                设计模式
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-04-13
+                </div>
+                
+
+                
+
+                
+
+                
+				
+                
+            </div>
+            
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <blockquote>
+<p>本文章仅用于本人学习笔记记录<br>微信：A20991212A（如本文档内容侵权了您的权益，请您通过微信联系到我）</p>
+</blockquote>
+<h2 id="责任链模式介绍"><a href="#责任链模式介绍" class="headerlink" title="责任链模式介绍"></a>责任链模式介绍</h2><p>责任链模式的核心是解决一组服务中的先后执行处理关系。就有点像你没钱花了，需要家庭财务支出审批，10块钱以下找闺女审批，100块钱先闺女审批在媳妇审批。你可以理解想象成当你要跳槽的时候被安排的明明白白的被各个领导签字放行。</p>
+<h2 id="简单例子"><a href="#简单例子" class="headerlink" title="简单例子"></a>简单例子</h2><h3 id="场景模拟工程"><a href="#场景模拟工程" class="headerlink" title="场景模拟工程"></a>场景模拟工程</h3><pre><code>itstack-demo-design-13-00
+└── src
+    └── main
+        └── java
+            └── org.itstack.demo.design
+                └── AuthService.java
+</code></pre><h3 id="场景简述"><a href="#场景简述" class="headerlink" title="场景简述"></a>场景简述</h3><h4 id="模拟审核服务"><a href="#模拟审核服务" class="headerlink" title="模拟审核服务"></a>模拟审核服务</h4><pre><code>public class AuthService {
+
+    private static Map&lt;String, Date&gt; authMap = new ConcurrentHashMap&lt;String, Date&gt;();
+
+    public static Date queryAuthInfo(String uId, String orderId) {
+        return authMap.get(uId.concat(orderId));
+    }
+
+    public static void auth(String uId, String orderId) {
+        authMap.put(uId.concat(orderId), new Date());
+    }
+
+}
+</code></pre><p>这部分是把由谁审核的和审核的单子ID作为唯一key值记录到内存Map结构中</p>
+<h2 id="用一坨坨代码实现"><a href="#用一坨坨代码实现" class="headerlink" title="用一坨坨代码实现"></a>用一坨坨代码实现</h2><p>按照我们的需求审批流程，平常系统上线只需要三级负责人审批就可以，但是到了618大促时间点，就需要由二级负责以及一级负责人一起加入审批系统上线流程。在这里我们使用非常直接的if判断方式来实现这样的需求。</p>
+<h3 id="工程结构"><a href="#工程结构" class="headerlink" title="工程结构"></a>工程结构</h3><pre><code>itstack-demo-design-13-01
+└── src
+    └── main
+        └── java
+            └── org.itstack.demo.design
+                └── AuthController.java
+</code></pre><h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><pre><code>public class AuthController {
+
+    private SimpleDateFormat f = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);// 时间格式化
+
+    public AuthInfo doAuth(String uId, String orderId, Date authDate) throws ParseException {
+
+        // 三级审批
+        Date date = AuthService.queryAuthInfo(&quot;1000013&quot;, orderId);
+        if (null == date) return new AuthInfo(&quot;0001&quot;, &quot;单号：&quot;, orderId, &quot; 状态：待三级审批负责人 &quot;, &quot;王工&quot;);
+
+        // 二级审批
+        if (authDate.after(f.parse(&quot;2020-06-01 00:00:00&quot;)) &amp;&amp; authDate.before(f.parse(&quot;2020-06-25 23:59:59&quot;))) {
+            date = AuthService.queryAuthInfo(&quot;1000012&quot;, orderId);
+            if (null == date) return new AuthInfo(&quot;0001&quot;, &quot;单号：&quot;, orderId, &quot; 状态：待二级审批负责人 &quot;, &quot;张经理&quot;);
+        }
+
+        // 一级审批
+        if (authDate.after(f.parse(&quot;2020-06-11 00:00:00&quot;)) &amp;&amp; authDate.before(f.parse(&quot;2020-06-20 23:59:59&quot;))) {
+            date = AuthService.queryAuthInfo(&quot;1000011&quot;, orderId);
+            if (null == date) return new AuthInfo(&quot;0001&quot;, &quot;单号：&quot;, orderId, &quot; 状态：待一级审批负责人 &quot;, &quot;段总&quot;);
+        }
+
+        return new AuthInfo(&quot;0001&quot;, &quot;单号：&quot;, orderId, &quot; 状态：审批完成&quot;);
+    }
+
+}</code></pre><h3 id="测试验证"><a href="#测试验证" class="headerlink" title="测试验证"></a>测试验证</h3><pre><code>@Test
+public void test_AuthController() throws ParseException {
+    AuthController authController = new AuthController();  
+
+    // 模拟三级负责人审批
+    logger.info(&quot;测试结果：{}&quot;, JSON.toJSONString(authController.doAuth(&quot;小傅哥&quot;, &quot;1000998004813441&quot;, new Date())));
+    logger.info(&quot;测试结果：{}&quot;, &quot;模拟三级负责人审批，王工&quot;);
+    AuthService.auth(&quot;1000013&quot;, &quot;1000998004813441&quot;);  
+
+    // 模拟二级负责人审批                                 
+    logger.info(&quot;测试结果：{}&quot;, JSON.toJSONString(authController.doAuth(&quot;小傅哥&quot;, &quot;1000998004813441&quot;, new Date())));
+    logger.info(&quot;测试结果：{}&quot;, &quot;模拟二级负责人审批，张经理&quot;);
+    AuthService.auth(&quot;1000012&quot;, &quot;1000998004813441&quot;);    
+
+    // 模拟一级负责人审批
+    logger.info(&quot;测试结果：{}&quot;, JSON.toJSONString(authController.doAuth(&quot;小傅哥&quot;, &quot;1000998004813441&quot;, new Date())));
+    logger.info(&quot;测试结果：{}&quot;, &quot;模拟一级负责人审批，段总&quot;);
+    AuthService.auth(&quot;1000011&quot;, &quot;1000998004813441&quot;);            
+
+    logger.info(&quot;测试结果：{}&quot;, &quot;审批完成&quot;);
+}
+</code></pre><pre><code>23:25:00.363 [main] INFO  org.itstack.demo.design.test.ApiTest - 测试结果：{&quot;code&quot;:&quot;0001&quot;,&quot;info&quot;:&quot;单号：1000998004813441 状态：待三级审批负责人 王工&quot;}
+23:25:00.366 [main] INFO  org.itstack.demo.design.test.ApiTest - 测试结果：模拟三级负责人审批，王工
+23:25:00.367 [main] INFO  org.itstack.demo.design.test.ApiTest - 测试结果：{&quot;code&quot;:&quot;0001&quot;,&quot;info&quot;:&quot;单号：1000998004813441 状态：待二级审批负责人 张经理&quot;}
+23:25:00.367 [main] INFO  org.itstack.demo.design.test.ApiTest - 测试结果：模拟二级负责人审批，张经理
+23:25:00.368 [main] INFO  org.itstack.demo.design.test.ApiTest - 测试结果：{&quot;code&quot;:&quot;0001&quot;,&quot;info&quot;:&quot;单号：1000998004813441 状态：待一级审批负责人 段总&quot;}
+23:25:00.368 [main] INFO  org.itstack.demo.design.test.ApiTest - 测试结果：模拟一级负责人审批，段总
+23:25:00.368 [main] INFO  org.itstack.demo.design.test.ApiTest - 测试结果：审批完成
+
+Process finished with exit code 0
+</code></pre><h2 id="责任链模式重构代码"><a href="#责任链模式重构代码" class="headerlink" title="责任链模式重构代码"></a>责任链模式重构代码</h2><p>责任链模式可以让各个服务模块更加清晰，而每一个模块间可以通过next的方式进行获取。而每一个next是由继承的统一抽象类实现的。最终所有类的职责可以动态的进行编排使用，编排的过程可以做成可配置化。</p>
+<h3 id="工程结构-1"><a href="#工程结构-1" class="headerlink" title="工程结构"></a>工程结构</h3><pre><code>itstack-demo-design-13-02
+└── src
+    └── main
+        └── java
+            └── org.itstack.demo.design
+                ├── impl
+                │    ├── Level1AuthLink.java
+                │    ├── Level2AuthLink.java
+                │    └── Level3AuthLink.java
+                ├── AuthInfo.java
+                └── AuthLink.java
+</code></pre><p>责任链模式模型结构</p>
+<p><img src="/2021/04/13/2021-04-13-design-ze-ren-lian/itstack-demo-design-13-03.png" alt></p>
+<ul>
+<li>上图是这个业务模型中责任链结构的核心部分，通过三个实现了统一抽象类AuthLink的不同规则，再进行责任编排模拟出一条链路。这个链路就是业务中的责任链。</li>
+<li>一般在使用责任链时候如果是场景比较固定，可以通过写死到代码中进行初始化。但如果业务场景经常变化可以做成xml配置的方式进行处理，也可以落到库里进行初始化操作。</li>
+</ul>
+<h3 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h3><h4 id="责任链中返回对象定义"><a href="#责任链中返回对象定义" class="headerlink" title="责任链中返回对象定义"></a>责任链中返回对象定义</h4><pre><code>public class AuthInfo {
+
+    private String code;
+    private String info = &quot;&quot;;
+
+    public AuthInfo(String code, String ...infos) {
+        this.code = code;
+        for (String str:infos){
+            this.info = this.info.concat(str);
+        }
+    }
+
+    // ...get/set
+}
+</code></pre><p>这个类的是包装了责任链处理过程中返回结果的类，方面处理每个责任链的返回信息。</p>
+<h4 id="链路抽象类定义"><a href="#链路抽象类定义" class="headerlink" title="链路抽象类定义"></a>链路抽象类定义</h4><pre><code>public abstract class AuthLink {
+
+    protected Logger logger = LoggerFactory.getLogger(AuthLink.class);
+
+    protected SimpleDateFormat f = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);// 时间格式化
+    protected String levelUserId;                           // 级别人员ID
+    protected String levelUserName;                         // 级别人员姓名 
+    private AuthLink next;                                  // 责任链
+
+    public AuthLink(String levelUserId, String levelUserName) {
+        this.levelUserId = levelUserId;
+        this.levelUserName = levelUserName;
+    }
+
+    public AuthLink next() {
+        return next;
+    }
+
+    public AuthLink appendNext(AuthLink next) {
+        this.next = next;
+        return this;
+    }
+
+    public abstract AuthInfo doAuth(String uId, String orderId, Date authDate);
+
+}
+</code></pre><ul>
+<li>这部分是责任链，链接起来的核心部分。AuthLink next，重点在于可以通过next方式获取下一个链路需要处理的节点。</li>
+<li>levelUserId、levelUserName，是责任链中的公用信息，标记每一个审核节点的人员信息。</li>
+<li>抽象类中定义了一个抽象方法，abstract AuthInfo doAuth，这是每一个实现者必须实现的类，不同的审核级别处理不同的业务。</li>
+</ul>
+<h4 id="三个审核实现类"><a href="#三个审核实现类" class="headerlink" title="三个审核实现类"></a>三个审核实现类</h4><pre><code>public class Level1AuthLink extends AuthLink {
+
+    public Level1AuthLink(String levelUserId, String levelUserName) {
+        super(levelUserId, levelUserName);
+    }
+
+    public AuthInfo doAuth(String uId, String orderId, Date authDate) {
+        Date date = AuthService.queryAuthInfo(levelUserId, orderId);
+        if (null == date) {
+            return new AuthInfo(&quot;0001&quot;, &quot;单号：&quot;, orderId, &quot; 状态：待一级审批负责人 &quot;, levelUserName);
+        }
+        AuthLink next = super.next();
+        if (null == next) {
+            return new AuthInfo(&quot;0000&quot;, &quot;单号：&quot;, orderId, &quot; 状态：一级审批完成负责人&quot;, &quot; 时间：&quot;, f.format(date), &quot; 审批人：&quot;, levelUserName);
+        }
+
+        return next.doAuth(uId, orderId, authDate);
+    }
+
+}
+</code></pre><pre><code>public class Level2AuthLink extends AuthLink {
+
+    private Date beginDate = f.parse(&quot;2020-06-11 00:00:00&quot;);
+    private Date endDate = f.parse(&quot;2020-06-20 23:59:59&quot;);
+
+    public Level2AuthLink(String levelUserId, String levelUserName) throws ParseException {
+        super(levelUserId, levelUserName);
+    }
+
+    public AuthInfo doAuth(String uId, String orderId, Date authDate) {
+        Date date = AuthService.queryAuthInfo(levelUserId, orderId);
+        if (null == date) {
+            return new AuthInfo(&quot;0001&quot;, &quot;单号：&quot;, orderId, &quot; 状态：待二级审批负责人 &quot;, levelUserName);
+        }
+        AuthLink next = super.next();
+        if (null == next) {
+            return new AuthInfo(&quot;0000&quot;, &quot;单号：&quot;, orderId, &quot; 状态：二级审批完成负责人&quot;, &quot; 时间：&quot;, f.format(date), &quot; 审批人：&quot;, levelUserName);
+        }
+
+        if (authDate.before(beginDate) || authDate.after(endDate)) {
+            return new AuthInfo(&quot;0000&quot;, &quot;单号：&quot;, orderId, &quot; 状态：二级审批完成负责人&quot;, &quot; 时间：&quot;, f.format(date), &quot; 审批人：&quot;, levelUserName);
+        }
+
+        return next.doAuth(uId, orderId, authDate);
+    }
+
+}
+</code></pre><pre><code>public class Level3AuthLink extends AuthLink {
+
+    private Date beginDate = f.parse(&quot;2020-06-01 00:00:00&quot;);
+    private Date endDate = f.parse(&quot;2020-06-25 23:59:59&quot;);
+
+    public Level3AuthLink(String levelUserId, String levelUserName) throws ParseException {
+        super(levelUserId, levelUserName);
+    }
+
+    public AuthInfo doAuth(String uId, String orderId, Date authDate) {
+        Date date = AuthService.queryAuthInfo(levelUserId, orderId);
+        if (null == date) {
+            return new AuthInfo(&quot;0001&quot;, &quot;单号：&quot;, orderId, &quot; 状态：待三级审批负责人 &quot;, levelUserName);
+        }
+        AuthLink next = super.next();
+        if (null == next) {
+            return new AuthInfo(&quot;0000&quot;, &quot;单号：&quot;, orderId, &quot; 状态：三级审批负责人完成&quot;, &quot; 时间：&quot;, f.format(date), &quot; 审批人：&quot;, levelUserName);
+        }
+
+        if (authDate.before(beginDate) || authDate.after(endDate)) {
+            return new AuthInfo(&quot;0000&quot;, &quot;单号：&quot;, orderId, &quot; 状态：三级审批负责人完成&quot;, &quot; 时间：&quot;, f.format(date), &quot; 审批人：&quot;, levelUserName);
+        }
+
+        return next.doAuth(uId, orderId, authDate);
+    }
+
+}
+</code></pre><ul>
+<li>例如第一个审核类中会先判断是否审核通过，如果没有审核通过则返回结果给调用方，引导去审核。</li>
+<li>判断完成后获取下一个审核节点；super.next();，如果不存在下一个节点，则直接返回结果。</li>
+<li>之后是根据不同的业务时间段进行判断是否需要，二级和一级的审核。</li>
+<li>最后返回下一个审核结果；next.doAuth(uId, orderId, authDate);，有点像递归调用。</li>
+</ul>
+<h4 id="测试验证-1"><a href="#测试验证-1" class="headerlink" title="测试验证"></a>测试验证</h4><pre><code>@Test
+public void test_AuthLink() throws ParseException {
+    AuthLink authLink = new Level3AuthLink(&quot;1000013&quot;, &quot;王工&quot;)
+            .appendNext(new Level2AuthLink(&quot;1000012&quot;, &quot;张经理&quot;)
+                    .appendNext(new Level1AuthLink(&quot;1000011&quot;, &quot;段总&quot;)));
+
+    logger.info(&quot;测试结果：{}&quot;, JSON.toJSONString(authLink.doAuth(&quot;小傅哥&quot;, &quot;1000998004813441&quot;, new Date())));
+
+    // 模拟三级负责人审批
+    AuthService.auth(&quot;1000013&quot;, &quot;1000998004813441&quot;);
+    logger.info(&quot;测试结果：{}&quot;, &quot;模拟三级负责人审批，王工&quot;);
+    logger.info(&quot;测试结果：{}&quot;, JSON.toJSONString(authLink.doAuth(&quot;小傅哥&quot;, &quot;1000998004813441&quot;, new Date())));
+
+    // 模拟二级负责人审批
+    AuthService.auth(&quot;1000012&quot;, &quot;1000998004813441&quot;);
+    logger.info(&quot;测试结果：{}&quot;, &quot;模拟二级负责人审批，张经理&quot;);
+    logger.info(&quot;测试结果：{}&quot;, JSON.toJSONString(authLink.doAuth(&quot;小傅哥&quot;, &quot;1000998004813441&quot;, new Date())));
+
+    // 模拟一级负责人审批
+    AuthService.auth(&quot;1000011&quot;, &quot;1000998004813441&quot;);
+    logger.info(&quot;测试结果：{}&quot;, &quot;模拟一级负责人审批，段总&quot;);
+    logger.info(&quot;测试结果：{}&quot;, JSON.toJSONString(authLink.doAuth(&quot;小傅哥&quot;, &quot;1000998004813441&quot;, new Date())));
+}
+</code></pre><ul>
+<li>这里包括最核心的责任链创建，实际的业务中会包装到控制层； AuthLink authLink = new Level3AuthLink(“1000013”, “王工”) .appendNext(new Level2AuthLink(“1000012”, “张经理”) .appendNext(new Level1AuthLink(“1000011”, “段总”))); 通过把不同的责任节点进行组装，构成一条完整业务的责任链。</li>
+<li>接下里不断的执行查看审核链路authLink.doAuth(…)，通过返回结果对数据进行3、2、1级负责人审核，直至最后审核全部完成。</li>
+</ul>
+<pre><code>23:49:46.585 [main] INFO  org.itstack.demo.design.test.ApiTest - 测试结果：{&quot;code&quot;:&quot;0001&quot;,&quot;info&quot;:&quot;单号：1000998004813441 状态：待三级审批负责人 王工&quot;}
+23:49:46.590 [main] INFO  org.itstack.demo.design.test.ApiTest - 测试结果：模拟三级负责人审批，王工
+23:49:46.590 [main] INFO  org.itstack.demo.design.test.ApiTest - 测试结果：{&quot;code&quot;:&quot;0001&quot;,&quot;info&quot;:&quot;单号：1000998004813441 状态：待二级审批负责人 张经理&quot;}
+23:49:46.590 [main] INFO  org.itstack.demo.design.test.ApiTest - 测试结果：模拟二级负责人审批，张经理
+23:49:46.590 [main] INFO  org.itstack.demo.design.test.ApiTest - 测试结果：{&quot;code&quot;:&quot;0001&quot;,&quot;info&quot;:&quot;单号：1000998004813441 状态：待一级审批负责人 段总&quot;}
+23:49:46.590 [main] INFO  org.itstack.demo.design.test.ApiTest - 测试结果：模拟一级负责人审批，段总
+23:49:46.590 [main] INFO  org.itstack.demo.design.test.ApiTest - 测试结果：{&quot;code&quot;:&quot;0000&quot;,&quot;info&quot;:&quot;单号：1000998004813441 状态：一级审批完成负责人 时间：2020-06-18 23:49:46 审批人：段总&quot;}
+
+Process finished with exit code 0
+</code></pre><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>从上面代码从if语句重构到使用责任链模式开发可以看到，我们的代码结构变得清晰干净了，也解决了大量if语句的使用。并不是if语句不好，只不过if语句并不适合做系统流程设计，但是在做判断和行为逻辑处理中还是非常可以使用的。</li>
+<li>责任链模式很好的处理单一职责和开闭原则，简单了耦合也使对象关系更加清晰，而且外部的调用方并不需要关心责任链是如何进行处理的(以上程序中可以把责任链的组合进行包装，在提供给外部使用)。但除了这些优点外也需要是适当的场景才进行使用，避免造成性能以及编排混乱调试测试疏漏问题。</li>
+<li>责任链模式的核心是解决一组服务中的先后执行处理关系。 </li>
+</ul>
+
+            </div>
+            <hr>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://adbo.gitee.io" rel="external nofollow noreferrer">Adbo</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://adbo.gitee.io/2021/04/13/2021-04-13-design-ze-ren-lian/">http://adbo.gitee.io/2021/04/13/2021-04-13-design-ze-ren-lian/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="http://adbo.gitee.io" target="_blank">Adbo</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/设计模式/">
+                                    <span class="chip bg-color">设计模式</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">充点钱我更猛</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+            
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '9150c7c4b90b14e0cd58',
+        clientSecret: '9666f231bec8dfe9335833e3684d57d2fcf8da6b',
+        repo: 'gitalk',
+        owner: 'adbbo',
+        admin: "adbbo",
+        id: '2021-04-13T22-43-52',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/04/14/2021-04-14-design-ming-ling/">
+                    <div class="card-image">
+                        
+                        <img src="/medias/cover/itstack-demo-design-14-01.png" class="responsive-img" alt="命令模式">
+                        
+                        <span class="card-title">命令模式</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            重学 Java 设计模式
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-04-14
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/设计模式/" class="post-category">
+                                    设计模式
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/设计模式/">
+                        <span class="chip bg-color">设计模式</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/04/12/2021-04-12-design-dai-li/">
+                    <div class="card-image">
+                        
+                        <img src="/medias/cover/itstack-demo-design-12-01.png" class="responsive-img" alt="代理模式">
+                        
+                        <span class="card-title">代理模式</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            重学 Java 设计模式
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-12
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/设计模式/" class="post-category">
+                                    设计模式
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/设计模式/">
+                        <span class="chip bg-color">设计模式</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+    
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2020</span>
+            <a href="http://adbo.gitee.io" target="_blank">Adbo</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv" class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv" class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/adbbo" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1309338083@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1309338083" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 1309338083" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字" class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

@@ -1,0 +1,1451 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="组合模式, Adbo~Blog">
+    <meta name="description" content="重学 Java 设计模式">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>组合模式 | Adbo</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Adbo</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-at" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Adbo</div>
+        <div class="logo-desc">
+            
+            沉淀、分享、成长，让自己和他人都能有所收获
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-at"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://adbo.gitee.io/javaify" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://adbo.gitee.io/javaify" class="github-corner tooltipped hide-on-med-and-down" target="_blank" data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewbox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/cover/itstack-demo-design-8-01.png')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">组合模式</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/设计模式/">
+                                <span class="chip bg-color">设计模式</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/设计模式/" class="post-category">
+                                设计模式
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-04-08
+                </div>
+                
+
+                
+
+                
+
+                
+				
+                
+            </div>
+            
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <blockquote>
+<p>本文章仅用于本人学习笔记记录<br>微信：A20991212A（如本文档内容侵权了您的权益，请您通过微信联系到我）</p>
+</blockquote>
+<h2 id="组合模式介绍"><a href="#组合模式介绍" class="headerlink" title="组合模式介绍"></a>组合模式介绍</h2><p><img src="/2021/04/08/2021-04-08-design-zu-he/itstack-demo-design-8-01.png" alt></p>
+<p>从上图可以看到这有点像螺丝🔩和螺母，通过一堆的链接组织出一棵结构树。而这种通过把相似对象(也可以称作是方法)组合成一组可被调用的结构树对象的设计思路叫做组合模式。组合模式也就是把相似对象(也可以称作是方法)组合成一组可被调用的结构树对象。</p>
+<p>这种设计方式可以让你的服务组节点进行自由组合对外提供服务，例如你有三个原子校验功能(A：身份证、B：银行卡、C：手机号)服务并对外提供调用使用。有些调用方需要使用AB组合，有些调用方需要使用到CBA组合，还有一些可能只使用三者中的一个。那么这个时候你就可以使用组合模式进行构建服务，对于不同类型的调用方配置不同的组织关系树，而这个树结构你可以配置到数据库中也可以不断的通过图形界面来控制树结构。</p>
+<p>所以不同的设计模式用在恰当好处的场景可以让代码逻辑非常清晰并易于扩展，同时也可以减少团队新增人员对项目的学习成本。</p>
+<h2 id="简单例子"><a href="#简单例子" class="headerlink" title="简单例子"></a>简单例子</h2><p><img src="/2021/04/08/2021-04-08-design-zu-he/itstack-demo-design-8-02.png" alt></p>
+<p>以上是一个非常简化版的营销规则决策树，根据性别、年龄来发放不同类型的优惠券，来刺激消费起到精准用户促活的目的。</p>
+<h2 id="用一坨坨代码实现"><a href="#用一坨坨代码实现" class="headerlink" title="用一坨坨代码实现"></a>用一坨坨代码实现</h2><h3 id="工程结构"><a href="#工程结构" class="headerlink" title="工程结构"></a>工程结构</h3><pre><code>itstack-demo-design-8-01
+└── src
+    └── main
+        └── java
+            └── org.itstack.demo.design
+                └── EngineController.java
+</code></pre><h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><pre><code>public class EngineController {
+
+    private Logger logger = LoggerFactory.getLogger(EngineController.class);
+
+    public String process(final String userId, final String userSex, final int userAge) {
+
+        logger.info(&quot;ifelse实现方式判断用户结果。userId：{} userSex：{} userAge：{}&quot;, userId, userSex, userAge);
+
+        if (&quot;man&quot;.equals(userSex)) {
+            if (userAge &lt; 25) {
+                return &quot;果实A&quot;;
+            }
+
+            if (userAge &gt;= 25) {
+                return &quot;果实B&quot;;
+            }
+        }
+
+        if (&quot;woman&quot;.equals(userSex)) {
+            if (userAge &lt; 25) {
+                return &quot;果实C&quot;;
+            }
+
+            if (userAge &gt;= 25) {
+                return &quot;果实D&quot;;
+            }
+        }
+
+        return null;
+
+    }
+
+}
+</code></pre><h2 id="组合模式重构代码"><a href="#组合模式重构代码" class="headerlink" title="组合模式重构代码"></a>组合模式重构代码</h2><p>接下来的重构部分代码改动量相对来说会比较大一些，为了让我们可以把不同类型的决策节点和最终的果实组装成一棵可被运行的决策树，需要做适配设计和工厂方法调用，具体会体现在定义接口以及抽象类和初始化配置决策节点(性别、年龄)上。建议这部分代码多阅读几次，最好实践下。</p>
+<h3 id="工程结构-1"><a href="#工程结构-1" class="headerlink" title="工程结构"></a>工程结构</h3><pre><code>itstack-demo-design-8-02
+└── src
+    ├── main
+    │   └── java
+    │      └── org.itstack.demo.design.domain
+    │          ├── model
+    │          │   ├── aggregates
+    │          │   │   └── TreeRich.java
+    │          │   └── vo
+    │          │       ├── EngineResult.java
+    │          │       ├── TreeNode.java
+    │          │       ├── TreeNodeLink.java    
+    │          │       └── TreeRoot.java    
+    │          └── service
+    │              ├── engine
+    │              │   ├── impl    
+    │              │   │   └── TreeEngineHandle.java       
+    │              │   ├── EngineBase.java 
+    │              │   ├── EngineConfig.java       
+    │              │   └── IEngine.java    
+    │              └── logic
+    │                  ├── impl    
+    │                  │   ├── LogicFilter.java     
+    │                  │   └── LogicFilter.java        
+    │                  └── LogicFilter.java    
+    └── test
+         └── java
+             └── org.itstack.demo.design.test
+                 └── ApiTest.java
+</code></pre><p>组合模式模型结构</p>
+<p><img src="/2021/04/08/2021-04-08-design-zu-he/itstack-demo-design-8-03.png" alt></p>
+<p>LogicFilter开始定义适配的决策过滤器，BaseLogic是对接口的实现，提供最基本的通用方法。UserAgeFilter、UserGenerFilter，是两个具体的实现类用于判断年龄和性别。</p>
+<h3 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h3><h4 id="基础对象"><a href="#基础对象" class="headerlink" title="基础对象"></a>基础对象</h4><p>![](Image 1.png)</p>
+<p>以上这部分简单介绍，不包含逻辑只是各项必要属性的get/set</p>
+<h4 id="树节点逻辑过滤器接口"><a href="#树节点逻辑过滤器接口" class="headerlink" title="树节点逻辑过滤器接口"></a>树节点逻辑过滤器接口</h4><pre><code>public interface LogicFilter {
+
+    /**
+     * 逻辑决策器
+     *
+     * @param matterValue          决策值
+     * @param treeNodeLineInfoList 决策节点
+     * @return 下一个节点Id
+     */
+    Long filter(String matterValue, List&lt;TreeNodeLink&gt; treeNodeLineInfoList);
+
+    /**
+     * 获取决策值
+     *
+     * @param decisionMatter 决策物料
+     * @return 决策值
+     */
+    String matterValue(Long treeId, String userId, Map&lt;String, String&gt; decisionMatter);
+
+}
+</code></pre><p>这一部分定义了适配的通用接口，逻辑决策器、获取决策值，让每一个提供决策能力的节点都必须实现此接口，保证统一性。</p>
+<h4 id="决策抽象类提供基础服务"><a href="#决策抽象类提供基础服务" class="headerlink" title="决策抽象类提供基础服务"></a>决策抽象类提供基础服务</h4><pre><code>public abstract class BaseLogic implements LogicFilter {
+
+    @Override
+    public Long filter(String matterValue, List&lt;TreeNodeLink&gt; treeNodeLinkList) {
+        for (TreeNodeLink nodeLine : treeNodeLinkList) {
+            if (decisionLogic(matterValue, nodeLine)) return nodeLine.getNodeIdTo();
+        }
+        return 0L;
+    }
+
+    @Override
+    public abstract String matterValue(Long treeId, String userId, Map&lt;String, String&gt; decisionMatter);
+
+    private boolean decisionLogic(String matterValue, TreeNodeLink nodeLink) {
+        switch (nodeLink.getRuleLimitType()) {
+            case 1:
+                return matterValue.equals(nodeLink.getRuleLimitValue());
+            case 2:
+                return Double.parseDouble(matterValue) &gt; Double.parseDouble(nodeLink.getRuleLimitValue());
+            case 3:
+                return Double.parseDouble(matterValue) &lt; Double.parseDouble(nodeLink.getRuleLimitValue());
+            case 4:
+                return Double.parseDouble(matterValue) &lt;= Double.parseDouble(nodeLink.getRuleLimitValue());
+            case 5:
+                return Double.parseDouble(matterValue) &gt;= Double.parseDouble(nodeLink.getRuleLimitValue());
+            default:
+                return false;
+        }
+    }
+
+}
+</code></pre><p>在抽象方法中实现了接口方法，同时定义了基本的决策方法；1、2、3、4、5，等于、小于、大于、小于等于、大于等于的判断逻辑。</p>
+<p>同时定义了抽象方法，让每一个实现接口的类都必须按照规则提供决策值，这个决策值用于做逻辑比对。</p>
+<h4 id="树节点逻辑实现类"><a href="#树节点逻辑实现类" class="headerlink" title="树节点逻辑实现类"></a>树节点逻辑实现类</h4><p>年龄节点</p>
+<pre><code>public class UserAgeFilter extends BaseLogic {
+
+    @Override
+    public String matterValue(Long treeId, String userId, Map&lt;String, String&gt; decisionMatter) {
+        return decisionMatter.get(&quot;age&quot;);
+    }
+
+}
+</code></pre><p>性别节点</p>
+<pre><code>public class UserGenderFilter extends BaseLogic {
+
+    @Override
+    public String matterValue(Long treeId, String userId, Map&lt;String, String&gt; decisionMatter) {
+        return decisionMatter.get(&quot;gender&quot;);
+    }
+
+}
+</code></pre><p>以上两个决策逻辑的节点获取值的方式都非常简单，只是获取用户的入参即可。实际的业务开发可以从数据库、RPC接口、缓存运算等各种方式获取。</p>
+<h4 id="决策引擎接口定义"><a href="#决策引擎接口定义" class="headerlink" title="决策引擎接口定义"></a>决策引擎接口定义</h4><pre><code>public interface IEngine {
+
+    EngineResult process(final Long treeId, final String userId, TreeRich treeRich, final Map&lt;String, String&gt; decisionMatter);
+
+}
+</code></pre><p>对于使用方来说也同样需要定义统一的接口操作，这样的好处非常方便后续拓展出不同类型的决策引擎，也就是可以建造不同的决策工厂。</p>
+<h4 id="决策节点配置"><a href="#决策节点配置" class="headerlink" title="决策节点配置"></a>决策节点配置</h4><pre><code>public class EngineConfig {
+
+    static Map&lt;String, LogicFilter&gt; logicFilterMap;
+
+    static {
+        logicFilterMap = new ConcurrentHashMap&lt;&gt;();
+        logicFilterMap.put(&quot;userAge&quot;, new UserAgeFilter());
+        logicFilterMap.put(&quot;userGender&quot;, new UserGenderFilter());
+    }
+
+    public Map&lt;String, LogicFilter&gt; getLogicFilterMap() {
+        return logicFilterMap;
+    }
+
+    public void setLogicFilterMap(Map&lt;String, LogicFilter&gt; logicFilterMap) {
+        this.logicFilterMap = logicFilterMap;
+    }
+
+}
+</code></pre><p>在这里将可提供服务的决策节点配置到map结构中，对于这样的map结构可以抽取到数据库中，那么就可以非常方便的管理。</p>
+<h4 id="基础决策引擎功能"><a href="#基础决策引擎功能" class="headerlink" title="基础决策引擎功能"></a>基础决策引擎功能</h4><pre><code>public abstract class EngineBase extends EngineConfig implements IEngine {
+
+    private Logger logger = LoggerFactory.getLogger(EngineBase.class);
+
+    @Override
+    public abstract EngineResult process(Long treeId, String userId, TreeRich treeRich, Map&lt;String, String&gt; decisionMatter);
+
+    protected TreeNode engineDecisionMaker(TreeRich treeRich, Long treeId, String userId, Map&lt;String, String&gt; decisionMatter) {
+        TreeRoot treeRoot = treeRich.getTreeRoot();
+        Map&lt;Long, TreeNode&gt; treeNodeMap = treeRich.getTreeNodeMap();
+        // 规则树根ID
+        Long rootNodeId = treeRoot.getTreeRootNodeId();
+        TreeNode treeNodeInfo = treeNodeMap.get(rootNodeId);
+        //节点类型[NodeType]；1子叶、2果实
+        while (treeNodeInfo.getNodeType().equals(1)) {
+            String ruleKey = treeNodeInfo.getRuleKey();
+            LogicFilter logicFilter = logicFilterMap.get(ruleKey);
+            String matterValue = logicFilter.matterValue(treeId, userId, decisionMatter);
+            Long nextNode = logicFilter.filter(matterValue, treeNodeInfo.getTreeNodeLinkList());
+            treeNodeInfo = treeNodeMap.get(nextNode);
+            logger.info(&quot;决策树引擎=&gt;{} userId：{} treeId：{} treeNode：{} ruleKey：{} matterValue：{}&quot;, treeRoot.getTreeName(), userId, treeId, treeNodeInfo.getTreeNodeId(), ruleKey, matterValue);
+        }
+        return treeNodeInfo;
+    }
+
+}
+</code></pre><p>这里主要提供决策树流程的处理过程，有点像通过链路的关系(性别、年龄)在二叉树中寻找果实节点的过程。</p>
+<p>同时提供一个抽象方法，执行决策流程的方法供外部去做具体的实现。</p>
+<h4 id="决策引擎的实现"><a href="#决策引擎的实现" class="headerlink" title="决策引擎的实现"></a>决策引擎的实现</h4><pre><code>public class TreeEngineHandle extends EngineBase {
+
+    @Override
+    public EngineResult process(Long treeId, String userId, TreeRich treeRich, Map&lt;String, String&gt; decisionMatter) {
+        // 决策流程
+        TreeNode treeNode = engineDecisionMaker(treeRich, treeId, userId, decisionMatter);
+        // 决策结果
+        return new EngineResult(userId, treeId, treeNode.getTreeNodeId(), treeNode.getNodeValue());
+    }
+
+}
+</code></pre><pre><code>这里对于决策引擎的实现就非常简单了，通过传递进来的必要信息；决策树信息、决策物料值，来做具体的树形结构决策。</code></pre><h3 id="测试验证"><a href="#测试验证" class="headerlink" title="测试验证"></a>测试验证</h3><h4 id="组装树关系"><a href="#组装树关系" class="headerlink" title="组装树关系"></a>组装树关系</h4><pre><code>@Before
+public void init() {
+    // 节点：1
+    TreeNode treeNode_01 = new TreeNode();
+    treeNode_01.setTreeId(10001L);
+    treeNode_01.setTreeNodeId(1L);
+    treeNode_01.setNodeType(1);
+    treeNode_01.setNodeValue(null);
+    treeNode_01.setRuleKey(&quot;userGender&quot;);
+    treeNode_01.setRuleDesc(&quot;用户性别[男/女]&quot;);
+    // 链接：1-&gt;11
+    TreeNodeLink treeNodeLink_11 = new TreeNodeLink();
+    treeNodeLink_11.setNodeIdFrom(1L);
+    treeNodeLink_11.setNodeIdTo(11L);
+    treeNodeLink_11.setRuleLimitType(1);
+    treeNodeLink_11.setRuleLimitValue(&quot;man&quot;);
+    // 链接：1-&gt;12
+    TreeNodeLink treeNodeLink_12 = new TreeNodeLink();
+    treeNodeLink_12.setNodeIdTo(1L);
+    treeNodeLink_12.setNodeIdTo(12L);
+    treeNodeLink_12.setRuleLimitType(1);
+    treeNodeLink_12.setRuleLimitValue(&quot;woman&quot;);
+    List&lt;TreeNodeLink&gt; treeNodeLinkList_1 = new ArrayList&lt;&gt;();
+    treeNodeLinkList_1.add(treeNodeLink_11);
+    treeNodeLinkList_1.add(treeNodeLink_12);
+    treeNode_01.setTreeNodeLinkList(treeNodeLinkList_1);
+    // 节点：11
+    TreeNode treeNode_11 = new TreeNode();
+    treeNode_11.setTreeId(10001L);
+    treeNode_11.setTreeNodeId(11L);
+    treeNode_11.setNodeType(1);
+    treeNode_11.setNodeValue(null);
+    treeNode_11.setRuleKey(&quot;userAge&quot;);
+    treeNode_11.setRuleDesc(&quot;用户年龄&quot;);
+    // 链接：11-&gt;111
+    TreeNodeLink treeNodeLink_111 = new TreeNodeLink();
+    treeNodeLink_111.setNodeIdFrom(11L);
+    treeNodeLink_111.setNodeIdTo(111L);
+    treeNodeLink_111.setRuleLimitType(3);
+    treeNodeLink_111.setRuleLimitValue(&quot;25&quot;);
+    // 链接：11-&gt;112
+    TreeNodeLink treeNodeLink_112 = new TreeNodeLink();
+    treeNodeLink_112.setNodeIdFrom(11L);
+    treeNodeLink_112.setNodeIdTo(112L);
+    treeNodeLink_112.setRuleLimitType(5);
+    treeNodeLink_112.setRuleLimitValue(&quot;25&quot;);
+    List&lt;TreeNodeLink&gt; treeNodeLinkList_11 = new ArrayList&lt;&gt;();
+    treeNodeLinkList_11.add(treeNodeLink_111);
+    treeNodeLinkList_11.add(treeNodeLink_112);
+    treeNode_11.setTreeNodeLinkList(treeNodeLinkList_11);
+    // 节点：12
+    TreeNode treeNode_12 = new TreeNode();
+    treeNode_12.setTreeId(10001L);
+    treeNode_12.setTreeNodeId(12L);
+    treeNode_12.setNodeType(1);
+    treeNode_12.setNodeValue(null);
+    treeNode_12.setRuleKey(&quot;userAge&quot;);
+    treeNode_12.setRuleDesc(&quot;用户年龄&quot;);
+    // 链接：12-&gt;121
+    TreeNodeLink treeNodeLink_121 = new TreeNodeLink();
+    treeNodeLink_121.setNodeIdFrom(12L);
+    treeNodeLink_121.setNodeIdTo(121L);
+    treeNodeLink_121.setRuleLimitType(3);
+    treeNodeLink_121.setRuleLimitValue(&quot;25&quot;);
+    // 链接：12-&gt;122
+    TreeNodeLink treeNodeLink_122 = new TreeNodeLink();
+    treeNodeLink_122.setNodeIdFrom(12L);
+    treeNodeLink_122.setNodeIdTo(122L);
+    treeNodeLink_122.setRuleLimitType(5);
+    treeNodeLink_122.setRuleLimitValue(&quot;25&quot;);
+    List&lt;TreeNodeLink&gt; treeNodeLinkList_12 = new ArrayList&lt;&gt;();
+    treeNodeLinkList_12.add(treeNodeLink_121);
+    treeNodeLinkList_12.add(treeNodeLink_122);
+    treeNode_12.setTreeNodeLinkList(treeNodeLinkList_12);
+    // 节点：111
+    TreeNode treeNode_111 = new TreeNode();
+    treeNode_111.setTreeId(10001L);
+    treeNode_111.setTreeNodeId(111L);
+    treeNode_111.setNodeType(2);
+    treeNode_111.setNodeValue(&quot;果实A&quot;);
+    // 节点：112
+    TreeNode treeNode_112 = new TreeNode();
+    treeNode_112.setTreeId(10001L);
+    treeNode_112.setTreeNodeId(112L);
+    treeNode_112.setNodeType(2);
+    treeNode_112.setNodeValue(&quot;果实B&quot;);
+    // 节点：121
+    TreeNode treeNode_121 = new TreeNode();
+    treeNode_121.setTreeId(10001L);
+    treeNode_121.setTreeNodeId(121L);
+    treeNode_121.setNodeType(2);
+    treeNode_121.setNodeValue(&quot;果实C&quot;);
+    // 节点：122
+    TreeNode treeNode_122 = new TreeNode();
+    treeNode_122.setTreeId(10001L);
+    treeNode_122.setTreeNodeId(122L);
+    treeNode_122.setNodeType(2);
+    treeNode_122.setNodeValue(&quot;果实D&quot;);
+    // 树根
+    TreeRoot treeRoot = new TreeRoot();
+    treeRoot.setTreeId(10001L);
+    treeRoot.setTreeRootNodeId(1L);
+    treeRoot.setTreeName(&quot;规则决策树&quot;);
+    Map&lt;Long, TreeNode&gt; treeNodeMap = new HashMap&lt;&gt;();
+    treeNodeMap.put(1L, treeNode_01);
+    treeNodeMap.put(11L, treeNode_11);
+    treeNodeMap.put(12L, treeNode_12);
+    treeNodeMap.put(111L, treeNode_111);
+    treeNodeMap.put(112L, treeNode_112);
+    treeNodeMap.put(121L, treeNode_121);
+    treeNodeMap.put(122L, treeNode_122);
+    treeRich = new TreeRich(treeRoot, treeNodeMap);
+}
+</code></pre><p><img src="/2021/04/08/2021-04-08-design-zu-he/itstack-demo-design-8-04.png" alt></p>
+<ul>
+<li>重要，这一部分是组合模式非常重要的使用，在我们已经建造好的决策树关系下，可以创建出树的各个节点，以及对节点间使用链路进行串联。</li>
+<li>及时后续你需要做任何业务的扩展都可以在里面添加相应的节点，并做动态化的配置。</li>
+<li>关于这部分手动组合的方式可以提取到数据库中，那么也就可以扩展到图形界面的进行配置操作。</li>
+</ul>
+<h3 id="编写测试类"><a href="#编写测试类" class="headerlink" title="编写测试类"></a>编写测试类</h3><pre><code>@Test
+public void test_tree() {
+    logger.info(&quot;决策树组合结构信息：\r\n&quot; + JSON.toJSONString(treeRich));
+
+    IEngine treeEngineHandle = new TreeEngineHandle();
+    Map&lt;String, String&gt; decisionMatter = new HashMap&lt;&gt;();
+    decisionMatter.put(&quot;gender&quot;, &quot;man&quot;);
+    decisionMatter.put(&quot;age&quot;, &quot;29&quot;);
+
+    EngineResult result = treeEngineHandle.process(10001L, &quot;Oli09pLkdjh&quot;, treeRich, decisionMatter);
+
+    logger.info(&quot;测试结果：{}&quot;, JSON.toJSONString(result));
+}
+</code></pre><p>在这里提供了调用的通过组织模式创建出来的流程决策树，调用的时候传入了决策树的ID，那么如果是业务开发中就可以方便的解耦决策树与业务的绑定关系，按需传入决策树ID即可。</p>
+<p>此外入参我们还提供了需要处理；男(man)、年龄(29岁)，的参数信息。</p>
+<h4 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h4><pre><code>23:35:05.711 [main] INFO  o.i.d.d.d.service.engine.EngineBase - 决策树引擎=&gt;规则决策树 userId：Oli09pLkdjh treeId：10001 treeNode：11 ruleKey：userGender matterValue：man
+23:35:05.712 [main] INFO  o.i.d.d.d.service.engine.EngineBase - 决策树引擎=&gt;规则决策树 userId：Oli09pLkdjh treeId：10001 treeNode：112 ruleKey：userAge matterValue：29
+23:35:05.715 [main] INFO  org.itstack.demo.design.test.ApiTest - 测试结果：{&quot;nodeId&quot;:112,&quot;nodeValue&quot;:&quot;果实B&quot;,&quot;success&quot;:true,&quot;treeId&quot;:10001,&quot;userId&quot;:&quot;Oli09pLkdjh&quot;}
+
+Process finished with exit code 0
+</code></pre><p>从测试结果上看这与我们使用ifelse是一样的，但是目前这与的组合模式设计下，就非常方便后续的拓展和修改。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li><p>从以上的决策树场景来看，组合模式的主要解决的是一系列简单逻辑节点或者扩展的复杂逻辑节点在不同结构的组织下，对于外部的调用是仍然可以非常简单的。</p>
+</li>
+<li><p>这部分设计模式保证了开闭原则，无需更改模型结构你就可以提供新的逻辑节点的使用并配合组织出新的关系树。但如果是一些功能差异化非常大的接口进行包装就会变得比较困难，但也不是不能很好的处理，只不过需要做一些适配和特定化的开发。</p>
+</li>
+<li><p>组合模式也就是把相似对象(也可以称作是方法)组合成一组可被调用的结构树对象。</p>
+</li>
+</ul>
+
+            </div>
+            <hr>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://adbo.gitee.io" rel="external nofollow noreferrer">Adbo</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://adbo.gitee.io/2021/04/08/2021-04-08-design-zu-he/">http://adbo.gitee.io/2021/04/08/2021-04-08-design-zu-he/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="http://adbo.gitee.io" target="_blank">Adbo</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/设计模式/">
+                                    <span class="chip bg-color">设计模式</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">充点钱我更猛</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+            
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '9150c7c4b90b14e0cd58',
+        clientSecret: '9666f231bec8dfe9335833e3684d57d2fcf8da6b',
+        repo: 'gitalk',
+        owner: 'adbbo',
+        admin: "adbbo",
+        id: '2021-04-08T22-43-52',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/04/09/2021-04-09-design-zhuang-shi-qi/">
+                    <div class="card-image">
+                        
+                        <img src="/medias/cover/itstack-demo-design-9-01.png" class="responsive-img" alt="装饰器模式">
+                        
+                        <span class="card-title">装饰器模式</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            重学 Java 设计模式
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-04-09
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/设计模式/" class="post-category">
+                                    设计模式
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/设计模式/">
+                        <span class="chip bg-color">设计模式</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/04/07/2021-04-07-design-qiao-jie/">
+                    <div class="card-image">
+                        
+                        <img src="/medias/cover/itstack-demo-design-7-01.png" class="responsive-img" alt="桥接模式">
+                        
+                        <span class="card-title">桥接模式</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            重学 Java 设计模式
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-07
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/设计模式/" class="post-category">
+                                    设计模式
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/设计模式/">
+                        <span class="chip bg-color">设计模式</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+    
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2020</span>
+            <a href="http://adbo.gitee.io" target="_blank">Adbo</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv" class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv" class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/adbbo" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1309338083@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1309338083" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 1309338083" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字" class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

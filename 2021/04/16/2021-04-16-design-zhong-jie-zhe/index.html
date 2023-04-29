@@ -1,0 +1,2081 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="中介者模式, Adbo~Blog">
+    <meta name="description" content="重学 Java 设计模式">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>中介者模式 | Adbo</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Adbo</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-at" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Adbo</div>
+        <div class="logo-desc">
+            
+            沉淀、分享、成长，让自己和他人都能有所收获
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-at"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://adbo.gitee.io/javaify" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://adbo.gitee.io/javaify" class="github-corner tooltipped hide-on-med-and-down" target="_blank" data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewbox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/cover/itstack-demo-design-16-01.png')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">中介者模式</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/设计模式/">
+                                <span class="chip bg-color">设计模式</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/设计模式/" class="post-category">
+                                设计模式
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-04-16
+                </div>
+                
+
+                
+
+                
+
+                
+				
+                
+            </div>
+            
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <blockquote>
+<p>本文章仅用于本人学习笔记记录<br>微信：A20991212A（如本文档内容侵权了您的权益，请您通过微信联系到我）</p>
+</blockquote>
+<h2 id="中介者模式介绍"><a href="#中介者模式介绍" class="headerlink" title="中介者模式介绍"></a>中介者模式介绍</h2><p>中介者模式要解决的就是复杂功能应用之间的重复调用，在这中间添加一层中介者包装服务，对外提供简单、通用、易扩展的服务能力。</p>
+<p>这样的设计模式几乎在我们日常生活和实际业务开发中都会见到，例如；飞机🛬降落有小姐姐在塔台喊话、无论哪个方向来的候车都从站台上下、公司的系统中有一个中台专门为你包装所有接口和提供统一的服务等等，这些都运用了中介者模式。除此之外，你用到的一些中间件，他们包装了底层多种数据库的差异化，提供非常简单的方式进行使用。</p>
+<h2 id="简单例子"><a href="#简单例子" class="headerlink" title="简单例子"></a>简单例子</h2><p><img src="/2021/04/16/2021-04-16-design-zhong-jie-zhe/itstack-demo-design-16-02.png" alt></p>
+<p>把jdbc层进行包装，让用户在使用数据库服务的时候，可以和使用mybatis一样简单方便，通过这样的源码方式学习中介者模式，也方便对源码知识的拓展学习，增强知识栈。</p>
+<h2 id="用一坨坨代码实现"><a href="#用一坨坨代码实现" class="headerlink" title="用一坨坨代码实现"></a>用一坨坨代码实现</h2><h3 id="工程结构"><a href="#工程结构" class="headerlink" title="工程结构"></a>工程结构</h3><pre><code>itstack-demo-design-16-01
+└── src
+    └── main
+        └── java
+            └── org.itstack.demo.design
+                └── JDBCUtil.java
+</code></pre><h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><pre><code>public class JDBCUtil {
+
+    private static Logger logger = LoggerFactory.getLogger(JDBCUtil.class);
+
+    public static final String URL = &quot;jdbc:mysql://127.0.0.1:3306/itstack-demo-design&quot;;
+    public static final String USER = &quot;root&quot;;
+    public static final String PASSWORD = &quot;123456&quot;;
+
+    public static void main(String[] args) throws Exception {
+        //1. 加载驱动程序
+        Class.forName(&quot;com.mysql.jdbc.Driver&quot;);
+        //2. 获得数据库连接
+        Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        //3. 操作数据库
+        Statement stmt = conn.createStatement();
+        ResultSet resultSet = stmt.executeQuery(&quot;SELECT id, name, age, createTime, updateTime FROM user&quot;);
+        //4. 如果有数据 resultSet.next() 返回true
+        while (resultSet.next()) {
+            logger.info(&quot;测试结果 姓名：{} 年龄：{}&quot;, resultSet.getString(&quot;name&quot;),resultSet.getInt(&quot;age&quot;));
+        }
+    }
+
+}
+</code></pre><h2 id="中介模式开发ORM框架"><a href="#中介模式开发ORM框架" class="headerlink" title="中介模式开发ORM框架"></a>中介模式开发ORM框架</h2><h3 id="工程结构-1"><a href="#工程结构-1" class="headerlink" title="工程结构"></a>工程结构</h3><pre><code>itstack-demo-design-16-02
+└── src
+    ├── main
+    │   ├── java
+    │   │   └── org.itstack.demo.design
+    │   │       ├── dao
+    │   │       │    ├── ISchool.java
+    │   │       │    └── IUserDao.java
+    │   │       ├── mediator
+    │   │       │    ├── Configuration.java
+    │   │       │    ├── DefaultSqlSession.java
+    │   │       │    ├── DefaultSqlSessionFactory.java
+    │   │       │    ├── Resources.java
+    │   │       │    ├── SqlSession.java
+    │   │       │    ├── SqlSessionFactory.java
+    │   │       │    ├── SqlSessionFactoryBuilder.java
+    │   │       │    └── SqlSessionFactoryBuilder.java
+    │   │       └── po
+    │   │             ├── School.java
+    │   │             └── User.java
+    │   └── resources
+    │       ├── mapper
+    │       │   ├── School_Mapper.xml
+    │       │   └── User_Mapper.xml
+    │       └── mybatis-config-datasource.xml
+    └── test
+         └── java
+             └── org.itstack.demo.design.test
+                 └── ApiTest.java
+</code></pre><p>中介者模式模型结构</p>
+<p><img src="/2021/04/16/2021-04-16-design-zhong-jie-zhe/itstack-demo-design-16-03.png" alt></p>
+<ul>
+<li>以上是对ORM框架实现的核心类，包括了；加载配置文件、对xml解析、获取数据库session、操作数据库以及结果返回。</li>
+<li>左上是对数据库的定义和处理，基本包括我们常用的方法；<t> T selectOne、<t> List<t> selectList等。</t></t></t></li>
+<li>右侧蓝色部分是对数据库配置的开启session的工厂处理类，这里的工厂会操作DefaultSqlSession</li>
+<li>之后是红色地方的SqlSessionFactoryBuilder，这个类是对数据库操作的核心类；处理工厂、解析文件、拿到session等。</li>
+</ul>
+<h3 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h3><h4 id="定义SqlSession接口"><a href="#定义SqlSession接口" class="headerlink" title="定义SqlSession接口"></a>定义SqlSession接口</h4><pre><code>public interface SqlSession {
+
+    &lt;T&gt; T selectOne(String statement);
+
+    &lt;T&gt; T selectOne(String statement, Object parameter);
+
+    &lt;T&gt; List&lt;T&gt; selectList(String statement);
+
+    &lt;T&gt; List&lt;T&gt; selectList(String statement, Object parameter);
+
+    void close();
+}
+</code></pre><p>这里定义了对数据库操作的查询接口，分为查询一个结果和查询多个结果，同时包括有参数和没有参数的方法。</p>
+<h4 id="SqlSession具体实现类"><a href="#SqlSession具体实现类" class="headerlink" title="SqlSession具体实现类"></a>SqlSession具体实现类</h4><pre><code>public class DefaultSqlSession implements SqlSession {
+
+    private Connection connection;
+    private Map&lt;String, XNode&gt; mapperElement;
+
+    public DefaultSqlSession(Connection connection, Map&lt;String, XNode&gt; mapperElement) {
+        this.connection = connection;
+        this.mapperElement = mapperElement;
+    }
+
+    @Override
+    public &lt;T&gt; T selectOne(String statement) {
+        try {
+            XNode xNode = mapperElement.get(statement);
+            PreparedStatement preparedStatement = connection.prepareStatement(xNode.getSql());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List&lt;T&gt; objects = resultSet2Obj(resultSet, Class.forName(xNode.getResultType()));
+            return objects.get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public &lt;T&gt; List&lt;T&gt; selectList(String statement) {
+        XNode xNode = mapperElement.get(statement);
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(xNode.getSql());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet2Obj(resultSet, Class.forName(xNode.getResultType()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // ...
+
+    private &lt;T&gt; List&lt;T&gt; resultSet2Obj(ResultSet resultSet, Class&lt;?&gt; clazz) {
+        List&lt;T&gt; list = new ArrayList&lt;&gt;();
+        try {
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            int columnCount = metaData.getColumnCount();
+            // 每次遍历行值
+            while (resultSet.next()) {
+                T obj = (T) clazz.newInstance();
+                for (int i = 1; i &lt;= columnCount; i++) {
+                    Object value = resultSet.getObject(i);
+                    String columnName = metaData.getColumnName(i);
+                    String setMethod = &quot;set&quot; + columnName.substring(0, 1).toUpperCase() + columnName.substring(1);
+                    Method method;
+                    if (value instanceof Timestamp) {
+                        method = clazz.getMethod(setMethod, Date.class);
+                    } else {
+                        method = clazz.getMethod(setMethod, value.getClass());
+                    }
+                    method.invoke(obj, value);
+                }
+                list.add(obj);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    @Override
+    public void close() {
+        if (null == connection) return;
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre><h4 id="定义SqlSessionFactory接口"><a href="#定义SqlSessionFactory接口" class="headerlink" title="定义SqlSessionFactory接口"></a>定义SqlSessionFactory接口</h4><pre><code>public interface SqlSessionFactory {
+
+    SqlSession openSession();
+
+}
+</code></pre><p>开启一个SqlSession， 这几乎是大家在平时的使用中都需要进行操作的内容。虽然你看不见，但是当你有数据库操作的时候都会获取每一次执行的SqlSession。</p>
+<h4 id="SqlSessionFactory具体实现类"><a href="#SqlSessionFactory具体实现类" class="headerlink" title="SqlSessionFactory具体实现类"></a>SqlSessionFactory具体实现类</h4><pre><code>public class DefaultSqlSessionFactory implements SqlSessionFactory {
+
+    private final Configuration configuration;
+
+    public DefaultSqlSessionFactory(Configuration configuration) {
+        this.configuration = configuration;
+    }
+
+    @Override
+    public SqlSession openSession() {
+        return new DefaultSqlSession(configuration.connection, configuration.mapperElement);
+    }
+
+}
+</code></pre><ul>
+<li>DefaultSqlSessionFactory，是使用mybatis最常用的类，这里我们简单的实现了一个版本。</li>
+<li>虽然是简单的版本，但是包括了最基本的核心思路。当开启SqlSession时会进行返回一个DefaultSqlSession</li>
+<li>这个构造函数中向下传递了Configuration配置文件，在这个配置文件中包括；Connection connection、Map&lt;String, String&gt; dataSource、Map&lt;String, XNode&gt; mapperElement。如果有你阅读过Mybatis源码，对这个就不会陌生。</li>
+</ul>
+<h4 id="SqlSessionFactoryBuilder实现"><a href="#SqlSessionFactoryBuilder实现" class="headerlink" title="SqlSessionFactoryBuilder实现"></a>SqlSessionFactoryBuilder实现</h4><pre><code>public class SqlSessionFactoryBuilder {
+
+    public DefaultSqlSessionFactory build(Reader reader) {
+        SAXReader saxReader = new SAXReader();
+        try {
+            saxReader.setEntityResolver(new XMLMapperEntityResolver());
+            Document document = saxReader.read(new InputSource(reader));
+            Configuration configuration = parseConfiguration(document.getRootElement());
+            return new DefaultSqlSessionFactory(configuration);
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private Configuration parseConfiguration(Element root) {
+        Configuration configuration = new Configuration();
+        configuration.setDataSource(dataSource(root.selectNodes(&quot;//dataSource&quot;)));
+        configuration.setConnection(connection(configuration.dataSource));
+        configuration.setMapperElement(mapperElement(root.selectNodes(&quot;mappers&quot;)));
+        return configuration;
+    }
+
+    // 获取数据源配置信息
+    private Map&lt;String, String&gt; dataSource(List&lt;Element&gt; list) {
+        Map&lt;String, String&gt; dataSource = new HashMap&lt;&gt;(4);
+        Element element = list.get(0);
+        List content = element.content();
+        for (Object o : content) {
+            Element e = (Element) o;
+            String name = e.attributeValue(&quot;name&quot;);
+            String value = e.attributeValue(&quot;value&quot;);
+            dataSource.put(name, value);
+        }
+        return dataSource;
+    }
+
+    private Connection connection(Map&lt;String, String&gt; dataSource) {
+        try {
+            Class.forName(dataSource.get(&quot;driver&quot;));
+            return DriverManager.getConnection(dataSource.get(&quot;url&quot;), dataSource.get(&quot;username&quot;), dataSource.get(&quot;password&quot;));
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // 获取SQL语句信息
+    private Map&lt;String, XNode&gt; mapperElement(List&lt;Element&gt; list) {
+        Map&lt;String, XNode&gt; map = new HashMap&lt;&gt;();
+
+        Element element = list.get(0);
+        List content = element.content();
+        for (Object o : content) {
+            Element e = (Element) o;
+            String resource = e.attributeValue(&quot;resource&quot;);
+
+            try {
+                Reader reader = Resources.getResourceAsReader(resource);
+                SAXReader saxReader = new SAXReader();
+                Document document = saxReader.read(new InputSource(reader));
+                Element root = document.getRootElement();
+                //命名空间
+                String namespace = root.attributeValue(&quot;namespace&quot;);
+
+                // SELECT
+                List&lt;Element&gt; selectNodes = root.selectNodes(&quot;select&quot;);
+                for (Element node : selectNodes) {
+                    String id = node.attributeValue(&quot;id&quot;);
+                    String parameterType = node.attributeValue(&quot;parameterType&quot;);
+                    String resultType = node.attributeValue(&quot;resultType&quot;);
+                    String sql = node.getText();
+
+                    // ? 匹配
+                    Map&lt;Integer, String&gt; parameter = new HashMap&lt;&gt;();
+                    Pattern pattern = Pattern.compile(&quot;(#\\{(.*?)})&quot;);
+                    Matcher matcher = pattern.matcher(sql);
+                    for (int i = 1; matcher.find(); i++) {
+                        String g1 = matcher.group(1);
+                        String g2 = matcher.group(2);
+                        parameter.put(i, g2);
+                        sql = sql.replace(g1, &quot;?&quot;);
+                    }
+
+                    XNode xNode = new XNode();
+                    xNode.setNamespace(namespace);
+                    xNode.setId(id);
+                    xNode.setParameterType(parameterType);
+                    xNode.setResultType(resultType);
+                    xNode.setSql(sql);
+                    xNode.setParameter(parameter);
+
+                    map.put(namespace + &quot;.&quot; + id, xNode);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+        }
+        return map;
+    }
+
+}
+</code></pre><p>在这个类中包括的核心方法有；build(构建实例化元素)、parseConfiguration(解析配置)、dataSource(获取数据库配置)、connection(Map&lt;String, String&gt; dataSource) (链接数据库)、mapperElement (解析sql语句)</p>
+<ul>
+<li><p>build(构建实例化元素)</p>
+<p>  这个类主要用于创建解析xml文件的类，以及初始化SqlSession工厂类DefaultSqlSessionFactory。另外需要注意这段代码saxReader.setEntityResolver(new XMLMapperEntityResolver());，是为了保证在不联网的时候一样可以解析xml，否则会需要从互联网获取dtd文件。</p>
+</li>
+<li><p>parseConfiguration(解析配置)</p>
+<p>  是对xml中的元素进行获取，这里主要获取了；dataSource、mappers，而这两个配置一个是我们数据库的链接信息，另外一个是对数据库操作语句的解析。</p>
+</li>
+<li><p>connection(Map&lt;String, String&gt; dataSource) (链接数据库)</p>
+<p>  链接数据库的地方和我们常见的方式是一样的；Class.forName(dataSource.get(“driver”));，但是这样包装以后外部是不需要知道具体的操作。同时当我们需要链接多套数据库的时候，也是可以在这里扩展。</p>
+</li>
+<li><p>mapperElement (解析sql语句)</p>
+<p>  这部分代码块内容相对来说比较长，但是核心的点就是为了解析xml中的sql语句配置。在我们平常的使用中基本都会配置一些sql语句，也有一些入参的占位符。在这里我们使用正则表达式的方式进行解析操作。</p>
+<p>  解析完成的sql语句就有了一个名称和sql的映射关系，当我们进行数据库操作的时候，这个组件就可以通过映射关系获取到对应sql语句进行操作。</p>
+</li>
+</ul>
+<h3 id="测试验证"><a href="#测试验证" class="headerlink" title="测试验证"></a>测试验证</h3><pre><code>CREATE TABLE school ( id bigint NOT NULL AUTO_INCREMENT, name varchar(64), address varchar(256), createTime datetime, updateTime datetime, PRIMARY KEY (id) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+insert into school (id, name, address, createTime, updateTime) values (1, &#39;北京大学&#39;, &#39;北京市海淀区颐和园路5号&#39;, &#39;2019-10-18 13:35:57&#39;, &#39;2019-10-18 13:35:57&#39;);
+insert into school (id, name, address, createTime, updateTime) values (2, &#39;南开大学&#39;, &#39;中国天津市南开区卫津路94号&#39;, &#39;2019-10-18 13:35:57&#39;, &#39;2019-10-18 13:35:57&#39;);
+insert into school (id, name, address, createTime, updateTime) values (3, &#39;同济大学&#39;, &#39;上海市彰武路1号同济大厦A楼7楼7区&#39;, &#39;2019-10-18 13:35:57&#39;, &#39;2019-10-18 13:35:57&#39;);
+
+CREATE TABLE user ( id bigint(11) NOT NULL AUTO_INCREMENT, name varchar(32), age int(4), address varchar(128), entryTime datetime, remark varchar(64), createTime datetime, updateTime datetime, status int(4) DEFAULT &#39;0&#39;, dateTime varchar(64), PRIMARY KEY (id), INDEX idx_name (name) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+insert into user (id, name, age, address, entryTime, remark, createTime, updateTime, status, dateTime) values (1, &#39;水水&#39;, 18, &#39;吉林省榆树市黑林镇尹家村5组&#39;, &#39;2019-12-22 00:00:00&#39;, &#39;无&#39;, &#39;2019-12-22 00:00:00&#39;, &#39;2019-12-22 00:00:00&#39;, 0, &#39;20200309&#39;);
+insert into user (id, name, age, address, entryTime, remark, createTime, updateTime, status, dateTime) values (2, &#39;豆豆&#39;, 18, &#39;辽宁省大连市清河湾司马道407路&#39;, &#39;2019-12-22 00:00:00&#39;, &#39;无&#39;, &#39;2019-12-22 00:00:00&#39;, &#39;2019-12-22 00:00:00&#39;, 1, null);
+insert into user (id, name, age, address, entryTime, remark, createTime, updateTime, status, dateTime) values (3, &#39;花花&#39;, 19, &#39;辽宁省大连市清河湾司马道407路&#39;, &#39;2019-12-22 00:00:00&#39;, &#39;无&#39;, &#39;2019-12-22 00:00:00&#39;, &#39;2019-12-22 00:00:00&#39;, 0, &#39;20200310&#39;);
+</code></pre><h4 id="创建数据库对象类"><a href="#创建数据库对象类" class="headerlink" title="创建数据库对象类"></a>创建数据库对象类</h4><pre><code>public class User {
+
+    private Long id;
+    private String name;
+    private Integer age;
+    private Date createTime;
+    private Date updateTime;
+
+    // ... get/set
+}
+</code></pre><pre><code>public class School {
+
+    private Long id;
+    private String name;
+    private String address;
+    private Date createTime;
+    private Date updateTime;  
+
+    // ... get/set
+}
+</code></pre><h4 id="创建DAO包"><a href="#创建DAO包" class="headerlink" title="创建DAO包"></a>创建DAO包</h4><pre><code>public interface IUserDao {
+
+     User queryUserInfoById(Long id);
+
+}
+</code></pre><pre><code>public interface ISchoolDao {
+
+    School querySchoolInfoById(Long treeId);
+
+}
+</code></pre><h4 id="ORM配置文件"><a href="#ORM配置文件" class="headerlink" title="ORM配置文件"></a>ORM配置文件</h4><pre><code>&lt;configuration&gt;
+    &lt;environments default=&quot;development&quot;&gt;
+        &lt;environment id=&quot;development&quot;&gt;
+            &lt;transactionManager type=&quot;JDBC&quot;/&gt;
+            &lt;dataSource type=&quot;POOLED&quot;&gt;
+                &lt;property name=&quot;driver&quot; value=&quot;com.mysql.jdbc.Driver&quot;/&gt;
+                &lt;property name=&quot;url&quot; value=&quot;jdbc:mysql://127.0.0.1:3306/itstack_demo_design?useUnicode=true&quot;/&gt;
+                &lt;property name=&quot;username&quot; value=&quot;root&quot;/&gt;
+                &lt;property name=&quot;password&quot; value=&quot;123456&quot;/&gt;
+            &lt;/dataSource&gt;
+        &lt;/environment&gt;
+    &lt;/environments&gt;
+
+    &lt;mappers&gt;
+        &lt;mapper resource=&quot;mapper/User_Mapper.xml&quot;/&gt;
+        &lt;mapper resource=&quot;mapper/School_Mapper.xml&quot;/&gt;
+    &lt;/mappers&gt;
+
+&lt;/configuration&gt;
+</code></pre><h4 id="操作配置-用户"><a href="#操作配置-用户" class="headerlink" title="操作配置(用户)"></a>操作配置(用户)</h4><pre><code>&lt;mapper namespace=&quot;org.itstack.demo.design.dao.IUserDao&quot;&gt;
+
+    &lt;select id=&quot;queryUserInfoById&quot; parameterType=&quot;java.lang.Long&quot; resultType=&quot;org.itstack.demo.design.po.User&quot;&gt;
+        SELECT id, name, age, createTime, updateTime
+        FROM user
+        where id = #{id}
+    &lt;/select&gt;
+
+    &lt;select id=&quot;queryUserList&quot; parameterType=&quot;org.itstack.demo.design.po.User&quot; resultType=&quot;org.itstack.demo.design.po.User&quot;&gt;
+        SELECT id, name, age, createTime, updateTime
+        FROM user
+        where age = #{age}
+    &lt;/select&gt;
+
+&lt;/mapper&gt;
+</code></pre><pre><code>&lt;mapper namespace=&quot;org.itstack.demo.design.dao.ISchoolDao&quot;&gt;
+
+    &lt;select id=&quot;querySchoolInfoById&quot; resultType=&quot;org.itstack.demo.design.po.School&quot;&gt;
+        SELECT id, name, address, createTime, updateTime
+        FROM school
+        where id = #{id}
+    &lt;/select&gt;
+
+&lt;/mapper&gt;
+</code></pre><h4 id="单个结果查询测试"><a href="#单个结果查询测试" class="headerlink" title="单个结果查询测试"></a>单个结果查询测试</h4><pre><code>@Test
+public void test_queryUserInfoById() {
+    String resource = &quot;mybatis-config-datasource.xml&quot;;
+    Reader reader;
+    try {
+        reader = Resources.getResourceAsReader(resource);
+        SqlSessionFactory sqlMapper = new SqlSessionFactoryBuilder().build(reader);
+        SqlSession session = sqlMapper.openSession();
+        try {
+            User user = session.selectOne(&quot;org.itstack.demo.design.dao.IUserDao.queryUserInfoById&quot;, 1L);
+            logger.info(&quot;测试结果：{}&quot;, JSON.toJSONString(user));
+        } finally {
+            session.close();
+            reader.close();
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+</code></pre><p>这里的使用方式和Mybatis是一样的，都包括了；资源加载和解析、SqlSession工厂构建、开启SqlSession以及最后执行查询操作selectOne</p>
+<h4 id="集合结果查询测试"><a href="#集合结果查询测试" class="headerlink" title="集合结果查询测试"></a>集合结果查询测试</h4><pre><code>
+bugstack虫洞栈
+首页
+Java/Spring
+Netty4.x专题
+架构师专题
+Archives
+重学 Java 设计模式：实战中介者模式「按照Mybatis原理手写ORM框架，给JDBC方式操作数据库增加中介者场景」
+2020/06/27
+
+作者：小傅哥
+博客：https://bugstack.cn
+
+    沉淀、分享、成长，让自己和他人都能有所收获！😄
+
+一、前言
+
+同龄人的差距是从什么时候拉开的
+
+同样的幼儿园、同样的小学、一样的书本、一样的课堂，有人学习好、有人学习差。不只是上学，几乎人生处处都是赛道，发令枪响起的时刻，也就把人生的差距拉开。编程开发这条路也是很长很宽，有人跑得快有人跑得慢。那么你是否想起过，这一点点的差距到遥不可及的距离，是从哪一天开始的。摸摸肚子的肉，看看远处的路，别人讲的是故事，你想起的都是事故。
+
+思想没有产品高才写出一片的ifelse
+
+当你承接一个需求的时候，比如；交易、订单、营销、保险等各类场景。如果你不熟悉这个场景下的业务模式，以及将来的拓展方向，那么很难设计出良好可扩展的系统。再加上产品功能初建，说老板要的急，尽快上线。作为程序员的你更没有时间思考，整体一看现在的需求也不难，直接上手开干(一个方法两个if语句)，这样确实满足了当前需求。但老板的想法多呀，产品也跟着变化快，到你这就是改改改，加加加。当然你也不客气，回首掏就是1024个if语句！
+
+日积月累的技术沉淀是为了厚积薄发
+
+粗略的估算过，如果从上大学开始每天写200行，一个月是6000行，一年算10个月话，就是6万行，第三年出去实习的是时候就有20万行的代码量。如果你能做到这一点，找工作难？有时候很多事情就是靠时间积累出来的，想走捷径有时候真的没有。你的技术水平、你的业务能力、你身上的肉，都是一点点积累下来的，不要浪费看似很短的时间，一年年坚持下来，留下印刻青春的痕迹，多给自己武装上一些能力。
+二、开发环境
+
+    JDK 1.8
+    Idea + Maven
+    mysql 5.1.20
+    涉及工程一个，可以通过关注公众号：bugstack虫洞栈，回复源码下载获取(打开获取的链接，找到序号18)
+
+工程     描述
+itstack-demo-design-16-01     使用JDBC方式连接数据库
+itstack-demo-design-16-02     手写ORM框架操作数据库
+三、中介者模式介绍
+
+中介者模式，图片来自 refactoringguru.cn
+
+中介者模式要解决的就是复杂功能应用之间的重复调用，在这中间添加一层中介者包装服务，对外提供简单、通用、易扩展的服务能力。
+
+这样的设计模式几乎在我们日常生活和实际业务开发中都会见到，例如；飞机🛬降落有小姐姐在塔台喊话、无论哪个方向来的候车都从站台上下、公司的系统中有一个中台专门为你包装所有接口和提供统一的服务等等，这些都运用了中介者模式。除此之外，你用到的一些中间件，他们包装了底层多种数据库的差异化，提供非常简单的方式进行使用。
+四、案例场景模拟
+
+场景模拟；模仿Mybatis手写ORM框架
+
+在本案例中我们通过模仿Mybatis手写ORM框架，通过这样操作数据库学习中介者运用场景
+
+除了这样的中间件层使用场景外，对于一些外部接口，例如N种奖品服务，可以由中台系统进行统一包装对外提供服务能力。也是中介者模式的一种思想体现。
+
+在本案例中我们会把jdbc层进行包装，让用户在使用数据库服务的时候，可以和使用mybatis一样简单方便，通过这样的源码方式学习中介者模式，也方便对源码知识的拓展学习，增强知识栈。
+五、用一坨坨代码实现
+
+这是一种关于数据库操作最初的方式
+
+基本上每一个学习开发的人都学习过直接使用jdbc方式连接数据库，进行CRUD操作。以下的例子可以当做回忆。
+1. 工程结构
+
+itstack-demo-design-16-01
+└── src
+    └── main
+        └── java
+            └── org.itstack.demo.design
+                └── JDBCUtil.java
+
+    这里的类比较简单只包括了一个数据库操作类。
+
+2. 代码实现
+
+public class JDBCUtil {
+
+    private static Logger logger = LoggerFactory.getLogger(JDBCUtil.class);
+
+    public static final String URL = &quot;jdbc:mysql://127.0.0.1:3306/itstack-demo-design&quot;;
+    public static final String USER = &quot;root&quot;;
+    public static final String PASSWORD = &quot;123456&quot;;
+
+    public static void main(String[] args) throws Exception {
+        //1. 加载驱动程序
+        Class.forName(&quot;com.mysql.jdbc.Driver&quot;);
+        //2. 获得数据库连接
+        Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        //3. 操作数据库
+        Statement stmt = conn.createStatement();
+        ResultSet resultSet = stmt.executeQuery(&quot;SELECT id, name, age, createTime, updateTime FROM user&quot;);
+        //4. 如果有数据 resultSet.next() 返回true
+        while (resultSet.next()) {
+            logger.info(&quot;测试结果 姓名：{} 年龄：{}&quot;, resultSet.getString(&quot;name&quot;),resultSet.getInt(&quot;age&quot;));
+        }
+    }
+
+}
+
+    以上是使用JDBC的方式进行直接操作数据库，几乎大家都使用过这样的方式。
+
+3. 测试结果
+
+15:38:10.919 [main] INFO  org.itstack.demo.design.JDBCUtil - 测试结果 姓名：水水 年龄：18
+15:38:10.922 [main] INFO  org.itstack.demo.design.JDBCUtil - 测试结果 姓名：豆豆 年龄：18
+15:38:10.922 [main] INFO  org.itstack.demo.design.JDBCUtil - 测试结果 姓名：花花 年龄：19
+
+Process finished with exit code 0
+
+    从测试结果可以看到这里已经查询到了数据库中的数据。只不过如果在全部的业务开发中都这样实现，会非常的麻烦。
+
+六、中介模式开发ORM框架
+
+`接下来就使用中介模式的思想完成模仿Mybatis的ORM框架开发~
+1. 工程结构
+
+itstack-demo-design-16-02
+└── src
+    ├── main
+    │   ├── java
+    │   │   └── org.itstack.demo.design
+    │   │       ├── dao
+    │   │       │    ├── ISchool.java
+    │   │       │    └── IUserDao.java
+    │   │       ├── mediator
+    │   │       │    ├── Configuration.java
+    │   │       │    ├── DefaultSqlSession.java
+    │   │       │    ├── DefaultSqlSessionFactory.java
+    │   │       │    ├── Resources.java
+    │   │       │    ├── SqlSession.java
+    │   │       │    ├── SqlSessionFactory.java
+    │   │       │    ├── SqlSessionFactoryBuilder.java
+    │   │       │    └── SqlSessionFactoryBuilder.java
+    │   │       └── po
+    │   │             ├── School.java
+    │   │             └── User.java
+    │   └── resources
+    │       ├── mapper
+    │       │   ├── School_Mapper.xml
+    │       │   └── User_Mapper.xml
+    │       └── mybatis-config-datasource.xml
+    └── test
+         └── java
+             └── org.itstack.demo.design.test
+                 └── ApiTest.java
+
+中介者模式模型结构
+
+中介者模式模型结构
+
+    以上是对ORM框架实现的核心类，包括了；加载配置文件、对xml解析、获取数据库session、操作数据库以及结果返回。
+    左上是对数据库的定义和处理，基本包括我们常用的方法；&lt;T&gt; T selectOne、&lt;T&gt; List&lt;T&gt; selectList等。
+    右侧蓝色部分是对数据库配置的开启session的工厂处理类，这里的工厂会操作DefaultSqlSession
+    之后是红色地方的SqlSessionFactoryBuilder，这个类是对数据库操作的核心类；处理工厂、解析文件、拿到session等。
+
+接下来我们就分别介绍各个类的功能实现过程。
+2. 代码实现
+2.1 定义SqlSession接口
+
+public interface SqlSession {
+
+    &lt;T&gt; T selectOne(String statement);
+
+    &lt;T&gt; T selectOne(String statement, Object parameter);
+
+    &lt;T&gt; List&lt;T&gt; selectList(String statement);
+
+    &lt;T&gt; List&lt;T&gt; selectList(String statement, Object parameter);
+
+    void close();
+}
+
+    这里定义了对数据库操作的查询接口，分为查询一个结果和查询多个结果，同时包括有参数和没有参数的方法。
+
+2.2 SqlSession具体实现类
+
+public class DefaultSqlSession implements SqlSession {
+
+    private Connection connection;
+    private Map&lt;String, XNode&gt; mapperElement;
+
+    public DefaultSqlSession(Connection connection, Map&lt;String, XNode&gt; mapperElement) {
+        this.connection = connection;
+        this.mapperElement = mapperElement;
+    }
+
+    @Override
+    public &lt;T&gt; T selectOne(String statement) {
+        try {
+            XNode xNode = mapperElement.get(statement);
+            PreparedStatement preparedStatement = connection.prepareStatement(xNode.getSql());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List&lt;T&gt; objects = resultSet2Obj(resultSet, Class.forName(xNode.getResultType()));
+            return objects.get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public &lt;T&gt; List&lt;T&gt; selectList(String statement) {
+        XNode xNode = mapperElement.get(statement);
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(xNode.getSql());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet2Obj(resultSet, Class.forName(xNode.getResultType()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // ...
+
+    private &lt;T&gt; List&lt;T&gt; resultSet2Obj(ResultSet resultSet, Class&lt;?&gt; clazz) {
+        List&lt;T&gt; list = new ArrayList&lt;&gt;();
+        try {
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            int columnCount = metaData.getColumnCount();
+            // 每次遍历行值
+            while (resultSet.next()) {
+                T obj = (T) clazz.newInstance();
+                for (int i = 1; i &lt;= columnCount; i++) {
+                    Object value = resultSet.getObject(i);
+                    String columnName = metaData.getColumnName(i);
+                    String setMethod = &quot;set&quot; + columnName.substring(0, 1).toUpperCase() + columnName.substring(1);
+                    Method method;
+                    if (value instanceof Timestamp) {
+                        method = clazz.getMethod(setMethod, Date.class);
+                    } else {
+                        method = clazz.getMethod(setMethod, value.getClass());
+                    }
+                    method.invoke(obj, value);
+                }
+                list.add(obj);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    @Override
+    public void close() {
+        if (null == connection) return;
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+    这里包括了接口定义的方法实现，也就是包装了jdbc层。
+    通过这样的包装可以让对数据库的jdbc操作隐藏起来，外部调用的时候对入参、出参都有内部进行处理。
+
+2.3 定义SqlSessionFactory接口
+
+public interface SqlSessionFactory {
+
+    SqlSession openSession();
+
+}
+
+    开启一个SqlSession， 这几乎是大家在平时的使用中都需要进行操作的内容。虽然你看不见，但是当你有数据库操作的时候都会获取每一次执行的SqlSession。
+
+2.4 SqlSessionFactory具体实现类
+
+public class DefaultSqlSessionFactory implements SqlSessionFactory {
+
+    private final Configuration configuration;
+
+    public DefaultSqlSessionFactory(Configuration configuration) {
+        this.configuration = configuration;
+    }
+
+    @Override
+    public SqlSession openSession() {
+        return new DefaultSqlSession(configuration.connection, configuration.mapperElement);
+    }
+
+}
+
+    DefaultSqlSessionFactory，是使用mybatis最常用的类，这里我们简单的实现了一个版本。
+    虽然是简单的版本，但是包括了最基本的核心思路。当开启SqlSession时会进行返回一个DefaultSqlSession
+    这个构造函数中向下传递了Configuration配置文件，在这个配置文件中包括；Connection connection、Map&lt;String, String&gt; dataSource、Map&lt;String, XNode&gt; mapperElement。如果有你阅读过Mybatis源码，对这个就不会陌生。
+
+2.5 SqlSessionFactoryBuilder实现
+
+public class SqlSessionFactoryBuilder {
+
+    public DefaultSqlSessionFactory build(Reader reader) {
+        SAXReader saxReader = new SAXReader();
+        try {
+            saxReader.setEntityResolver(new XMLMapperEntityResolver());
+            Document document = saxReader.read(new InputSource(reader));
+            Configuration configuration = parseConfiguration(document.getRootElement());
+            return new DefaultSqlSessionFactory(configuration);
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private Configuration parseConfiguration(Element root) {
+        Configuration configuration = new Configuration();
+        configuration.setDataSource(dataSource(root.selectNodes(&quot;//dataSource&quot;)));
+        configuration.setConnection(connection(configuration.dataSource));
+        configuration.setMapperElement(mapperElement(root.selectNodes(&quot;mappers&quot;)));
+        return configuration;
+    }
+
+    // 获取数据源配置信息
+    private Map&lt;String, String&gt; dataSource(List&lt;Element&gt; list) {
+        Map&lt;String, String&gt; dataSource = new HashMap&lt;&gt;(4);
+        Element element = list.get(0);
+        List content = element.content();
+        for (Object o : content) {
+            Element e = (Element) o;
+            String name = e.attributeValue(&quot;name&quot;);
+            String value = e.attributeValue(&quot;value&quot;);
+            dataSource.put(name, value);
+        }
+        return dataSource;
+    }
+
+    private Connection connection(Map&lt;String, String&gt; dataSource) {
+        try {
+            Class.forName(dataSource.get(&quot;driver&quot;));
+            return DriverManager.getConnection(dataSource.get(&quot;url&quot;), dataSource.get(&quot;username&quot;), dataSource.get(&quot;password&quot;));
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // 获取SQL语句信息
+    private Map&lt;String, XNode&gt; mapperElement(List&lt;Element&gt; list) {
+        Map&lt;String, XNode&gt; map = new HashMap&lt;&gt;();
+
+        Element element = list.get(0);
+        List content = element.content();
+        for (Object o : content) {
+            Element e = (Element) o;
+            String resource = e.attributeValue(&quot;resource&quot;);
+
+            try {
+                Reader reader = Resources.getResourceAsReader(resource);
+                SAXReader saxReader = new SAXReader();
+                Document document = saxReader.read(new InputSource(reader));
+                Element root = document.getRootElement();
+                //命名空间
+                String namespace = root.attributeValue(&quot;namespace&quot;);
+
+                // SELECT
+                List&lt;Element&gt; selectNodes = root.selectNodes(&quot;select&quot;);
+                for (Element node : selectNodes) {
+                    String id = node.attributeValue(&quot;id&quot;);
+                    String parameterType = node.attributeValue(&quot;parameterType&quot;);
+                    String resultType = node.attributeValue(&quot;resultType&quot;);
+                    String sql = node.getText();
+
+                    // ? 匹配
+                    Map&lt;Integer, String&gt; parameter = new HashMap&lt;&gt;();
+                    Pattern pattern = Pattern.compile(&quot;(#\\{(.*?)})&quot;);
+                    Matcher matcher = pattern.matcher(sql);
+                    for (int i = 1; matcher.find(); i++) {
+                        String g1 = matcher.group(1);
+                        String g2 = matcher.group(2);
+                        parameter.put(i, g2);
+                        sql = sql.replace(g1, &quot;?&quot;);
+                    }
+
+                    XNode xNode = new XNode();
+                    xNode.setNamespace(namespace);
+                    xNode.setId(id);
+                    xNode.setParameterType(parameterType);
+                    xNode.setResultType(resultType);
+                    xNode.setSql(sql);
+                    xNode.setParameter(parameter);
+
+                    map.put(namespace + &quot;.&quot; + id, xNode);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+        }
+        return map;
+    }
+
+}
+
+    在这个类中包括的核心方法有；build(构建实例化元素)、parseConfiguration(解析配置)、dataSource(获取数据库配置)、connection(Map&lt;String, String&gt; dataSource) (链接数据库)、mapperElement (解析sql语句)
+    接下来我们分别介绍这样的几个核心方法。
+
+build(构建实例化元素)
+
+这个类主要用于创建解析xml文件的类，以及初始化SqlSession工厂类DefaultSqlSessionFactory。另外需要注意这段代码saxReader.setEntityResolver(new XMLMapperEntityResolver());，是为了保证在不联网的时候一样可以解析xml，否则会需要从互联网获取dtd文件。
+
+parseConfiguration(解析配置)
+
+是对xml中的元素进行获取，这里主要获取了；dataSource、mappers，而这两个配置一个是我们数据库的链接信息，另外一个是对数据库操作语句的解析。
+
+connection(Map&lt;String, String&gt; dataSource) (链接数据库)
+
+链接数据库的地方和我们常见的方式是一样的；Class.forName(dataSource.get(&quot;driver&quot;));，但是这样包装以后外部是不需要知道具体的操作。同时当我们需要链接多套数据库的时候，也是可以在这里扩展。
+
+mapperElement (解析sql语句)
+
+这部分代码块内容相对来说比较长，但是核心的点就是为了解析xml中的sql语句配置。在我们平常的使用中基本都会配置一些sql语句，也有一些入参的占位符。在这里我们使用正则表达式的方式进行解析操作。
+
+解析完成的sql语句就有了一个名称和sql的映射关系，当我们进行数据库操作的时候，这个组件就可以通过映射关系获取到对应sql语句进行操作。
+3. 测试验证
+
+在测试之前需要导入sql语句到数据库中;
+
+    库名：itstack-demo-design
+    表名：user、school
+
+CREATE TABLE school ( id bigint NOT NULL AUTO_INCREMENT, name varchar(64), address varchar(256), createTime datetime, updateTime datetime, PRIMARY KEY (id) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+insert into school (id, name, address, createTime, updateTime) values (1, &#39;北京大学&#39;, &#39;北京市海淀区颐和园路5号&#39;, &#39;2019-10-18 13:35:57&#39;, &#39;2019-10-18 13:35:57&#39;);
+insert into school (id, name, address, createTime, updateTime) values (2, &#39;南开大学&#39;, &#39;中国天津市南开区卫津路94号&#39;, &#39;2019-10-18 13:35:57&#39;, &#39;2019-10-18 13:35:57&#39;);
+insert into school (id, name, address, createTime, updateTime) values (3, &#39;同济大学&#39;, &#39;上海市彰武路1号同济大厦A楼7楼7区&#39;, &#39;2019-10-18 13:35:57&#39;, &#39;2019-10-18 13:35:57&#39;);
+CREATE TABLE user ( id bigint(11) NOT NULL AUTO_INCREMENT, name varchar(32), age int(4), address varchar(128), entryTime datetime, remark varchar(64), createTime datetime, updateTime datetime, status int(4) DEFAULT &#39;0&#39;, dateTime varchar(64), PRIMARY KEY (id), INDEX idx_name (name) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+insert into user (id, name, age, address, entryTime, remark, createTime, updateTime, status, dateTime) values (1, &#39;水水&#39;, 18, &#39;吉林省榆树市黑林镇尹家村5组&#39;, &#39;2019-12-22 00:00:00&#39;, &#39;无&#39;, &#39;2019-12-22 00:00:00&#39;, &#39;2019-12-22 00:00:00&#39;, 0, &#39;20200309&#39;);
+insert into user (id, name, age, address, entryTime, remark, createTime, updateTime, status, dateTime) values (2, &#39;豆豆&#39;, 18, &#39;辽宁省大连市清河湾司马道407路&#39;, &#39;2019-12-22 00:00:00&#39;, &#39;无&#39;, &#39;2019-12-22 00:00:00&#39;, &#39;2019-12-22 00:00:00&#39;, 1, null);
+insert into user (id, name, age, address, entryTime, remark, createTime, updateTime, status, dateTime) values (3, &#39;花花&#39;, 19, &#39;辽宁省大连市清河湾司马道407路&#39;, &#39;2019-12-22 00:00:00&#39;, &#39;无&#39;, &#39;2019-12-22 00:00:00&#39;, &#39;2019-12-22 00:00:00&#39;, 0, &#39;20200310&#39;);
+
+3.1 创建数据库对象类
+
+用户类
+
+public class User {
+
+    private Long id;
+    private String name;
+    private Integer age;
+    private Date createTime;
+    private Date updateTime;
+
+    // ... get/set
+}
+
+学校类
+
+public class School {
+
+    private Long id;
+    private String name;
+    private String address;
+    private Date createTime;
+    private Date updateTime;  
+
+    // ... get/set
+}
+
+    这两个类都非常简单，就是基本的数据库信息。
+
+3.2 创建DAO包
+
+用户Dao
+
+public interface IUserDao {
+
+     User queryUserInfoById(Long id);
+
+}
+
+学校Dao
+
+public interface ISchoolDao {
+
+    School querySchoolInfoById(Long treeId);
+
+}
+
+3.3 ORM配置文件
+
+链接配置
+
+&lt;configuration&gt;
+    &lt;environments default=&quot;development&quot;&gt;
+        &lt;environment id=&quot;development&quot;&gt;
+            &lt;transactionManager type=&quot;JDBC&quot;/&gt;
+            &lt;dataSource type=&quot;POOLED&quot;&gt;
+                &lt;property name=&quot;driver&quot; value=&quot;com.mysql.jdbc.Driver&quot;/&gt;
+                &lt;property name=&quot;url&quot; value=&quot;jdbc:mysql://127.0.0.1:3306/itstack_demo_design?useUnicode=true&quot;/&gt;
+                &lt;property name=&quot;username&quot; value=&quot;root&quot;/&gt;
+                &lt;property name=&quot;password&quot; value=&quot;123456&quot;/&gt;
+            &lt;/dataSource&gt;
+        &lt;/environment&gt;
+    &lt;/environments&gt;
+
+    &lt;mappers&gt;
+        &lt;mapper resource=&quot;mapper/User_Mapper.xml&quot;/&gt;
+        &lt;mapper resource=&quot;mapper/School_Mapper.xml&quot;/&gt;
+    &lt;/mappers&gt;
+
+&lt;/configuration&gt;
+
+    这个配置与我们平常使用的mybatis基本是一样的，包括了数据库的连接池信息以及需要引入的mapper映射文件。
+
+操作配置(用户)
+
+&lt;mapper namespace=&quot;org.itstack.demo.design.dao.IUserDao&quot;&gt;
+
+    &lt;select id=&quot;queryUserInfoById&quot; parameterType=&quot;java.lang.Long&quot; resultType=&quot;org.itstack.demo.design.po.User&quot;&gt;
+        SELECT id, name, age, createTime, updateTime
+        FROM user
+        where id = #{id}
+    &lt;/select&gt;
+
+    &lt;select id=&quot;queryUserList&quot; parameterType=&quot;org.itstack.demo.design.po.User&quot; resultType=&quot;org.itstack.demo.design.po.User&quot;&gt;
+        SELECT id, name, age, createTime, updateTime
+        FROM user
+        where age = #{age}
+    &lt;/select&gt;
+
+&lt;/mapper&gt;
+
+操作配置(学校)
+
+&lt;mapper namespace=&quot;org.itstack.demo.design.dao.ISchoolDao&quot;&gt;
+
+    &lt;select id=&quot;querySchoolInfoById&quot; resultType=&quot;org.itstack.demo.design.po.School&quot;&gt;
+        SELECT id, name, address, createTime, updateTime
+        FROM school
+        where id = #{id}
+    &lt;/select&gt;
+
+&lt;/mapper&gt;
+
+3.4 单个结果查询测试
+
+@Test
+public void test_queryUserInfoById() {
+    String resource = &quot;mybatis-config-datasource.xml&quot;;
+    Reader reader;
+    try {
+        reader = Resources.getResourceAsReader(resource);
+        SqlSessionFactory sqlMapper = new SqlSessionFactoryBuilder().build(reader);
+        SqlSession session = sqlMapper.openSession();
+        try {
+            User user = session.selectOne(&quot;org.itstack.demo.design.dao.IUserDao.queryUserInfoById&quot;, 1L);
+            logger.info(&quot;测试结果：{}&quot;, JSON.toJSONString(user));
+        } finally {
+            session.close();
+            reader.close();
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+    这里的使用方式和Mybatis是一样的，都包括了；资源加载和解析、SqlSession工厂构建、开启SqlSession以及最后执行查询操作selectOne
+
+测试结果
+
+16:56:51.831 [main] INFO  org.itstack.demo.design.demo.ApiTest - 测试结果：{&quot;age&quot;:18,&quot;createTime&quot;:1576944000000,&quot;id&quot;:1,&quot;name&quot;:&quot;水水&quot;,&quot;updateTime&quot;:1576944000000}
+
+Process finished with exit code 0
+
+    从结果上看已经满足了我们的查询需求。
+
+3.5 集合结果查询测试
+
+@Test
+public void test_queryUserList() {
+    String resource = &quot;mybatis-config-datasource.xml&quot;;
+    Reader reader;
+    try {
+        reader = Resources.getResourceAsReader(resource);
+        SqlSessionFactory sqlMapper = new SqlSessionFactoryBuilder().build(reader);
+        SqlSession session = sqlMapper.openSession();
+        try {
+            User req = new User();
+            req.setAge(18);
+            List&lt;User&gt; userList = session.selectList(&quot;org.itstack.demo.design.dao.IUserDao.queryUserList&quot;, req);
+            logger.info(&quot;测试结果：{}&quot;, JSON.toJSONString(userList));
+        } finally {
+            session.close();
+            reader.close();
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+</code></pre><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>在上述的实现和测试使用中可以看到，这种模式的设计满足了；单一职责和开闭原则，也就符合了迪米特原则，即越少人知道越好。外部的人只需要按照需求进行调用，不需要知道具体的是如何实现的，复杂的一面已经有组件合作服务平台处理。</li>
+<li>中介者模式要解决的就是复杂功能应用之间的重复调用，在这中间添加一层中介者包装服务，对外提供简单、通用、易扩展的服务能力。</li>
+</ul>
+
+            </div>
+            <hr>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://adbo.gitee.io" rel="external nofollow noreferrer">Adbo</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://adbo.gitee.io/2021/04/16/2021-04-16-design-zhong-jie-zhe/">http://adbo.gitee.io/2021/04/16/2021-04-16-design-zhong-jie-zhe/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="http://adbo.gitee.io" target="_blank">Adbo</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/设计模式/">
+                                    <span class="chip bg-color">设计模式</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">充点钱我更猛</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+            
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '9150c7c4b90b14e0cd58',
+        clientSecret: '9666f231bec8dfe9335833e3684d57d2fcf8da6b',
+        repo: 'gitalk',
+        owner: 'adbbo',
+        admin: "adbbo",
+        id: '2021-04-16T22-43-52',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/04/17/2021-04-17-design-bei-wang-lu/">
+                    <div class="card-image">
+                        
+                        <img src="/medias/cover/itstack-demo-design-17-01.png" class="responsive-img" alt="备忘录模式">
+                        
+                        <span class="card-title">备忘录模式</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            重学 Java 设计模式
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-04-17
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/设计模式/" class="post-category">
+                                    设计模式
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/设计模式/">
+                        <span class="chip bg-color">设计模式</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/04/15/2021-04-15-design-die-dai-qi/">
+                    <div class="card-image">
+                        
+                        <img src="/medias/cover/itstack-demo-design-15-01.png" class="responsive-img" alt="迭代器模式">
+                        
+                        <span class="card-title">迭代器模式</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            重学 Java 设计模式
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-04-15
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/设计模式/" class="post-category">
+                                    设计模式
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/设计模式/">
+                        <span class="chip bg-color">设计模式</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+    
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2020</span>
+            <a href="http://adbo.gitee.io" target="_blank">Adbo</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv" class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv" class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/adbbo" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1309338083@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1309338083" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 1309338083" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字" class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
