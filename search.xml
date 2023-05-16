@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>Git常用命令</title>
+      <link href="/2023/05/16/2023-05-16-git-chang-yong-ming-ling/"/>
+      <url>/2023/05/16/2023-05-16-git-chang-yong-ming-ling/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>本篇主要应前同事需要，整理工作中常用的Git操作</p></blockquote><h2 id="安装配置"><a href="#安装配置" class="headerlink" title="安装配置"></a>安装配置</h2><h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>官网下载：<a href="https://git-scm.com/downloads" target="_blank" rel="noopener">Git-Downloads</a></p><h3 id="生成秘钥"><a href="#生成秘钥" class="headerlink" title="生成秘钥"></a>生成秘钥</h3><ol><li>右击打开git bash</li><li>执行命令，按3个回车，密码为空</li></ol><pre><code>ssh-keygen -t rsa -C &quot;个人邮箱地址&quot;</code></pre><ol start="3"><li>在C:\Users{windows用户名}.ssh目录下找到id_rsa.pub文件</li><li>复制id_rsa.pub添加到仓库SSH秘钥配置中。</li></ol><h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><ul><li>设置自己的姓名和邮箱</li></ul><pre><code>git config --global user.name &quot;Your Name&quot;git config --global user.email &quot;email@example.com&quot;</code></pre><ul><li>设置git仓库能正常显示中文</li></ul><pre><code>git config --global core.quotepath false</code></pre><h2 id="概念理解"><a href="#概念理解" class="headerlink" title="概念理解"></a>概念理解</h2><p><img src="/2023/05/16/2023-05-16-git-chang-yong-ming-ling/8205a12c11fc45ba4ee13a5af081577c.jpg" alt></p><ul><li>workspace：工作区</li><li>staging area：暂存区/缓存区</li><li>local repository：本地仓库</li><li>remote repository：远程仓库</li></ul><h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>新项目执行Git初始化，并进行第一次提交</p><pre><code>git initgit add .git commit -m &quot;first commit&quot;git remote add origin 仓库地址路径git push origin master</code></pre><h3 id="克隆"><a href="#克隆" class="headerlink" title="克隆"></a>克隆</h3><p>对github、gitlab远程仓库，已有项目进行克隆</p><pre><code>git clone 仓库地址路径</code></pre><h3 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h3><ul><li>查看所有分支</li></ul><pre><code>git branch -a</code></pre><ul><li>切换分支</li></ul><pre><code>git checkout 需要切换的分支名</code></pre><ul><li>创建新分支</li></ul><pre><code>git checkout -b 分支名</code></pre><p>-b表示创建并切换分支</p><h3 id="拉取"><a href="#拉取" class="headerlink" title="拉取"></a>拉取</h3><pre><code>git pull</code></pre><p>会从远程仓库拉取最新代码合并到当前分支</p><h3 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h3><h4 id="add"><a href="#add" class="headerlink" title="add"></a>add</h4><p>将文件添加到仓库</p><ul><li>将工作区的某个文件添加到暂存区</li></ul><pre><code>git add 文件名</code></pre><ul><li>将当前工作区的所有文件都加入暂存区</li></ul><pre><code>git add .</code></pre><h4 id="commit"><a href="#commit" class="headerlink" title="commit"></a>commit</h4><p>将暂存区文件提交到本地仓库</p><ul><li>将暂存区内容提交到本地仓库</li></ul><pre><code>git commit -m &quot;提交说明&quot;</code></pre><ul><li>跳过缓存区操作，直接把工作区内容提交到本地仓库</li></ul><pre><code>git commit -am &quot;提交说明&quot;</code></pre><p>这个命令等于git add . 和git commit -m “提交说明”组合</p><h4 id="push"><a href="#push" class="headerlink" title="push"></a>push</h4><p>将本地仓库分支推送同步到远程仓库分支</p><pre><code>git push</code></pre><h3 id="状态"><a href="#状态" class="headerlink" title="状态"></a>状态</h3><p>查看当前分支状态，可以看到修改、删除、还没提交的文件状态</p><pre><code>git status</code></pre><h3 id="合并"><a href="#合并" class="headerlink" title="合并"></a>合并</h3><ul><li>开发分支（dev）上的代码达到上线的标准后，要合并到 master 分支</li></ul><pre><code>git checkout devgit pullgit checkout mastergit merge devgit push origin master</code></pre><ul><li>当master代码有更新，需要更新开发分支（dev）上的代码</li></ul><pre><code>git checkout master git pull git checkout devgit merge master git push origin dev</code></pre><h3 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h3><p>到一个重要的阶段，并希望永远记住那个特别的提交快照，你可以使用 git tag 给它打上标签</p><ul><li>查看所有标签</li></ul><pre><code>git tag</code></pre><ul><li>创建并推送标签</li></ul><pre><code>git tag v1.0 -am &quot;release 1.0 version&quot;git push origin v1.0</code></pre><h3 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h3><p>查看历史记录</p><ul><li>查看所有commit记录(SHA-A校验和，作者名称，邮箱，提交时间，提交说明)</li></ul><pre><code>git log</code></pre><ul><li>查看最近多少次的提交记录</li></ul><pre><code>git log -p -次数</code></pre><ul><li>让提交记录以精简的一行输出</li></ul><pre><code>git log --oneline</code></pre><ul><li>图形展示分支的合并历史</li></ul><pre><code>git log --graph</code></pre><ul><li>查询作者的提交记录</li></ul><pre><code>git log --author=作者</code></pre><ul><li>列出提交信息中包含过滤信息的提交记录</li></ul><pre><code>git log --grep=过滤信息</code></pre><h3 id="回滚（谨慎）"><a href="#回滚（谨慎）" class="headerlink" title="回滚（谨慎）"></a>回滚（谨慎）</h3><p>可以通过 git reset 命令将代码回滚到之前某次提交的状态，但一定要将现有的代码做好备份，否则回滚之后这些变动都会消失</p><ul><li>回退成上次提交的版本</li></ul><pre><code>git reset HEAD^</code></pre><ul><li>回退到指定版本</li></ul><p>查看提交日志，回退到指定commit_id</p><pre><code>git loggit reset --hard commit_id</code></pre><ul><li>将本地的状态回退到和远程的一样</li></ul><pre><code>git reset --hard origin/master</code></pre><ul><li>回退 xxx.java 文件的版本到上一个版本</li></ul><pre><code>git reset HEAD^ xxx.java</code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> Work </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Git </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Redis数据结构</title>
       <link href="/2022/10/25/2022-10-25-redis-shu-ju-jie-gou/"/>
       <url>/2022/10/25/2022-10-25-redis-shu-ju-jie-gou/</url>
