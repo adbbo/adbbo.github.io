@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://adbo.gitee.io/"/>
-  <updated>2023-05-16T15:54:55.111Z</updated>
+  <updated>2023-07-09T11:02:56.271Z</updated>
   <id>http://adbo.gitee.io/</id>
   
   <author>
@@ -17,11 +17,69 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>SpringBoot自动装配</title>
+    <link href="http://adbo.gitee.io/2023/07/08/2023-07-08-springboot-zi-dong-zhuang-pei/"/>
+    <id>http://adbo.gitee.io/2023/07/08/2023-07-08-springboot-zi-dong-zhuang-pei/</id>
+    <published>2023-07-08T14:30:22.000Z</published>
+    <updated>2023-07-09T11:02:56.271Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;来源《SpringBoot 源码解读与原理分析》&lt;br&gt;微信：A20991212A（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2
+        
+      
+    
+    </summary>
+    
+      <category term="SpringBoot" scheme="http://adbo.gitee.io/categories/SpringBoot/"/>
+    
+    
+      <category term="Spring框架" scheme="http://adbo.gitee.io/tags/Spring%E6%A1%86%E6%9E%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SpringBootApplication注解</title>
+    <link href="http://adbo.gitee.io/2023/07/07/2023-07-07-springbootapplication-zhu-jie/"/>
+    <id>http://adbo.gitee.io/2023/07/07/2023-07-07-springbootapplication-zhu-jie/</id>
+    <published>2023-07-07T14:30:22.000Z</published>
+    <updated>2023-07-09T02:40:28.585Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;来源《SpringBoot 源码解读与原理分析》&lt;br&gt;微信：A20991212A（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2
+        
+      
+    
+    </summary>
+    
+      <category term="SpringBoot" scheme="http://adbo.gitee.io/categories/SpringBoot/"/>
+    
+    
+      <category term="Spring框架" scheme="http://adbo.gitee.io/tags/Spring%E6%A1%86%E6%9E%B6/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Git常用命令</title>
     <link href="http://adbo.gitee.io/2023/05/16/2023-05-16-git-chang-yong-ming-ling/"/>
     <id>http://adbo.gitee.io/2023/05/16/2023-05-16-git-chang-yong-ming-ling/</id>
     <published>2023-05-16T15:45:46.000Z</published>
-    <updated>2023-05-16T15:54:55.111Z</updated>
+    <updated>2023-05-16T16:02:47.754Z</updated>
     
     <summary type="html">
     
@@ -521,64 +579,6 @@
 &lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;来源《Java并发编程的艺术》&lt;br&gt;微信：A20991212A（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&quot;Lock接口&quot;&gt;&lt;a
-        
-      
-    
-    </summary>
-    
-      <category term="JAVA" scheme="http://adbo.gitee.io/categories/JAVA/"/>
-    
-    
-      <category term="并发编程的艺术" scheme="http://adbo.gitee.io/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Java并发编程线程</title>
-    <link href="http://adbo.gitee.io/2021/11/01/2021-11-01-java-bing-fa-bian-cheng-xian-cheng/"/>
-    <id>http://adbo.gitee.io/2021/11/01/2021-11-01-java-bing-fa-bian-cheng-xian-cheng/</id>
-    <published>2021-11-01T14:43:52.000Z</published>
-    <updated>2023-04-29T07:04:50.638Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;来源《Java并发编程的艺术》&lt;br&gt;微信：A20991212A（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;线程简介&quot;&gt;&lt;a
-        
-      
-    
-    </summary>
-    
-      <category term="JAVA" scheme="http://adbo.gitee.io/categories/JAVA/"/>
-    
-    
-      <category term="并发编程的艺术" scheme="http://adbo.gitee.io/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E8%89%BA%E6%9C%AF/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Java内存模型</title>
-    <link href="http://adbo.gitee.io/2021/10/30/2021-10-30-java-nei-cun-mo-xing/"/>
-    <id>http://adbo.gitee.io/2021/10/30/2021-10-30-java-nei-cun-mo-xing/</id>
-    <published>2021-10-30T14:43:52.000Z</published>
-    <updated>2023-04-29T07:04:50.629Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;blockquote&gt;
-&lt;p&gt;本文章仅用于本人学习笔记记录&lt;br&gt;来源《Java并发编程的艺术》&lt;br&gt;微信：A20991212A（如本文档内容侵权了您的权益，请您通过微信联系到我）&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h2 id=&quot;Java内存模型的基础&quot;&gt;&lt;a
         
       
     
