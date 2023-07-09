@@ -471,7 +471,7 @@ public @interface SpringBootApplication</code></pre><p>文档注释原文翻译�
 <blockquote>
 <p>Indicates a configuration class that declares one or more @Bean methods and also triggers auto-configuration and component scanning. This is a convenience annotation that is equivalent to declaring<br>@Configuration, @EnableAutoConfiguration and @ComponentScan.<br>标识了一个配置类，这个配置类上声明了一个或多个 @Bean 的方法，并且它会触发自动配置和组件扫描。<br>这是一个很方便的注解，它等价于同时标注 @Configuration + @EnableAutoConfiguration + @ComponentScan 。</p>
 </blockquote>
-<p>![](16e3b73d238f1154~tplv-t2oaga2asx-zoom-in-crop-mark 3024 0 0 0.webp)</p>
+<p><img src="/2023/07/07/2023-07-07-springbootapplication-zhu-jie/16e3b73d238f1154.webp" alt></p>
 <h2 id="ComponentScan"><a href="#ComponentScan" class="headerlink" title="@ComponentScan"></a>@ComponentScan</h2><p>在SpringFramework中@ComponentScan可以指定包扫描的根路径，让 SpringFramework 来扫描指定包及子包下的组件，也可以不指定路径，默认扫描当前配置类所在包及子包里的所有组件<strong>（其实这就解释了为什么 SpringBoot 的启动类要放到所有类所在包的最外层）</strong>。</p>
 <pre><code>@ComponentScan(excludeFilters = { @Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),
         @Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) })</code></pre><p>声明中有显式的指定了两个过滤条件</p>
